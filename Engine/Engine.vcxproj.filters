@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{55b42d0b-a97a-49c6-85ac-a9279711bfd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{8c68cb7f-7d7d-4647-8ba5-d049412a4bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{32a2c2fb-d388-4e99-8f78-42b211f58cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{7cb1231f-a065-45fe-97a9-6ccac374101c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GIS">
+      <UniqueIdentifier>{a1c867c8-180e-4cc2-89c1-7d6e8715df12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b5826046-59c0-4651-a192-1c26db4ca9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Allocators">
+      <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entities\Component.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Message.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Allocators\DLAllocator.cpp">
+      <Filter>Memory\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Logging.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\GameStateManager.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Tags.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entities\Component.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Message.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Allocators\DLAllocator.h">
+      <Filter>Memory\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Logging.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\GameStateManager.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Tags.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
