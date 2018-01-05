@@ -22,6 +22,9 @@
     <Filter Include="Memory\Allocators">
       <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{d1940e8e-e7cf-49c5-9a69-3c60d4da68b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -45,9 +48,10 @@
     <ClCompile Include="GameStates\GameStateManager.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
-    <ClCompile Include="Entities\Tags.cpp">
+    <ClCompile Include="Entities\EntityManager.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -71,8 +75,12 @@
     <ClInclude Include="GameStates\GameStateManager.h">
       <Filter>GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="Entities\Tags.h">
+    <ClInclude Include="Entities\EntityManager.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Types.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Pch.h" />
   </ItemGroup>
 </Project>
