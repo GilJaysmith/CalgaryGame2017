@@ -1,3 +1,5 @@
+#pragma once
+
 class Entity;
 class Message;
 
@@ -7,5 +9,5 @@ public:
 	Component(Entity*);
 	virtual ~Component();
 
-	void OnMessage(Message*);
+	virtual bool OnMessage(Message*) { return false; }
 };

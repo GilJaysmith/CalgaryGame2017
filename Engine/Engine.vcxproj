@@ -26,6 +26,7 @@
     <ClCompile Include="GameStates\GameStateManager.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Memory\Allocators\DLAllocator.cpp" />
+    <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -44,6 +45,7 @@
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Math\Types.h" />
     <ClInclude Include="Memory\Allocators\DLAllocator.h" />
+    <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Pch.h" />
   </ItemGroup>

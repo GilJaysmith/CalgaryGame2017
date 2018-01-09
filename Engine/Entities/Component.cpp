@@ -8,7 +8,3 @@ Component::Component(Entity *)
 Component::~Component()
 {
 }
-
-void Component::OnMessage(Message *)
-{
-}

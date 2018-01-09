@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 #include "Math/Types.h"
@@ -9,16 +11,17 @@ class Entity
 {
 public:
 
-	Entity();
-	~Entity();
-
 	void AddComponent(Component* component);
-	void OnMessage(Message* message);
+	int OnMessage(Message* message);
 
 	Math::Vector3 GetTranslation() const;
 	Math::Vector3 GetRotation() const;
 
 protected:
+
+	friend class EntityManager;
+	Entity();
+	~Entity();
 
 	std::vector<Component*> m_Components;
 	Math::Vector3 m_Translation;

@@ -1,3 +1,7 @@
+#pragma once
+
+#include <set>
+
 class Entity;
 
 class EntityManager
@@ -8,5 +12,7 @@ public:
 
 	Entity* CreateEntity();
 	void DestroyEntity(Entity* entity);
-	
+
+protected:
+	std::set<Entity*> m_AllEntities;
 };

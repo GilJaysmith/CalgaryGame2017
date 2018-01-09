@@ -52,6 +52,9 @@
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Pch.cpp" />
+    <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp">
+      <Filter>Memory\Allocators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -82,5 +85,8 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h">
+      <Filter>Memory\Allocators</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
