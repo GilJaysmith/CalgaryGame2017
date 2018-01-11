@@ -25,6 +25,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{d1940e8e-e7cf-49c5-9a69-3c60d4da68b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{6a868821-fbd1-483c-a435-0f61abe973ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -87,6 +90,12 @@
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h">
       <Filter>Memory\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\MessageTypes.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Singleton.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

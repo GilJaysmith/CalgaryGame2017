@@ -41,6 +41,7 @@
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Entities\Message.h" />
+    <ClInclude Include="Entities\MessageTypes.h" />
     <ClInclude Include="GameStates\GameStateManager.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Math\Types.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="Utilities\Singleton.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
