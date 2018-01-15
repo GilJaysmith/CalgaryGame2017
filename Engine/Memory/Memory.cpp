@@ -27,9 +27,20 @@ namespace Memory
 
 void* operator new(size_t size, MemoryPool::TYPE allocator)
 {
-	void* mem = Memory::s_Allocators[allocator]->Allocate(size + 4);
+	void* mem = Memory::s_Allocators[allocator]->Allocate(size + 16);
 	int* mem_i = (int*)mem;
 	*mem_i = int(allocator);
-	return mem_i + 1;
+	return mem_i + 4;
 }
 
+void* MemAlloc(MemoryPool::TYPE allocator, size_t size)
+{
+	return operator new(size, allocator);
+}
+
+void MemFree(void* ptr)
+{
+	int* ptr_i = (int*)ptr;
+	MemoryPool::TYPE allocator = (MemoryPool::TYPE)(ptr_i[-4]);
+	Memory::s_Allocators[allocator]->Destroy(ptr_i - 4);
+}

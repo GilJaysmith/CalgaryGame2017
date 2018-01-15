@@ -28,6 +28,9 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{6a868821-fbd1-483c-a435-0f61abe973ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{9a6ca443-d9d1-4936-ab92-f6e8dcb305ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="Pch.cpp" />
     <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp">
       <Filter>Memory\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Physics.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +102,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\Singleton.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Physics.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
