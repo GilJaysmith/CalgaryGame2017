@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\src\glew.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\include\GL\wglew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\include\GL\glew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\include\GL\glxew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\build\cmake\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\build\glew.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3A67C105-568F-3424-ABF6-4AF2CA5E52C8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{873F7973-AA73-3DDE-86EE-5B351CBD123E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

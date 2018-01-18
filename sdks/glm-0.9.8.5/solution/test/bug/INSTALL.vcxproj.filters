@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\work\github\CalgaryGame2017\sdks\glm-0.9.8.5\solution\CMakeFiles\cea2350999861e87561c65c32166f519\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{6D525C96-E16D-300A-A949-D3D45E65A3C9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

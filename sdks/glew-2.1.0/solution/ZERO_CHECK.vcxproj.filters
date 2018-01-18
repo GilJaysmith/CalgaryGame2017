@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\solution\CMakeFiles\2150e9bf1dbe643636e38c50c9823a7d\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{AFDE5F87-2299-339C-A06C-B1FA2CB1C075}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
