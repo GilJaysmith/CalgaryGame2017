@@ -1,13 +1,13 @@
-if(NOT EXISTS "D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
-endif(NOT EXISTS "D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
+if(NOT EXISTS "C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
+endif(NOT EXISTS "C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt")
 
 if (NOT DEFINED CMAKE_INSTALL_PREFIX)
   set (CMAKE_INSTALL_PREFIX "C:/Program Files/glew")
 endif ()
  message(${CMAKE_INSTALL_PREFIX})
 
-file(READ "D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt" files)
+file(READ "C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 foreach(file ${files})
   message(STATUS "Uninstalling $ENV{DESTDIR}${file}")

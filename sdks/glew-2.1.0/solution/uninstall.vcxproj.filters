@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\build\cmake\CMakeLists.txt" />
-    <CustomBuild Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\solution\CMakeFiles\2150e9bf1dbe643636e38c50c9823a7d\uninstall.rule">
+    <CustomBuild Include="C:\work\CalgaryGame2017\sdks\glew-2.1.0\build\cmake\CMakeLists.txt" />
+    <CustomBuild Include="C:\work\CalgaryGame2017\sdks\glew-2.1.0\solution\CMakeFiles\200d3ad57866c5d41eec7be3a7cbe285\uninstall.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="D:\work\github\CalgaryGame2017\sdks\glew-2.1.0\solution\CMakeFiles\uninstall" />
+    <None Include="C:\work\CalgaryGame2017\sdks\glew-2.1.0\solution\CMakeFiles\uninstall" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{AFDE5F87-2299-339C-A06C-B1FA2CB1C075}</UniqueIdentifier>
+      <UniqueIdentifier>{A3A44902-B9CB-3F65-AC2F-AD85048B1334}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

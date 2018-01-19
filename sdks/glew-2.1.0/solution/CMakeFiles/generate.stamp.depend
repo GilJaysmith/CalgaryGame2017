@@ -1,9 +1,9 @@
 # CMake generation dependency list for this directory.
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/CMakeLists.txt
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeSystem.cmake
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/CMakeLists.txt
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeSystem.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeSystemSpecificInitialize.cmake
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeCCompiler.cmake
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeCXXCompiler.cmake
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeCCompiler.cmake
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeCXXCompiler.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeSystemSpecificInformation.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeGenericSystem.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/Platform/Windows.cmake
@@ -12,7 +12,7 @@ C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeCInformation.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/Platform/Windows-MSVC-C.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/Platform/Windows-MSVC.cmake
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeRCCompiler.cmake
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/3.10.1/CMakeRCCompiler.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeRCInformation.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/CMakeCXXInformation.cmake
@@ -26,5 +26,5 @@ C:/Program Files/CMake/share/cmake-3.10/Modules/GNUInstallDirs.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/FindOpenGL.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/FindPackageHandleStandardArgs.cmake
 C:/Program Files/CMake/share/cmake-3.10/Modules/FindPackageMessage.cmake
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/../../glew.pc.in
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/cmake_uninstall.cmake.in
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/../../glew.pc.in
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/build/cmake/cmake_uninstall.cmake.in

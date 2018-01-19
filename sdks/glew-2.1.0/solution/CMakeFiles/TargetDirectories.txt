@@ -1,8 +1,8 @@
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glewinfo.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glew.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glew_s.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/uninstall.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/visualinfo.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/INSTALL.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/ALL_BUILD.dir
-D:/work/github/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/ZERO_CHECK.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glewinfo.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glew.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/glew_s.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/uninstall.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/visualinfo.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/INSTALL.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/ALL_BUILD.dir
+C:/work/CalgaryGame2017/sdks/glew-2.1.0/solution/CMakeFiles/ZERO_CHECK.dir
