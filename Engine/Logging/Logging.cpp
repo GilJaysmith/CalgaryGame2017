@@ -1,6 +1,7 @@
 #include "Pch.h"
 
 #include <stdio.h>
+#include <Windows.h>
 
 namespace Logging
 {

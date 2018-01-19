@@ -16,9 +16,6 @@
     <Filter Include="GIS">
       <UniqueIdentifier>{a1c867c8-180e-4cc2-89c1-7d6e8715df12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>{b5826046-59c0-4651-a192-1c26db4ca9f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory\Allocators">
       <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{9a6ca443-d9d1-4936-ab92-f6e8dcb305ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{ac4b7e1e-2e5e-4a31-82df-c8b281795404}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +63,9 @@
     </ClCompile>
     <ClCompile Include="Physics\Physics.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Renderer.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="Physics\Physics.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Renderer.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
