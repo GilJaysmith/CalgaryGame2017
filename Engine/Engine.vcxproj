@@ -37,6 +37,7 @@
     </ClCompile>
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
+    <ClCompile Include="Rendering\ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Rendering\Renderer.h" />
+    <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Utilities\Singleton.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

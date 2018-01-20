@@ -2,5 +2,5 @@
 
 namespace Logging
 {
-	void Log(const char* log, const char* message);
+	void Log(const std::string& log, const std::string& message);
 }

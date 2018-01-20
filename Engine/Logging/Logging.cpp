@@ -1,14 +1,20 @@
 #include "Pch.h"
 
+#include "sstream"
+
 #include <stdio.h>
 #include <Windows.h>
 
 namespace Logging
 {
-	void Log(const char* log, const char* message)
+	void Log(const std::string& log, const std::string& message)
 	{
-		char output[16384];
-		sprintf_s<sizeof(output)>(output, "%s: %s\n", log, message);
-		OutputDebugString(output);
+		std::stringstream buffer;
+		buffer << log;
+		buffer << ": ";
+		buffer << message;
+		buffer << "\n";
+		std::string contents(buffer.str());
+		OutputDebugString(contents.c_str());
 	}
 }

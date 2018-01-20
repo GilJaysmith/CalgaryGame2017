@@ -67,6 +67,9 @@
     <ClCompile Include="Rendering\Renderer.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\ShaderManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -110,6 +113,9 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ShaderManager.h">
       <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
