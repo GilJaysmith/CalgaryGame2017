@@ -1,10 +1,10 @@
-#include "Pch.h"
+#include "Engine/Pch.h"
 
 #include <fstream>
 #include <istream>
 #include <sstream>
 
-#include "Logging/Logging.h"
+#include "Engine/Logging/Logging.h"
 
 namespace ShaderManager
 {

@@ -31,6 +31,9 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{ac4b7e1e-2e5e-4a31-82df-c8b281795404}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{c5b0e2fb-515a-4727-a8bf-4d1c1365601b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -69,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="Rendering\ShaderManager.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="Rendering\ShaderManager.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

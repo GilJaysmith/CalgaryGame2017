@@ -1,8 +1,8 @@
-#include "Pch.h"
+#include "Engine/Pch.h"
 
-#include "Entities/Component.h"
-#include "Entities/Entity.h"
-#include "Entities/EntityManager.h"
+#include "Engine/Entities/Component.h"
+#include "Engine/Entities/Entity.h"
+#include "Engine/Entities/EntityManager.h"
 
 Entity::Entity()
 {

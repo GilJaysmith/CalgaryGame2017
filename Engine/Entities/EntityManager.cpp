@@ -1,7 +1,7 @@
-#include "Pch.h"
+#include "Engine/Pch.h"
 
-#include "Entities/Entity.h"
-#include "Entities/EntityManager.h"
+#include "Engine/Entities/Entity.h"
+#include "Engine/Entities/EntityManager.h"
 
 EntityManager::EntityManager()
 {

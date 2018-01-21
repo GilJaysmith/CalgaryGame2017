@@ -1,11 +1,11 @@
-#include "Pch.h"
+#include "Engine/Pch.h"
 
-#include "Physics/Physics.h"
+#include "Engine/Physics/Physics.h"
 #include "PxPhysicsAPI.h"
 #include "common/PxTolerancesScale.h"
 
-#include "Logging/Logging.h"
-#include "Memory/Memory.h"
+#include "Engine/Logging/Logging.h"
+#include "Engine/Memory/Memory.h"
 
 
 namespace Physics
