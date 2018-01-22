@@ -1,8 +1,11 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 
-namespace Rendering
+#include <set>
+
+namespace Renderer
 {
 	void Initialize()
 	{
@@ -60,4 +63,25 @@ namespace Rendering
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+
+	std::set<Renderable*> m_RenderablesInScene;
+
+	void RenderScene()
+	{
+		for (auto it : m_RenderablesInScene)
+		{
+			it->Render();
+		}
+	}
+
+	void RegisterRenderable(Renderable* renderable)
+	{
+		m_RenderablesInScene.insert(renderable);
+	}
+
+	void UnregisterRenderable(Renderable* renderable)
+	{
+		m_RenderablesInScene.erase(renderable);
+	}
+
 }

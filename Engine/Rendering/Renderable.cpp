@@ -16,7 +16,12 @@ Renderable::~Renderable()
 
 }
 
-void Renderable::Render(const glm::mat4& world_transform)
+void Renderable::SetTransform(const glm::mat4& world_transform)
 {
-	m_Mesh->Render(world_transform);
+	m_WorldTransform = world_transform;
+}
+
+void Renderable::Render()
+{
+	m_Mesh->Render(m_WorldTransform);
 }

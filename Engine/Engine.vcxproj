@@ -52,7 +52,6 @@
     <ClInclude Include="GameStates\GameStateManager.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Logging\Logging.h" />
-    <ClInclude Include="Math\Types.h" />
     <ClInclude Include="Memory\Allocators\DLAllocator.h" />
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />

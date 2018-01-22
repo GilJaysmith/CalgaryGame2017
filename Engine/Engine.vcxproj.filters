@@ -13,14 +13,8 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{7cb1231f-a065-45fe-97a9-6ccac374101c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GIS">
-      <UniqueIdentifier>{a1c867c8-180e-4cc2-89c1-7d6e8715df12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory\Allocators">
       <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{d1940e8e-e7cf-49c5-9a69-3c60d4da68b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utilities">
       <UniqueIdentifier>{6a868821-fbd1-483c-a435-0f61abe973ad}</UniqueIdentifier>
@@ -110,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="Entities\EntityManager.h">
       <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Types.h">
-      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h">

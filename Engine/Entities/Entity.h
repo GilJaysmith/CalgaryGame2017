@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "Engine/Math/Types.h"
-
 class Component;
 class Message;
 
@@ -16,8 +14,8 @@ public:
 	int OnMessage(Message* message);
 	void OnUpdate(float elapsed_time);
 
-	Math::Vector3 GetTranslation() const;
-	Math::Vector3 GetRotation() const;
+	glm::mat4 GetTransform() const { return m_Transform;  }
+	void SetTransform(const glm::mat4& transform) { m_Transform = transform; }
 
 	void AddTag(const std::string& tag);
 	void RemoveTag(const std::string& tag);
@@ -29,6 +27,5 @@ protected:
 	~Entity();
 
 	std::vector<Component*> m_Components;
-	Math::Vector3 m_Translation;
-	Math::Vector3 m_Rotation;
+	glm::mat4 m_Transform;
 };

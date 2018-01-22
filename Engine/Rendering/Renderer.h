@@ -2,7 +2,7 @@
 
 #undef CreateWindow
 
-namespace Rendering
+namespace Renderer
 {
 	void Initialize();
 	
@@ -15,4 +15,9 @@ namespace Rendering
 	GLFWwindow* GetWindow();
 
 	void ClearWindow();
+
+	void RenderScene();
+
+	void RegisterRenderable(Renderable* renderable);
+	void UnregisterRenderable(Renderable* renderable);
 }
