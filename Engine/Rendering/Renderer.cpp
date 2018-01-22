@@ -20,6 +20,7 @@ namespace Renderer
 
 	void Terminate()
 	{
+		glfwTerminate();
 	}
 
 	GLFWwindow* s_Window = nullptr;
