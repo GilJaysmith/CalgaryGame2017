@@ -76,6 +76,9 @@
     <ClCompile Include="Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\Renderable.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="Input\Input.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Renderable.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

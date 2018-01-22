@@ -12,6 +12,7 @@ namespace MemoryPool
 		Default,
 		System,
 		Physics,
+		Rendering,
 		COUNT
 	};
 }

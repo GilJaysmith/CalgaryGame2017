@@ -8,6 +8,7 @@
 
 #include <Windows.h>
 #undef CreateWindow
+#undef DestroyWindow
 
 #define GLEW_STATIC
 #include "../sdks/glew/include/GL/glew.h"
