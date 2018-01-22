@@ -1,0 +1,22 @@
+attributes:
+    -   
+        name: position
+        floats: 3
+    -
+        name: color
+        floats: 3
+    - 
+        name: texcoord
+        floats: 2
+ 
+outputs:
+    - outColor
+ 
+shaders:
+    - 
+        type: vertex
+        shader: TestVertexShader
+    -
+        type: fragment
+        shader: TestFragmentShader
+        

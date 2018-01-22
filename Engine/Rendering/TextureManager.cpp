@@ -31,7 +31,7 @@ namespace TextureManager
 		glBindTexture(GL_TEXTURE_2D, texture_id);
 
 		int width, height;
-		unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+		unsigned char* image = SOIL_load_image(("data/textures/" + filename).c_str(), &width, &height, 0, SOIL_LOAD_RGB);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
 

@@ -8,7 +8,7 @@
 
 namespace ShaderManager
 {
-	std::map<std::string, unsigned int> s_ShaderMap;
+	std::map<std::pair<std::string, unsigned int>, unsigned int> s_Shaders;
 
 	void Initialize()
 	{
@@ -17,15 +17,21 @@ namespace ShaderManager
 
 	void Terminate()
 	{
-		for (auto it : s_ShaderMap)
+		for (auto it : s_Shaders)
 		{
 			glDeleteShader(it.second);
 		}
-		s_ShaderMap.clear();
+		s_Shaders.clear();
 	}
 
 	unsigned int LoadShader(const std::string& shader_name, unsigned int shader_type)
 	{
+		auto it = s_Shaders.find(std::pair<std::string, unsigned int>(shader_name, shader_type));
+		if (it != s_Shaders.end())
+		{
+			return it->second;
+		}
+
 		std::string filename = "data/shaders/" + shader_name + ".glsl";
 
 		std::ifstream in(filename);
@@ -49,7 +55,7 @@ namespace ShaderManager
 			return 0;
 		}
 
-		s_ShaderMap[filename] = shader;
+		s_Shaders[std::pair<std::string, unsigned int>(shader_name, shader_type)] = shader;
 		return shader;
 	}
 
@@ -65,7 +71,6 @@ namespace ShaderManager
 		{
 			glBindFragDataLocation(shader_program, it.first, it.second.c_str());
 		}
-
 
 		glLinkProgram(shader_program);
 
