@@ -11,7 +11,10 @@
 #include "sdks/glm/gtc/type_ptr.hpp"
 
 #include "Engine/Memory/Memory.h"
+#include "Engine/Rendering/Mesh.h"
 #include "Engine/Physics/Physics.h"
+#include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
+#include "Engine/Rendering/TextureManager.h"
 #include "Engine/Input/Input.h"

@@ -79,6 +79,12 @@
     <ClCompile Include="Rendering\Renderable.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\Mesh.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\TextureManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -131,6 +137,12 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Renderable.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Mesh.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\TextureManager.h">
       <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
