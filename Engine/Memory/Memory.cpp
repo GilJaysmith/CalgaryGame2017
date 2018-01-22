@@ -33,6 +33,11 @@ void* operator new(size_t size, MemoryPool::TYPE allocator)
 	return mem_i + 4;
 }
 
+void operator delete(void*, MemoryPool::TYPE allocator)
+{
+
+}
+
 void* MemAlloc(MemoryPool::TYPE allocator, size_t size)
 {
 	return operator new(size, allocator);
