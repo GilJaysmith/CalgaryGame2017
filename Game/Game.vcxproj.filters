@@ -25,9 +25,6 @@
     <ClInclude Include="GameStates\FrontEndState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="GameStates\GameState.h">
-      <Filter>GameStates</Filter>
-    </ClInclude>
     <ClInclude Include="Entities\WorldComponent.h">
       <Filter>Entities</Filter>
     </ClInclude>
@@ -40,6 +37,12 @@
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\TestGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\InGameState.h">
+      <Filter>GameStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -55,9 +58,6 @@
     <ClCompile Include="GameStates\FrontEndState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
-    <ClCompile Include="GameStates\GameState.cpp">
-      <Filter>GameStates</Filter>
-    </ClCompile>
     <ClCompile Include="Entities\WorldComponent.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -68,6 +68,12 @@
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Pch.cpp" />
+    <ClCompile Include="GameStates\TestGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\InGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Shaders\TestFragmentShader.glsl">

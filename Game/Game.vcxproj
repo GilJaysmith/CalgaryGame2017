@@ -174,7 +174,8 @@
     <ClInclude Include="Entities\WorldComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameStates\FrontEndState.h" />
-    <ClInclude Include="GameStates\GameState.h" />
+    <ClInclude Include="GameStates\InGameState.h" />
+    <ClInclude Include="GameStates\TestGameState.h" />
     <ClInclude Include="Pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +186,8 @@
     <ClCompile Include="Entities\WorldComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameStates\FrontEndState.cpp" />
-    <ClCompile Include="GameStates\GameState.cpp" />
+    <ClCompile Include="GameStates\InGameState.cpp" />
+    <ClCompile Include="GameStates\TestGameState.cpp" />
     <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
