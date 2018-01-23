@@ -200,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Shaders\TestFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\TestShader.yaml" />
     <None Include="..\Data\Shaders\TestVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

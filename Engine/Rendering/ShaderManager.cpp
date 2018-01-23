@@ -5,6 +5,9 @@
 #include <sstream>
 
 #include "Engine/Logging/Logging.h"
+#include "Engine/Rendering/ShaderManager.h"
+
+#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 namespace ShaderManager
 {
@@ -52,7 +55,7 @@ namespace ShaderManager
 		{
 			glGetShaderInfoLog(shader, 512, NULL, infoLog);
 			Logging::Log("ShaderManager", std::string("shader compilation error: ") + shader_name + ": " + infoLog);
-			return 0;
+			exit(1);
 		}
 
 		s_Shaders[std::pair<std::string, unsigned int>(shader_name, shader_type)] = shader;
@@ -81,9 +84,56 @@ namespace ShaderManager
 		{
 			glGetShaderInfoLog(shader_program, 512, NULL, infoLog);
 			Logging::Log("ShaderManager", std::string("program compilation error: ") + infoLog);
-			return 0;
+			exit(1);
 		}
 
 		return shader_program;
+	}
+
+	std::map<std::string, unsigned int> s_Programs;
+	std::map<unsigned int, std::vector<AttributeBinding>> s_AttributeBindings;
+
+	unsigned int LoadProgram(const std::string& program_name)
+	{
+		auto it = s_Programs.find(program_name);
+		if (it != s_Programs.end())
+		{
+			return it->second;
+		}
+
+		std::string program_filename = "data/shaders/" + program_name + ".yaml";
+		YAML::Node node = YAML::LoadFile(program_filename);
+
+		std::vector<unsigned int> shaders;
+		for (auto shader : node["shaders"])
+		{
+			auto shader_type = shader["type"].as<std::string>() == "vertex" ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
+			auto shader_name = shader["shader"].as<std::string>();
+			shaders.push_back(ShaderManager::LoadShader(shader_name, shader_type));
+		}
+
+		std::map<unsigned int, std::string> outputs;
+		for (unsigned int i = 0; i < node["outputs"].size(); ++i)
+		{
+			outputs[i] = node["outputs"][i].as<std::string>();
+		}
+
+		GLuint shader_program = ShaderManager::MakeProgram(shaders, outputs);
+		s_Programs[program_name] = shader_program;
+
+		// Load attribute bindings
+		for (unsigned int i = 0; i < node["attributes"].size(); ++i)
+		{
+			auto binding = node["attributes"][i];
+			AttributeBinding ab = {binding["name"].as<std::string>(), binding["floats"].as<int>()};
+			s_AttributeBindings[shader_program].push_back(ab);
+		}
+
+		return shader_program;
+	}
+
+	const std::vector<AttributeBinding>& GetAttributeBindings(unsigned int shader_program)
+	{
+		return s_AttributeBindings[shader_program];
 	}
 }

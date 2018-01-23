@@ -1,5 +1,6 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Mesh.h"
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
@@ -21,17 +22,17 @@ Mesh::~Mesh()
 void Mesh::LoadFromYaml(const std::string& filename)
 {
 	std::string mesh_filename = "data/meshes/" + filename + ".yaml";
-	YAML::Node node = YAML::LoadFile(mesh_filename)["mesh"];
+	YAML::Node node = YAML::LoadFile(mesh_filename);
 
 	// Shaders
-	std::vector<unsigned int> shaders;
-	for (auto shader : node["shaders"])
+	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
+
+	const std::vector<ShaderManager::AttributeBinding>& attribute_bindings = ShaderManager::GetAttributeBindings(m_ShaderProgram);
+	int total_floats = 0;
+	for (auto ab : attribute_bindings)
 	{
-		auto shader_type = shader["type"].as<std::string>() == "vertex" ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
-		auto shader_name = shader["shader"].as<std::string>();
-		shaders.push_back(ShaderManager::LoadShader(shader_name, shader_type));
+		total_floats += ab.num_floats;
 	}
-	m_ShaderProgram = ShaderManager::MakeProgram(shaders, { { 0, "outColor" } });
 
 	// Textures
 	unsigned int texture_index = 0;
@@ -42,52 +43,50 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		++texture_index;
 	}
 
-	// Verts
-	std::vector<std::vector<float>> verts;
+	glGenVertexArrays(1, &m_Vao);
+	glBindVertexArray(m_Vao);
+
+	// Vertices
+	std::vector<std::vector<float>> vertices;
 	for (auto vert : node["vertices"])
 	{
-		verts.push_back(vert.as<std::vector<float>>());
+		vertices.push_back(vert.as<std::vector<float>>());
 	}
-	CreateFromVertexArray(verts);
-}
-
-void Mesh::CreateFromVertexArray(std::vector<std::vector<float>> vertices)
-{
 	m_NumTriangles = vertices.size();
 
 	float* vert_data = new float[vertices.size() * vertices[0].size()];
 	float* v = vert_data;
-	for (auto i : vertices)
+	for (auto vert : vertices)
 	{
-		for (auto j : i)
+		if (vert.size() != total_floats)
 		{
-			*v++ = j;
+			Logging::Log("Mesh", "Mesh vertex data has incorrect length");
+			exit(1);
+		}
+		for (auto f : vert)
+		{
+			*v++ = f;
 		}
 	}
-
-	glGenVertexArrays(1, &m_Vao);
-	glBindVertexArray(m_Vao);
 
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	int fc = vertices.size() * vertices[0].size();
-	glBufferData(GL_ARRAY_BUFFER, fc * sizeof(float), vert_data, GL_STATIC_DRAW);
+
+	int vert_data_size = vertices.size() * vertices[0].size() * sizeof(float);
+	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 
 	delete[] vert_data;
 
-	// Specify the layout of the vertex data
-	GLint posAttrib = glGetAttribLocation(m_ShaderProgram, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
-
-	GLint colAttrib = glGetAttribLocation(m_ShaderProgram, "color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-	GLint texAttrib = glGetAttribLocation(m_ShaderProgram, "texcoord");
-	glEnableVertexAttribArray(texAttrib);
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+	// Attributes
+	int offset = 0;
+	for (auto ab : attribute_bindings)
+	{
+		GLint posAttrib = glGetAttribLocation(m_ShaderProgram, ab.name.c_str());
+		glEnableVertexAttribArray(posAttrib);
+		glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
+		offset += ab.num_floats;
+	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -114,7 +113,7 @@ void Mesh::Render(glm::mat4 world_transform)
 	for (auto it : m_Textures)
 	{
 		glActiveTexture(it.first);
-		glBindTexture(it.first, it.second);
+		glBindTexture(GL_TEXTURE_2D, it.second);
 	}
 
 	GLint uniModel = glGetUniformLocation(m_ShaderProgram, "model");

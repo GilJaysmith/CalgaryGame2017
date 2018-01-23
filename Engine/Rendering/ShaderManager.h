@@ -10,6 +10,13 @@ namespace ShaderManager
 
 	void Terminate();
 
-	unsigned int LoadShader(const std::string& filename, unsigned int shader_type);
-	unsigned int MakeProgram(const std::vector<unsigned int>& shaders, const std::map<unsigned int, std::string>& buffer_outputs);
+	unsigned int LoadProgram(const std::string& filename);
+
+	struct AttributeBinding
+	{
+		std::string name;
+		int num_floats;
+	};
+
+	const std::vector<AttributeBinding>& GetAttributeBindings(unsigned int shader_program);
 }

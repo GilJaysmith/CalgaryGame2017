@@ -76,5 +76,8 @@
     <None Include="..\Data\Shaders\TestVertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Data\Shaders\TestShader.yaml">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
