@@ -120,7 +120,7 @@ void Mesh::SetTexture(unsigned int texture_index, GLuint texture_id)
 
 void Mesh::Render(glm::mat4 world_transform)
 {
-	glUseProgram(m_ShaderProgram);
+	ShaderManager::SetActiveShader(m_ShaderProgram);
 
 	for (auto it : m_Textures)
 	{
