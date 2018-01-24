@@ -122,4 +122,16 @@ namespace ShaderManager
 
 		return shader_program;
 	}
+
+	void SetUniform4fv(const std::string& uniform_name, const glm::mat4& v)
+	{
+		for (auto shader : s_Programs)
+		{
+			unsigned int shader_program = shader.second;
+			glUseProgram(shader_program);
+
+			GLint uniView = glGetUniformLocation(shader_program, uniform_name.c_str());
+			glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(v));
+		}
+	}
 }

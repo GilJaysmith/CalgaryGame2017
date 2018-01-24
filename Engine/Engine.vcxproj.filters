@@ -85,6 +85,15 @@
     <ClCompile Include="GameStates\GameState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
+    <ClCompile Include="Entities\ComponentRegistry.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderComponent.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MeshManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -147,6 +156,15 @@
     </ClInclude>
     <ClInclude Include="GameStates\Time.h">
       <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\ComponentRegistry.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderComponent.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MeshManager.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

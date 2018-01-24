@@ -2,80 +2,99 @@
 
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/EntityManager.h"
+#include "Engine/GameStates/Time.h"
 
-EntityManager::EntityManager()
+namespace EntityManager
 {
-}
+	std::set<Entity*> s_AllEntities;
+	std::map<std::string, std::set<Entity*>> s_EntityTags;
+	std::vector<Entity*> s_EntitiesToDelete;
 
-EntityManager::~EntityManager()
-{
-}
+	void ActuallyDestroyEntity(Entity* entity);
 
-Entity * EntityManager::CreateEntity()
-{
-	Entity* new_entity = new Entity();
-	m_AllEntities.insert(new_entity);
-	return new_entity;
-}
-
-void EntityManager::DestroyEntity(Entity* entity)
-{
-	m_EntitiesToDelete.push_back(entity);
-}
-
-void EntityManager::AddTag(Entity* entity, const std::string& tag)
-{
-	m_EntityTags[tag].insert(entity);
-}
-
-void EntityManager::RemoveTag(Entity* entity, const std::string& tag)
-{
-	auto it = m_EntityTags.find(tag);
-	if (it != m_EntityTags.end())
+	void Initialize()
 	{
-		it->second.erase(entity);
-		if (!it->second.size())
+	}
+
+	void Terminate()
+	{
+	}
+
+	void Update(const Time& time)
+	{
+		for (auto entity : s_AllEntities)
 		{
-			m_EntityTags.erase(it);
+			entity->OnUpdate(time);
 		}
 	}
-}
 
-void EntityManager::BroadcastMessage(Message* message)
-{
-	for (auto it : m_AllEntities)
+	Entity * CreateEntity()
 	{
-		it->OnMessage(message);
+		Entity* new_entity = new Entity();
+		s_AllEntities.insert(new_entity);
+		return new_entity;
 	}
-}
 
-void EntityManager::BroadcastMessageToTag(Message* message, const std::string& tag)
-{
-	auto it = m_EntityTags.find(tag);
-	if (it != m_EntityTags.end())
+	void DestroyEntity(Entity* entity)
 	{
-		for (auto entity : it->second)
+		s_EntitiesToDelete.push_back(entity);
+	}
+
+	void AddTag(Entity* entity, const std::string& tag)
+	{
+		s_EntityTags[tag].insert(entity);
+	}
+
+	void RemoveTag(Entity* entity, const std::string& tag)
+	{
+		auto it = s_EntityTags.find(tag);
+		if (it != s_EntityTags.end())
 		{
-			entity->OnMessage(message);
+			it->second.erase(entity);
+			if (!it->second.size())
+			{
+				s_EntityTags.erase(it);
+			}
 		}
 	}
+
+	void BroadcastMessage(Message* message)
+	{
+		for (auto it : s_AllEntities)
+		{
+			it->OnMessage(message);
+		}
+	}
+
+	void BroadcastMessageToTag(Message* message, const std::string& tag)
+	{
+		auto it = s_EntityTags.find(tag);
+		if (it != s_EntityTags.end())
+		{
+			for (auto entity : it->second)
+			{
+				entity->OnMessage(message);
+			}
+		}
+	}
+
+	void DestroyPendingEntities()
+	{
+		for (auto entity : s_EntitiesToDelete)
+		{
+			ActuallyDestroyEntity(entity);
+		}
+		s_EntitiesToDelete.clear();
+	}
+
+	void ActuallyDestroyEntity(Entity* entity)
+	{
+		s_AllEntities.erase(entity);
+		for (auto it : s_EntityTags)
+		{
+			it.second.erase(entity);
+		}
+		delete entity;
+	}
 }
 
-void EntityManager::DestroyPendingEntities()
-{
-	for (auto entity : m_EntitiesToDelete)
-	{
-		ActuallyDestroyEntity(entity);
-	}
-	m_EntitiesToDelete.clear();
-}
-
-void EntityManager::ActuallyDestroyEntity(Entity* entity)
-{
-	m_AllEntities.erase(entity);
-	for (auto it : m_EntityTags)
-	{
-		it.second.erase(entity);
-	}
-	delete entity;
-}

@@ -3,15 +3,16 @@
 #include <map>
 #include <set>
 
-#include "Engine/Utilities/Singleton.h"
-
 class Entity;
+class Message;
+class Time;
 
-class EntityManager : public Singleton<EntityManager>
+namespace EntityManager
 {
-public:
-	EntityManager();
-	~EntityManager();
+	void Initialize();
+	void Terminate();
+
+	void Update(const Time& time);
 
 	Entity* CreateEntity();
 	void DestroyEntity(Entity* entity);
@@ -23,12 +24,5 @@ public:
 	void BroadcastMessageToTag(Message* message, const std::string& tag);
 
 	void DestroyPendingEntities();
+}
 
-protected:
-
-	void ActuallyDestroyEntity(Entity* entity);
-
-	std::set<Entity*> m_AllEntities;
-	std::map<std::string, std::set<Entity*>> m_EntityTags;
-	std::vector<Entity*> m_EntitiesToDelete;
-};

@@ -2,7 +2,7 @@
 
 #include "Engine/GameStates/GameState.h"
 
-class Renderable;
+class Entity;
 
 class TestGameState : public GameState
 {
@@ -20,8 +20,5 @@ protected:
 	bool update_rotation;
 	bool update_time;
 
-	Renderable* renderable;
-	Renderable* renderable2;
-
-	unsigned int shader_program;
+	Entity* m_Entities[1000];
 };

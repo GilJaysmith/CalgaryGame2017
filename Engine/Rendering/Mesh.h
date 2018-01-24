@@ -11,8 +11,6 @@ public:
 	void LoadFromYaml(const std::string& filename);
 	void Render(glm::mat4 world_transform);
 
-	GLuint GetShaderProgram() const { return m_ShaderProgram;  }
-
 protected:
 
 	void CreateEBO(unsigned int* elements, unsigned int num_elements);

@@ -11,4 +11,6 @@ namespace ShaderManager
 	void Terminate();
 
 	unsigned int LoadProgram(const std::string& filename);
+
+	void SetUniform4fv(const std::string& uniform_name, const glm::mat4& v);
 }

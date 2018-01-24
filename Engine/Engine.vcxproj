@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp" />
+    <ClCompile Include="Entities\ComponentRegistry.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
     <ClCompile Include="Entities\Message.cpp" />
@@ -40,13 +41,16 @@
     </ClCompile>
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
+    <ClCompile Include="Rendering\MeshManager.cpp" />
     <ClCompile Include="Rendering\Renderable.cpp" />
+    <ClCompile Include="Rendering\RenderComponent.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
     <ClCompile Include="Rendering\ShaderManager.cpp" />
     <ClCompile Include="Rendering\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h" />
+    <ClInclude Include="Entities\ComponentRegistry.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Entities\Message.h" />
@@ -62,7 +66,9 @@
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Rendering\Mesh.h" />
+    <ClInclude Include="Rendering\MeshManager.h" />
     <ClInclude Include="Rendering\Renderable.h" />
+    <ClInclude Include="Rendering\RenderComponent.h" />
     <ClInclude Include="Rendering\Renderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
