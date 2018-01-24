@@ -2,6 +2,8 @@
 
 #include "Engine/GameStates/Time.h"
 
+class Time;
+
 class GameState
 {
 public:

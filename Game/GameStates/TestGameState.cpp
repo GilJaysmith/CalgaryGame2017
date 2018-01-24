@@ -1,7 +1,11 @@
 #include "Game/Pch.h"
 
 #include "Engine/Entities/Entity.h"
+#include "Engine/Input/Input.h"
+#include "Engine/Rendering/ShaderManager.h"
+
 #include "Game/GameStates/TestGameState.h"
+
 
 TestGameState::TestGameState()
 {

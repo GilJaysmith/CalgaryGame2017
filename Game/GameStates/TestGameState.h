@@ -3,6 +3,7 @@
 #include "Engine/GameStates/GameState.h"
 
 class Entity;
+class Time;
 
 class TestGameState : public GameState
 {

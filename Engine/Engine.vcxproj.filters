@@ -16,9 +16,6 @@
     <Filter Include="Memory\Allocators">
       <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{6a868821-fbd1-483c-a435-0f61abe973ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{9a6ca443-d9d1-4936-ab92-f6e8dcb305ab}</UniqueIdentifier>
     </Filter>
@@ -126,9 +123,6 @@
     </ClInclude>
     <ClInclude Include="Entities\MessageTypes.h">
       <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\Singleton.h">
-      <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Physics.h">
       <Filter>Physics</Filter>

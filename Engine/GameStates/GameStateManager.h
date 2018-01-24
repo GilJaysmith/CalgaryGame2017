@@ -1,6 +1,7 @@
 #pragma once
 
 class GameState;
+class Time;
 
 #include "Engine/GameStates/Time.h"
 

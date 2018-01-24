@@ -6,6 +6,7 @@
 
 class Entity;
 class Mesh;
+class Renderable;
 
 class RenderComponent : public Component
 {

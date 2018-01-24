@@ -9,6 +9,7 @@
 
 class Component;
 class Message;
+class Time;
 
 class Entity
 {

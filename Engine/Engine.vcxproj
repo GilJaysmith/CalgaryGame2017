@@ -72,7 +72,6 @@
     <ClInclude Include="Rendering\Renderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
-    <ClInclude Include="Utilities\Singleton.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

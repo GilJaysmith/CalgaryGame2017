@@ -2,6 +2,8 @@
 
 #undef CreateWindow
 
+class Renderable;
+
 namespace Renderer
 {
 	void Initialize();
