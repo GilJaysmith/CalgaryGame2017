@@ -41,6 +41,11 @@ vertices:
     - [-0.5,  0.5,  0.5, 1.0, 1.0, 1.0, 0.0, 0.0]
     - [-0.5,  0.5, -0.5, 1.0, 1.0, 1.0, 0.0, 1.0]       
 
+attributes:
+    - { name: position, floats: 3 }
+    - { name: color, floats: 3 }
+    - { name: texcoord, floats: 2 }
+	
 shader: TestShader
     
 textures:

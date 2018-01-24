@@ -91,7 +91,6 @@ namespace ShaderManager
 	}
 
 	std::map<std::string, unsigned int> s_Programs;
-	std::map<unsigned int, std::vector<AttributeBinding>> s_AttributeBindings;
 
 	unsigned int LoadProgram(const std::string& program_name)
 	{
@@ -121,19 +120,6 @@ namespace ShaderManager
 		GLuint shader_program = ShaderManager::MakeProgram(shaders, outputs);
 		s_Programs[program_name] = shader_program;
 
-		// Load attribute bindings
-		for (unsigned int i = 0; i < node["attributes"].size(); ++i)
-		{
-			auto binding = node["attributes"][i];
-			AttributeBinding ab = {binding["name"].as<std::string>(), binding["floats"].as<int>()};
-			s_AttributeBindings[shader_program].push_back(ab);
-		}
-
 		return shader_program;
-	}
-
-	const std::vector<AttributeBinding>& GetAttributeBindings(unsigned int shader_program)
-	{
-		return s_AttributeBindings[shader_program];
 	}
 }

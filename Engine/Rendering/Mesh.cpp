@@ -27,7 +27,19 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	// Shaders
 	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
 
-	const std::vector<ShaderManager::AttributeBinding>& attribute_bindings = ShaderManager::GetAttributeBindings(m_ShaderProgram);
+	// Load attribute bindings
+	struct AttributeBinding
+	{
+		std::string name;
+		int num_floats;
+	};
+	std::vector<AttributeBinding> attribute_bindings;
+	for (unsigned int i = 0; i < node["attributes"].size(); ++i)
+	{
+		auto binding = node["attributes"][i];
+		AttributeBinding ab = { binding["name"].as<std::string>(), binding["floats"].as<int>() };
+		attribute_bindings.push_back(ab);
+	}
 	int total_floats = 0;
 	for (auto ab : attribute_bindings)
 	{
@@ -78,7 +90,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 
 	delete[] vert_data;
 
-	// Attributes
+	// Apply attribute bindings
 	int offset = 0;
 	for (auto ab : attribute_bindings)
 	{

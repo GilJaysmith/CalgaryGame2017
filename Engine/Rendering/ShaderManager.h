@@ -11,12 +11,4 @@ namespace ShaderManager
 	void Terminate();
 
 	unsigned int LoadProgram(const std::string& filename);
-
-	struct AttributeBinding
-	{
-		std::string name;
-		int num_floats;
-	};
-
-	const std::vector<AttributeBinding>& GetAttributeBindings(unsigned int shader_program);
 }
