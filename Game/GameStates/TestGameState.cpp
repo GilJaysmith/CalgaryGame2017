@@ -25,13 +25,13 @@ void TestGameState::OnEnter()
 		m_Entities[i] = Entity::CreateEntity("cube");
 		glm::mat4 world_transform;
 		world_transform = glm::scale(world_transform, glm::vec3(0.8f, 0.8f, 0.8f));
-		world_transform = glm::translate(world_transform, glm::vec3(-5.0 + i % 10, 0.0f, 5.0f - i / 10));
+		world_transform = glm::translate(world_transform, glm::vec3(-50.0 + i % 100, 0.0f, 5.0f - i / 100));
 		m_Entities[i]->SetTransform(world_transform);
 		m_Axis[i] = glm::normalize(glm::vec3(rand()- rand(), rand() - rand(), rand()- rand()));
 		m_Speed[i] = (rand() / (float)RAND_MAX) / 10.0f;
 	}
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1024.0f / 768.0f, 1.0f, 1000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
 
 	m_Camera = MemNew(MemoryPool::Rendering, Camera);
@@ -62,9 +62,12 @@ void TestGameState::OnUpdate(const Time& frame_time)
 	}
 
 	float camera_speed = 1.0f;
+	float camera_yaw_speed = 0.2f;
+	float camera_pitch_speed = 0.2f;
+
 	if (Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::HELD)
 	{
-		camera_speed *= 5.0f;
+		camera_speed *= 10.0f;
 	}
 
 
@@ -94,19 +97,19 @@ void TestGameState::OnUpdate(const Time& frame_time)
 	}
 	if (Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::HELD)
 	{
-		m_CameraYaw -= camera_speed * frame_time.toSeconds();
+		m_CameraYaw -= camera_yaw_speed * frame_time.toSeconds();
 	}
 	if (Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::HELD)
 	{
-		m_CameraYaw += camera_speed * frame_time.toSeconds();
+		m_CameraYaw += camera_yaw_speed * frame_time.toSeconds();
 	}
 	if (Input::GetKeyEvent(GLFW_KEY_UP) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_UP) == Input::HELD)
 	{
-		m_CameraPitch += camera_speed * frame_time.toSeconds();
+		m_CameraPitch += camera_pitch_speed * frame_time.toSeconds();
 	}
 	if (Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::HELD)
 	{
-		m_CameraPitch -= camera_speed * frame_time.toSeconds();
+		m_CameraPitch -= camera_pitch_speed * frame_time.toSeconds();
 	}
 
 	m_CameraPitch = glm::clamp(m_CameraPitch, -glm::pi<float>() / 3.0f , glm::pi<float>() / 3.0f);
