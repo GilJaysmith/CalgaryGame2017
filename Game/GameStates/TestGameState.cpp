@@ -37,32 +37,90 @@ void TestGameState::OnEnter()
 	m_Camera = MemNew(MemoryPool::Rendering, Camera);
 	Renderer::SetActiveCamera(m_Camera);
 
-	time = 0.0f;
-	rot = 0;
+	m_Time = 0.0f;
+	m_UpdateTime = false;
 
-	update_time = false;
-	update_rotation = false;
+	m_CameraPos = glm::vec3(0.0f, 1.0f, 5.0f);
+	m_CameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_CameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	m_CameraYaw = 0.0f;
+	m_CameraPitch = 0.0f;
 }
 
 void TestGameState::OnUpdate(const Time& frame_time)
 {
 	GameState::OnUpdate(frame_time);
 
-	if (update_time)
+	if (Input::GetKeyEvent(GLFW_KEY_T) == Input::PRESSED)
 	{
-		time += 0.01f;
+		m_UpdateTime = !m_UpdateTime;
+	}
+	if (m_UpdateTime)
+	{
+		m_Time += 0.01f;
 	}
 
-	if (update_rotation)
+	float camera_speed = 1.0f;
+	if (Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::HELD)
 	{
-		rot = (rot + 1) % 360;
+		camera_speed *= 5.0f;
 	}
 
-	glm::vec3 camera_pos(cos(time), 2.0f, 4.0f + sin(time));
+
+	if (Input::GetKeyEvent(GLFW_KEY_W) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_W) == Input::HELD)
+	{
+		m_CameraPos += m_CameraFront * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_S) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_S) == Input::HELD)
+	{
+		m_CameraPos -= m_CameraFront * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_A) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_A) == Input::HELD)
+	{
+		m_CameraPos -= glm::normalize(glm::cross(m_CameraFront, m_CameraUp)) * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_D) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_D) == Input::HELD)
+	{
+		m_CameraPos += glm::normalize(glm::cross(m_CameraFront, m_CameraUp)) * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_Q) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_Q) == Input::HELD)
+	{
+		m_CameraPos += m_CameraUp * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_E) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_E) == Input::HELD)
+	{
+		m_CameraPos -= m_CameraUp * camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::HELD)
+	{
+		m_CameraYaw -= camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::HELD)
+	{
+		m_CameraYaw += camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_UP) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_UP) == Input::HELD)
+	{
+		m_CameraPitch += camera_speed * frame_time.toSeconds();
+	}
+	if (Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::HELD)
+	{
+		m_CameraPitch -= camera_speed * frame_time.toSeconds();
+	}
+
+	m_CameraPitch = glm::clamp(m_CameraPitch, -glm::pi<float>() / 3.0f , glm::pi<float>() / 3.0f);
+
+	glm::vec3 front;
+	front.x = cos(m_CameraPitch) * cos(m_CameraYaw);
+	front.y = sin(m_CameraPitch);
+	front.z = cos(m_CameraPitch) * sin(m_CameraYaw);
+	m_CameraFront = glm::normalize(front);
+
 	glm::mat4 view_matrix = glm::lookAt(
-		camera_pos,
-		glm::vec3(cos(time), 0.0f, sin(time)),
-		glm::vec3(0.0f, 1.0f, 0.0f));
+		m_CameraPos,
+		m_CameraPos + m_CameraFront,
+		m_CameraUp);
 	m_Camera->SetViewMatrix(view_matrix);
 
 	for (int i = 0; i < _countof(m_Entities); ++i)
@@ -70,16 +128,6 @@ void TestGameState::OnUpdate(const Time& frame_time)
 		glm::mat4 world_transform = m_Entities[i]->GetTransform();
 		world_transform = glm::rotate(world_transform, m_Speed[i], m_Axis[i]);
 		m_Entities[i]->SetTransform(world_transform);
-	}
-
-	if (Input::GetKeyEvent(GLFW_KEY_T) == Input::PRESSED)
-	{
-		update_time = !update_time;
-	}
-
-	if (Input::GetKeyEvent(GLFW_KEY_R) == Input::PRESSED)
-	{
-		update_rotation = !update_rotation;
 	}
 }
 

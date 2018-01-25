@@ -17,12 +17,16 @@ public:
 	virtual void OnExit() override;
 
 protected:
-	float time;
-	int rot;
-	bool update_rotation;
-	bool update_time;
+	float m_Time;
+	bool m_UpdateTime;
 
 	Camera* m_Camera;
+	glm::vec3 m_CameraPos;
+	glm::vec3 m_CameraFront;
+	glm::vec3 m_CameraUp;
+	float m_CameraYaw;
+	float m_CameraPitch;
+
 	Entity* m_Entities[1000];
 	glm::vec3 m_Axis[1000];
 	float m_Speed[1000];
