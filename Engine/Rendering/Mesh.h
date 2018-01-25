@@ -9,7 +9,7 @@ public:
 	~Mesh();
 
 	void LoadFromYaml(const std::string& filename);
-	void Render(glm::mat4 world_transform);
+	void Render(const glm::mat4& world_transform, const glm::vec4& tint);
 
 protected:
 

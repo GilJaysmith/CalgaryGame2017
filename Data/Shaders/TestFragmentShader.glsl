@@ -7,6 +7,7 @@ out vec4 outColor;
 
 uniform sampler2D tex;
 uniform float time;
+uniform vec4 tint;
 
 void main()
 {
@@ -14,7 +15,7 @@ void main()
 	//outColor = vec4(1.0, 1.0, 1.0, 1.0)
 	
 	// Sampled from texture
-	outColor = texture(tex, Texcoord) * vec4(gl_FragCoord.x / 800.0, 0.0, gl_FragCoord.y / 600.0, 1.0);
+	outColor = texture(tex, Texcoord) * tint;
 
 	// Based on screen position of pixel
 //	outColor = vec4(0.0, gl_FragCoord.y / 600.0, 0.0, 1.0);

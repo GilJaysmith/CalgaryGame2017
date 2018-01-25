@@ -118,7 +118,7 @@ void Mesh::SetTexture(unsigned int texture_index, GLuint texture_id)
 	m_Textures[texture_index] = texture_id;
 }
 
-void Mesh::Render(glm::mat4 world_transform)
+void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 {
 	ShaderManager::SetActiveShader(m_ShaderProgram);
 
@@ -130,6 +130,9 @@ void Mesh::Render(glm::mat4 world_transform)
 
 	GLint uniModel = glGetUniformLocation(m_ShaderProgram, "model");
 	glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(world_transform));
+
+	GLint uniTint = glGetUniformLocation(m_ShaderProgram, "tint");
+	glUniform4fv(uniTint, 1, glm::value_ptr(tint));
 
 	glBindVertexArray(m_Vao);
 	glDrawArrays(GL_TRIANGLES, 0, m_NumTriangles);
