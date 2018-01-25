@@ -44,7 +44,7 @@ void TestGameState::OnEnter()
 	m_CameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	m_CameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	m_CameraYaw = 0.0f;
+	m_CameraYaw = - glm::pi<float>() / 2.0f;
 	m_CameraPitch = 0.0f;
 }
 
