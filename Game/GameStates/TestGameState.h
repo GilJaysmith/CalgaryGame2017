@@ -2,6 +2,7 @@
 
 #include "Engine/GameStates/GameState.h"
 
+class Camera;
 class Entity;
 class Time;
 
@@ -21,5 +22,8 @@ protected:
 	bool update_rotation;
 	bool update_time;
 
+	Camera* m_Camera;
 	Entity* m_Entities[1000];
+	glm::vec3 m_Axis[1000];
+	float m_Speed[1000];
 };

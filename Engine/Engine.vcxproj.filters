@@ -25,6 +25,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{c5b0e2fb-515a-4727-a8bf-4d1c1365601b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cameras">
+      <UniqueIdentifier>{0da9adf8-ec42-4169-babb-52447e0523b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -90,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="Rendering\MeshManager.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\Camera.cpp">
+      <Filter>Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="Rendering\MeshManager.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\Camera.h">
+      <Filter>Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

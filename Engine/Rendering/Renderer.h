@@ -2,6 +2,7 @@
 
 #undef CreateWindow
 
+class Camera;
 class Renderable;
 
 namespace Renderer
@@ -17,6 +18,8 @@ namespace Renderer
 	GLFWwindow* GetWindow();
 
 	void ClearWindow();
+
+	void SetActiveCamera(Camera*);
 
 	void RenderScene();
 

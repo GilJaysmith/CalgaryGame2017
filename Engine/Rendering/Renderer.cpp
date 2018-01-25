@@ -1,7 +1,9 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Cameras/Camera.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/ShaderManager.h"
 
 #include <set>
 
@@ -65,13 +67,25 @@ namespace Renderer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	Camera* s_ActiveCamera = nullptr;
+
+	void SetActiveCamera(Camera* camera)
+	{
+		s_ActiveCamera = camera;
+	}
+
 	std::set<Renderable*> m_RenderablesInScene;
 
 	void RenderScene()
 	{
-		for (auto it : m_RenderablesInScene)
+		if (s_ActiveCamera)
 		{
-			it->Render();
+			ShaderManager::SetUniform4fv("view", glm::mat4(s_ActiveCamera->GetViewMatrix()));
+
+			for (auto it : m_RenderablesInScene)
+			{
+				it->Render();
+			}
 		}
 	}
 
