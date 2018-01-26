@@ -38,3 +38,11 @@ RenderComponent::RenderComponent(Entity* owner, const YAML::Node& properties)
 		}
 	}
 }
+
+void RenderComponent::OnSetActive(bool active)
+{
+	if (m_Renderable)
+	{
+		m_Renderable->SetActive(active);
+	}
+}

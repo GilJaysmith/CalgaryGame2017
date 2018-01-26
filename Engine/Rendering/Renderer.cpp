@@ -98,7 +98,10 @@ namespace Renderer
 
 			for (auto it : m_RenderablesInScene)
 			{
-				it->Render();
+				if (it->IsActive())
+				{
+					it->Render();
+				}
 			}
 		}
 	}

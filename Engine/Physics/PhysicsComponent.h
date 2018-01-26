@@ -12,8 +12,6 @@ namespace physx
 	class PxRigidDynamic;
 }
 
-
-
 class PhysicsComponent : public Component
 {
 public:
@@ -26,6 +24,8 @@ public:
 
 protected:
 	PhysicsComponent(Entity* owner, const YAML::Node& properties);
+
+	virtual void OnSetActive(bool active) override;
 
 	physx::PxRigidDynamic* m_Actor;
 };

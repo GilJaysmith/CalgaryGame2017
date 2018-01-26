@@ -13,6 +13,12 @@ public:
 	virtual bool OnMessage(Message*) { return false; }
 	virtual void OnUpdate(const Time& elapsed_time) {}
 
+	void SetActive(bool active);
+
 protected:
+
+	virtual void OnSetActive(bool active) {}
+
 	Entity* m_Entity;
+	bool m_Active;
 };

@@ -42,3 +42,8 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	m_Actor->createShape(physx::PxBoxGeometry(0.5f, 0.5f, 0.5f), *material);
 	Physics::GetScene()->addActor(*m_Actor);
 }
+
+void PhysicsComponent::OnSetActive(bool active)
+{
+	m_Actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !active);
+}

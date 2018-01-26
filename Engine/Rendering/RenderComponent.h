@@ -21,5 +21,7 @@ public:
 protected:
 	RenderComponent(Entity* owner, const YAML::Node& properties);
 
+	virtual void OnSetActive(bool active) override;
+
 	Renderable* m_Renderable;
 };
