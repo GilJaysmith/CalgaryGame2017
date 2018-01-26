@@ -56,6 +56,9 @@
     <ClInclude Include="GIS\shapelib\shapefil.h">
       <Filter>GIS\shapelib</Filter>
     </ClInclude>
+    <ClInclude Include="GIS\GISManager.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="GIS\shapelib\shputils.c">
       <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\GISManager.cpp">
+      <Filter>GIS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

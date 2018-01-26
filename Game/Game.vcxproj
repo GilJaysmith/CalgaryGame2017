@@ -176,6 +176,7 @@
     <ClInclude Include="GameStates\FrontEndState.h" />
     <ClInclude Include="GameStates\InGameState.h" />
     <ClInclude Include="GameStates\TestGameState.h" />
+    <ClInclude Include="GIS\GISManager.h" />
     <ClInclude Include="GIS\shapelib\shapefil.h" />
     <ClInclude Include="Pch.h" />
   </ItemGroup>
@@ -189,6 +190,7 @@
     <ClCompile Include="GameStates\FrontEndState.cpp" />
     <ClCompile Include="GameStates\InGameState.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp" />
+    <ClCompile Include="GIS\GISManager.cpp" />
     <ClCompile Include="GIS\shapelib\dbfadd.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
