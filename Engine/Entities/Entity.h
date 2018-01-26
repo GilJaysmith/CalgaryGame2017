@@ -17,7 +17,7 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	static Entity* CreateEntity(const std::string& entity_type);
+	static Entity* CreateEntity(const std::string& entity_type, const glm::mat4& transform);
 
 	void AddComponent(Component* component);
 	int OnMessage(Message* message);

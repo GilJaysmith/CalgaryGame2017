@@ -12,3 +12,4 @@
 
 #include "Engine/Memory/Memory.h"
 
+void CheckGLError();

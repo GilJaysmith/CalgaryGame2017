@@ -97,6 +97,9 @@
     <ClCompile Include="Cameras\Camera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\PhysicsComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -168,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="Cameras\Camera.h">
       <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsComponent.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

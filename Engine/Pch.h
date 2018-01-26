@@ -4,6 +4,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include <Windows.h>
@@ -19,3 +20,5 @@
 #include "../sdks/glm/glm.hpp"
 #include "../sdks/glm/gtc/matrix_transform.hpp"
 #include "../sdks/glm/gtc/type_ptr.hpp"
+
+void CheckGLError();

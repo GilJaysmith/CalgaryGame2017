@@ -45,8 +45,10 @@ namespace ShaderManager
 
 		unsigned int shader = glCreateShader(shader_type);
 		glShaderSource(shader, 1, &shader_text, nullptr);
+		CheckGLError();
 
 		glCompileShader(shader);
+		CheckGLError();
 
 		int success;
 		char infoLog[512];
@@ -68,18 +70,22 @@ namespace ShaderManager
 		for (auto shader : shaders)
 		{
 			glAttachShader(shader_program, shader);
+			CheckGLError();
 		}
 
 		for (auto it : buffer_outputs)
 		{
 			glBindFragDataLocation(shader_program, it.first, it.second.c_str());
+			CheckGLError();
 		}
 
 		glLinkProgram(shader_program);
+		CheckGLError();
 
 		int success;
 		char infoLog[512];
 		glGetShaderiv(shader_program, GL_LINK_STATUS, &success);
+		CheckGLError();
 		if (!success)
 		{
 			glGetShaderInfoLog(shader_program, 512, NULL, infoLog);
@@ -129,7 +135,9 @@ namespace ShaderManager
 	{
 		if (shader_program != s_ActiveShader)
 		{
+			CheckGLError();
 			glUseProgram(shader_program);
+			CheckGLError();
 			s_ActiveShader = shader_program;
 		}
 	}
@@ -138,11 +146,14 @@ namespace ShaderManager
 	{
 		for (auto shader : s_Programs)
 		{
+			CheckGLError();
 			unsigned int shader_program = shader.second;
 			SetActiveShader(shader_program);
-
+			CheckGLError();
 			GLint uniView = glGetUniformLocation(shader_program, uniform_name.c_str());
+			CheckGLError();
 			glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(v));
+			CheckGLError();
 		}
 	}
 }

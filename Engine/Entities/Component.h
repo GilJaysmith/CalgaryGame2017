@@ -14,5 +14,5 @@ public:
 	virtual void OnUpdate(const Time& elapsed_time) {}
 
 protected:
-	const Entity* m_Entity;
+	Entity* m_Entity;
 };

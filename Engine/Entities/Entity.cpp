@@ -7,12 +7,13 @@
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
-Entity* Entity::CreateEntity(const std::string& entity_type)
+Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& transform)
 {
 	std::string yaml_filename = "data/entities/" + entity_type + ".yaml";
 	YAML::Node yaml = YAML::LoadFile(yaml_filename);
 
 	Entity* entity = EntityManager::CreateEntity();
+	entity->SetTransform(transform);
 	for (auto behaviour : yaml["behaviours"])
 	{
 		Component* new_component = ComponentRegistry::CreateComponent(entity, behaviour.first.as<std::string>(), behaviour.second);

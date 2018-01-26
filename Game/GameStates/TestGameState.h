@@ -27,7 +27,5 @@ protected:
 	float m_CameraYaw;
 	float m_CameraPitch;
 
-	Entity* m_Entities[10000];
-	glm::vec3 m_Axis[10000];
-	float m_Speed[10000];
+	Entity* m_Entities[1000];
 };

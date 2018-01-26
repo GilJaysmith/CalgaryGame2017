@@ -3,10 +3,12 @@
 #include "Engine/Physics/Physics.h"
 #include "PxPhysicsAPI.h"
 #include "common/PxTolerancesScale.h"
+#include "PxScene.h"
+#include "PxSceneDesc.h"
 
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
-
+#include "Engine/GameStates/Time.h"
 
 namespace Physics
 {
@@ -42,6 +44,8 @@ namespace Physics
 	physx::PxPhysics* physics = nullptr;
 	physx::PxCooking* cooking = nullptr;
 
+	physx::PxScene* scene = nullptr;
+
 	void Initialize()
 	{
 		Logging::Log("Physics", "Physics initializing...");
@@ -53,12 +57,23 @@ namespace Physics
 		physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, physx::PxTolerancesScale(), false);
 		cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, physx::PxCookingParams(physx::PxTolerancesScale()));
 
+		physx::PxSceneDesc scene_desc(physics->getTolerancesScale());
+		scene_desc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+		scene_desc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
+		scene = physics->createScene(scene_desc);
+
+		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.6f);
+		physx::PxRigidStatic* groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *gMaterial);
+		scene->addActor(*groundPlane);
+
 		Logging::Log("Physics", "Physics initialized");
 	}
 
 	void Terminate()
 	{
 		Logging::Log("Physics", "Physics terminating...");
+		scene->release();
 		cooking->release();
 		physics->release();
 		foundation->release();
@@ -66,5 +81,22 @@ namespace Physics
 		MemDelete(pec);
 		MemDelete(pa);
 		Logging::Log("Physics", "Physics terminated");
+	}
+
+	void Simulate(const Time& time)
+	{
+		float seconds = time.toSeconds();
+		scene->simulate(seconds);
+		scene->fetchResults(true);
+	}
+
+	physx::PxPhysics* GetPhysics()
+	{
+		return physics;
+	}
+
+	physx::PxScene* GetScene()
+	{
+		return scene;
 	}
 }

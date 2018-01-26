@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/Camera.h"
+#include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
@@ -9,10 +10,17 @@
 
 namespace Renderer
 {
+	void GLFWErrorFunction(int error, const char* message)
+	{
+		std::stringstream s;
+		s << "Error " << error << " (" << message << ")";
+		Logging::Log("GLFW", s.str());
+	}
+
 	void Initialize()
 	{
+		glfwSetErrorCallback(GLFWErrorFunction);
 		glfwInit();
-
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -40,11 +48,15 @@ namespace Renderer
 		}
 
 		glfwMakeContextCurrent(s_Window);
+		CheckGLError();
 		glfwSwapInterval(1);
+		CheckGLError();
 		glEnable(GL_DEPTH_TEST);
+		CheckGLError();
 
 		glewExperimental = GL_TRUE;
 		glewInit();
+		CheckGLError();
 	}
 
 	void DestroyWindow()
@@ -64,7 +76,9 @@ namespace Renderer
 	void ClearWindow()
 	{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		CheckGLError();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		CheckGLError();
 	}
 
 	Camera* s_ActiveCamera = nullptr;

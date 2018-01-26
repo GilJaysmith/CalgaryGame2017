@@ -2,12 +2,12 @@
 
 #include "Engine/Cameras/Camera.h"
 #include "Engine/Entities/Entity.h"
+#include "Engine/Entities/EntityManager.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
 
 #include "Game/GameStates/TestGameState.h"
-
 
 TestGameState::TestGameState()
 {
@@ -22,17 +22,16 @@ void TestGameState::OnEnter()
 {
 	for (int i = 0; i < _countof(m_Entities); ++i)
 	{
-		m_Entities[i] = Entity::CreateEntity("cube");
 		glm::mat4 world_transform;
-		world_transform = glm::scale(world_transform, glm::vec3(0.8f, 0.8f, 0.8f));
-		world_transform = glm::translate(world_transform, glm::vec3(-50.0 + i % 100, 0.0f, 5.0f - i / 100));
+		world_transform = glm::translate(world_transform, glm::vec3(-20.0 + i % 40, 5.0f + 10.f * (rand() / (float)RAND_MAX), 5.0f - i / 40));
+		m_Entities[i] = Entity::CreateEntity("cube", world_transform);
+		CheckGLError();
 		m_Entities[i]->SetTransform(world_transform);
-		m_Axis[i] = glm::normalize(glm::vec3(rand()- rand(), rand() - rand(), rand()- rand()));
-		m_Speed[i] = (rand() / (float)RAND_MAX) / 10.0f;
 	}
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1024.0f / 768.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 1000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
+	CheckGLError();
 
 	m_Camera = MemNew(MemoryPool::Rendering, Camera);
 	Renderer::SetActiveCamera(m_Camera);
@@ -40,12 +39,12 @@ void TestGameState::OnEnter()
 	m_Time = 0.0f;
 	m_UpdateTime = false;
 
-	m_CameraPos = glm::vec3(0.0f, 1.0f, 5.0f);
+	m_CameraPos = glm::vec3(0.0f, 20.0f, 15.0f);
 	m_CameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	m_CameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	m_CameraYaw = - glm::pi<float>() / 2.0f;
-	m_CameraPitch = 0.0f;
+	m_CameraYaw = -glm::pi<float>() / 2.0f;
+	m_CameraPitch = -glm::pi<float>() / 5.0f;
 }
 
 void TestGameState::OnUpdate(const Time& frame_time)
@@ -69,7 +68,6 @@ void TestGameState::OnUpdate(const Time& frame_time)
 	{
 		camera_speed *= 10.0f;
 	}
-
 
 	if (Input::GetKeyEvent(GLFW_KEY_W) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_W) == Input::HELD)
 	{
@@ -125,13 +123,6 @@ void TestGameState::OnUpdate(const Time& frame_time)
 		m_CameraPos + m_CameraFront,
 		m_CameraUp);
 	m_Camera->SetViewMatrix(view_matrix);
-
-	for (int i = 0; i < _countof(m_Entities); ++i)
-	{
-		glm::mat4 world_transform = m_Entities[i]->GetTransform();
-		world_transform = glm::rotate(world_transform, m_Speed[i], m_Axis[i]);
-		m_Entities[i]->SetTransform(world_transform);
-	}
 }
 
 void TestGameState::OnExit()

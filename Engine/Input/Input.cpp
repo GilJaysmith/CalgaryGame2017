@@ -22,7 +22,7 @@ namespace Input
 
 	void Update(GLFWwindow* window)
 	{
-		for (int i = GLFW_KEY_UNKNOWN; i <= GLFW_KEY_LAST; ++i)
+		for (int i = GLFW_KEY_SPACE; i <= GLFW_KEY_LAST; ++i)
 		{
 			switch (glfwGetKey(window, i))
 			{ 
@@ -47,6 +47,7 @@ namespace Input
 					}
 					break;
 			}
+			CheckGLError();
 		}
 	}
 

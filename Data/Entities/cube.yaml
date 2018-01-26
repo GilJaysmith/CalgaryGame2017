@@ -2,3 +2,4 @@
 behaviours: 
   render: 
     mesh: cube
+  physics: ~
