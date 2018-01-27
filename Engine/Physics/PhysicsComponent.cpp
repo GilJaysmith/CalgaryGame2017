@@ -38,7 +38,7 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	const glm::mat4& transform = owner->GetTransform();
 	glm::vec4 position = transform[3];
 	m_Actor = Physics::GetPhysics()->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
-	physx::PxMaterial* material = Physics::GetPhysics()->createMaterial(0.5f, 0.5f, 0.1f);
+	physx::PxMaterial* material = Physics::GetPhysics()->createMaterial(0.2f, 0.2f, 0.6f);
 	m_Actor->createShape(physx::PxBoxGeometry(0.5f, 0.5f, 0.5f), *material);
 	Physics::GetScene()->addActor(*m_Actor);
 }

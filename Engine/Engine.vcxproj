@@ -209,6 +209,7 @@
       <PrecompiledHeaderFile>Engine/Pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PhysX\PhysX\Include;..\sdks\PhysX\PxShared\include;..\sdks\libyaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

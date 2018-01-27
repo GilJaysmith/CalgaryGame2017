@@ -63,7 +63,7 @@ namespace Physics
 		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
 		scene = physics->createScene(scene_desc);
 
-		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.6f);
+		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.5f);
 		physx::PxRigidStatic* groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *gMaterial);
 		scene->addActor(*groundPlane);
 

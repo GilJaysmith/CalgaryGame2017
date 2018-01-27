@@ -18,14 +18,17 @@ TestGameState::~TestGameState()
 
 }
 
+
 void TestGameState::OnEnter()
 {
 	for (int i = 0; i < _countof(m_Entities); ++i)
 	{
 		glm::mat4 world_transform;
-		world_transform = glm::translate(world_transform, glm::vec3(-20.0 + i % 40, 5.0f + 10.f * (rand() / (float)RAND_MAX), 5.0f - i / 40));
+		float x = -20.0f + i % 40;
+		float y = 5.0f + 5.f * (rand() / (float)RAND_MAX);
+		float z = 5.0f - i / 40;
+		world_transform = glm::translate(world_transform, glm::vec3(x, y, z));
 		m_Entities[i] = Entity::CreateEntity("cube", world_transform);
-		CheckGLError();
 		m_Entities[i]->SetTransform(world_transform);
 	}
 
@@ -46,6 +49,7 @@ void TestGameState::OnEnter()
 	m_CameraYaw = -glm::pi<float>() / 2.0f;
 	m_CameraPitch = -glm::pi<float>() / 5.0f;
 }
+
 
 void TestGameState::OnUpdate(const Time& frame_time)
 {
