@@ -1,5 +1,6 @@
 #include "Game/Pch.h"
 
+#include "Engine/Audio/Audio.h"
 #include "Engine/Cameras/Camera.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/EntityManager.h"
@@ -48,6 +49,8 @@ void TestGameState::OnEnter()
 
 	m_CameraYaw = -glm::pi<float>() / 2.0f;
 	m_CameraPitch = -glm::pi<float>() / 5.0f;
+
+	Audio::PlaySound("a2002011001-e02.wav");
 }
 
 

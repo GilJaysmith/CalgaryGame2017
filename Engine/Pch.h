@@ -22,3 +22,5 @@
 #include "../sdks/glm/gtc/type_ptr.hpp"
 
 void CheckGLError();
+
+#include "Engine/Logging/Logging.h"

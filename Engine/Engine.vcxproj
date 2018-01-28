@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Cameras\Camera.cpp" />
     <ClCompile Include="Entities\Component.cpp" />
     <ClCompile Include="Entities\ComponentRegistry.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="Rendering\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Cameras\Camera.h" />
     <ClInclude Include="Entities\Component.h" />
     <ClInclude Include="Entities\ComponentRegistry.h" />

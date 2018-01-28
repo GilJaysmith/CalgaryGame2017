@@ -28,6 +28,9 @@
     <Filter Include="Cameras">
       <UniqueIdentifier>{0da9adf8-ec42-4169-babb-52447e0523b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{06f8edec-4cd6-4515-a2a5-973195a137e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -99,6 +102,9 @@
     </ClCompile>
     <ClCompile Include="Physics\PhysicsComponent.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\Audio.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="Physics\PhysicsComponent.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\Audio.h">
+      <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
