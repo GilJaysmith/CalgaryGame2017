@@ -49,14 +49,17 @@ void TestGameState::OnEnter()
 
 	m_CameraYaw = -glm::pi<float>() / 2.0f;
 	m_CameraPitch = -glm::pi<float>() / 5.0f;
-
-	Audio::PlaySound("a2002011001-e02.wav");
 }
 
 
 void TestGameState::OnUpdate(const Time& frame_time)
 {
 	GameState::OnUpdate(frame_time);
+
+	if (Input::GetKeyEvent(GLFW_KEY_M) == Input::PRESSED)
+	{
+		Audio::PlaySound("a2002011001-e02.wav");
+	}
 
 	if (Input::GetKeyEvent(GLFW_KEY_T) == Input::PRESSED)
 	{
@@ -134,5 +137,9 @@ void TestGameState::OnUpdate(const Time& frame_time)
 
 void TestGameState::OnExit()
 {
-
+	MemDelete(m_Camera);
+	for (auto it : m_Entities)
+	{
+		EntityManager::DestroyEntity(it);
+	}
 }

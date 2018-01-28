@@ -16,7 +16,6 @@ Renderable::Renderable(Mesh* mesh)
 
 Renderable::~Renderable()
 {
-
 }
 
 void Renderable::SetTransform(const glm::mat4& world_transform)

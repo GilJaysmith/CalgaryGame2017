@@ -13,6 +13,7 @@ namespace MemoryPool
 		System,
 		Physics,
 		Rendering,
+		Entities,
 		COUNT
 	};
 }
@@ -45,32 +46,45 @@ namespace Memory
 		MemoryPool::TYPE m_Allocator;
 	};
 
+	void Initialize();
+	void Terminate();
+
 	Allocator* CreateFreeStoreAllocator();
 	Allocator* CreateDougLeaAllocator();
 
 	void RegisterAllocator(MemoryPool::TYPE memory_pool_type, Allocator* allocator);
 }
 
-void* operator new(size_t size, MemoryPool::TYPE allocator);
-void operator delete(void* ptr, MemoryPool::TYPE allocator);
+void* MemAlloc(MemoryPool::TYPE allocator, size_t size, const char* filename, int line);
+
+void* operator new(size_t size, MemoryPool::TYPE allocator, const char* filename, int line);
+void operator delete(void* ptr, MemoryPool::TYPE allocator, const char* filename, int line);
 
 
 // Basic interface to memory.
-
-void* MemAlloc(MemoryPool::TYPE allocator, size_t size);
-void MemFree(void* ptr);
+void MemFreeNotForPublicUse(void* ptr);
 
 // Interface for creating and deleting single instance of a class object.
 
-#define MemNew(allocator, type) new(allocator) type
+#define MemNewBytes(allocator, size) MemAlloc(allocator, size, __FILE__, __LINE__)
+#define MemNew(allocator, type) new(allocator, __FILE__, __LINE__) type
 
 template<typename T> void MemDelete(T* ptr)
 {
 	int* ptr_i = (int*)ptr;
 	MemoryPool::TYPE allocator = (MemoryPool::TYPE)(ptr_i[-4]);
 	ptr->~T();
-	MemFree(ptr);
+	MemFreeNotForPublicUse(ptr);
 }
+
+// Specialization without '~T' call.
+template<> inline void MemDelete(void* ptr)
+{
+	int* ptr_i = (int*)ptr;
+	MemoryPool::TYPE allocator = (MemoryPool::TYPE)(ptr_i[-4]);
+	MemFreeNotForPublicUse(ptr);
+}
+
 
 // Interface for creating and deleting arrays of class objects.
 
@@ -87,7 +101,7 @@ struct TypeAndCount<T[N]>
 };
 
 template <typename T>
-T* NewArray(MemoryPool::TYPE allocator, size_t N)
+T* NewArray(MemoryPool::TYPE allocator, size_t N, const char* filename, int line)
 {
 	union
 	{
@@ -101,8 +115,6 @@ T* NewArray(MemoryPool::TYPE allocator, size_t N)
 	// store number of instances in first size_t bytes
 	*as_size_t++ = allocator;
 	*as_size_t++ = N;
-	as_size_t++;
-	as_size_t++;
 
 	// construct instances using placement new
 	const T* const onePastLast = as_T + N;
@@ -113,7 +125,7 @@ T* NewArray(MemoryPool::TYPE allocator, size_t N)
 	return (as_T - N);
 }
 
-#define MemNewArray(allocator, type)    NewArray<TypeAndCount<type>::Type>(allocator, TypeAndCount<type>::Count)
+#define MemNewArray(allocator, type)    NewArray<TypeAndCount<type>::Type>(allocator, TypeAndCount<type>::Count, __FILE__, __LINE__)
 
 template<typename T> void MemDeleteArray(T* ptr)
 {

@@ -3,6 +3,7 @@
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/EntityManager.h"
 #include "Engine/GameStates/Time.h"
+#include "Engine/Memory/Memory.h"
 
 namespace EntityManager
 {
@@ -18,6 +19,11 @@ namespace EntityManager
 
 	void Terminate()
 	{
+		for (auto entity : s_AllEntities)
+		{
+			MemDelete(entity);
+		}
+		s_AllEntities.clear();
 	}
 
 	void Update(const Time& time)
@@ -30,7 +36,7 @@ namespace EntityManager
 
 	Entity * CreateEntity()
 	{
-		Entity* new_entity = new Entity();
+		Entity* new_entity = MemNew(MemoryPool::Entities, Entity);
 		s_AllEntities.insert(new_entity);
 		return new_entity;
 	}
@@ -94,7 +100,7 @@ namespace EntityManager
 		{
 			it.second.erase(entity);
 		}
-		delete entity;
+		MemDelete(entity);
 	}
 }
 

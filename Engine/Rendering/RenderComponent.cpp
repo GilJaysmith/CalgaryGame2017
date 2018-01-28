@@ -14,7 +14,10 @@ Component* RenderComponent::CreateComponent(Entity* owner, const YAML::Node& pro
 
 RenderComponent::~RenderComponent()
 {
-
+	if (m_Renderable)
+	{
+		MemDelete(m_Renderable);
+	}
 }
 
 void RenderComponent::OnUpdate(const Time& elapsed_time)

@@ -6,6 +6,8 @@
 
 namespace MeshManager
 {
+	std::map<std::string, Mesh*> s_Meshes;
+
 	void Initialize()
 	{
 
@@ -13,10 +15,12 @@ namespace MeshManager
 
 	void Terminate()
 	{
-
+		for (auto it : s_Meshes)
+		{
+			MemDelete(it.second);
+		}
+		s_Meshes.clear();
 	}
-
-	std::map<std::string, Mesh*> s_Meshes;
 
 	Mesh* LoadMeshFromFile(const std::string& mesh_name)
 	{

@@ -19,11 +19,11 @@ namespace Physics
 		virtual ~PhysicsAllocator() {}
 		virtual void* allocate(size_t size, const char* typeName, const char* filename, int line) override
 		{
-			return operator new(size, MemoryPool::Physics);
+			return MemAlloc(MemoryPool::Physics, size, filename, line);
 		}
 		virtual void deallocate(void* ptr) override
 		{
-			MemFree(ptr);
+			MemDelete(ptr);
 		}
 	};
 
@@ -45,6 +45,10 @@ namespace Physics
 	physx::PxCooking* cooking = nullptr;
 
 	physx::PxScene* scene = nullptr;
+	physx::PxDefaultCpuDispatcher* dispatcher = nullptr;
+
+	physx::PxMaterial* gMaterial = nullptr;
+	physx::PxRigidStatic* groundPlane = nullptr;
 
 	void Initialize()
 	{
@@ -59,12 +63,13 @@ namespace Physics
 
 		physx::PxSceneDesc scene_desc(physics->getTolerancesScale());
 		scene_desc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
-		scene_desc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+		dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+		scene_desc.cpuDispatcher = dispatcher;
 		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
 		scene = physics->createScene(scene_desc);
 
-		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.5f);
-		physx::PxRigidStatic* groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *gMaterial);
+		gMaterial = physics->createMaterial(0.5f, 0.5f, 0.5f);
+		groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *gMaterial);
 		scene->addActor(*groundPlane);
 
 		Logging::Log("Physics", "Physics initialized");
@@ -73,7 +78,13 @@ namespace Physics
 	void Terminate()
 	{
 		Logging::Log("Physics", "Physics terminating...");
+
+		groundPlane->release();
+		gMaterial->release();
+
+		dispatcher->release();
 		scene->release();
+
 		cooking->release();
 		physics->release();
 		foundation->release();

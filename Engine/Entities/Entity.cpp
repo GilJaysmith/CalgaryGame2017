@@ -4,6 +4,7 @@
 #include "Engine/Entities/ComponentRegistry.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/EntityManager.h"
+#include "Engine/Memory/Memory.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
@@ -28,6 +29,10 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+	for (auto component : m_Components)
+	{
+		MemDelete(component);
+	}
 }
 
 void Entity::AddComponent(Component * component)

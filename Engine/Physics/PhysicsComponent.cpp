@@ -15,7 +15,14 @@ Component* PhysicsComponent::CreateComponent(Entity* owner, const YAML::Node& pr
 
 PhysicsComponent::~PhysicsComponent()
 {
-
+	if (m_Material)
+	{
+		m_Material->release();
+	}
+	if (m_Actor)
+	{
+		m_Actor->release();
+	}
 }
 
 void PhysicsComponent::OnUpdate(const Time& elapsed_time)
@@ -38,8 +45,8 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	const glm::mat4& transform = owner->GetTransform();
 	glm::vec4 position = transform[3];
 	m_Actor = Physics::GetPhysics()->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
-	physx::PxMaterial* material = Physics::GetPhysics()->createMaterial(0.2f, 0.2f, 0.6f);
-	m_Actor->createShape(physx::PxBoxGeometry(0.5f, 0.5f, 0.5f), *material);
+	m_Material = Physics::GetPhysics()->createMaterial(0.2f, 0.2f, 0.6f);
+	m_Actor->createShape(physx::PxBoxGeometry(0.5f, 0.5f, 0.5f), *m_Material);
 	Physics::GetScene()->addActor(*m_Actor);
 }
 

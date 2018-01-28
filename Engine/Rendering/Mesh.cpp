@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Logging/Logging.h"
+#include "Engine/Memory/Memory.h"
 #include "Engine/Rendering/Mesh.h"
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
@@ -69,7 +70,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	}
 	m_NumTriangles = vertices.size();
 
-	float* vert_data = new float[vertices.size() * vertices[0].size()];
+	float* vert_data = (float*) MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * vertices[0].size());
 	float* v = vert_data;
 	for (auto vert : vertices)
 	{
@@ -93,7 +94,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 	CheckGLError();
 
-	delete[] vert_data;
+	MemDelete(vert_data);
 
 	// Apply attribute bindings
 	int offset = 0;
