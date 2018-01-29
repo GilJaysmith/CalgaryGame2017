@@ -28,4 +28,5 @@ protected:
 	float m_CameraPitch;
 
 	Entity* m_Entities[1000];
+	Entity* m_GroundPlane;
 };

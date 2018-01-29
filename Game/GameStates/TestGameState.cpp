@@ -22,6 +22,8 @@ TestGameState::~TestGameState()
 
 void TestGameState::OnEnter()
 {
+	m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
+
 	for (int i = 0; i < _countof(m_Entities); ++i)
 	{
 		glm::mat4 world_transform;
@@ -33,7 +35,7 @@ void TestGameState::OnEnter()
 		m_Entities[i]->SetTransform(world_transform);
 	}
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
 
 	m_Camera = MemNew(MemoryPool::Rendering, Camera);
@@ -75,7 +77,7 @@ void TestGameState::OnUpdate(const Time& frame_time)
 
 	if (Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::HELD)
 	{
-		camera_speed *= 10.0f;
+		camera_speed *= 100.0f;
 	}
 
 	if (Input::GetKeyEvent(GLFW_KEY_W) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_W) == Input::HELD)
@@ -141,4 +143,6 @@ void TestGameState::OnExit()
 	{
 		EntityManager::DestroyEntity(it);
 	}
+
+	EntityManager::DestroyEntity(m_GroundPlane);
 }

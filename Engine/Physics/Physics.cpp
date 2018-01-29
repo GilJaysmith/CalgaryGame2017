@@ -47,8 +47,6 @@ namespace Physics
 	physx::PxScene* scene = nullptr;
 	physx::PxDefaultCpuDispatcher* dispatcher = nullptr;
 
-	physx::PxRigidStatic* groundPlane = nullptr;
-
 	std::map<std::string, physx::PxMaterial*> s_Materials;
 
 	physx::PxMaterial* GetMaterial(const std::string& material_name)
@@ -88,9 +86,6 @@ namespace Physics
 			s_Materials[material_name] = physx_material;
 		}
 
-		groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *GetMaterial("floor"));
-		scene->addActor(*groundPlane);
-
 		Logging::Log("Physics", "Physics initialized");
 	}
 
@@ -98,8 +93,6 @@ namespace Physics
 	{
 		Logging::Log("Physics", "Physics terminating...");
 
-		groundPlane->release();
-		
 		for (auto material : s_Materials)
 		{
 			material.second->release();

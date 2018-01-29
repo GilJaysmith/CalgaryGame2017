@@ -19,6 +19,10 @@ PhysicsComponent::~PhysicsComponent()
 	{
 		m_Actor->release();
 	}
+	if (m_StaticActor)
+	{
+		m_StaticActor->release();
+	}
 }
 
 void PhysicsComponent::OnUpdate(const Time& elapsed_time)
@@ -37,6 +41,8 @@ void PhysicsComponent::OnUpdate(const Time& elapsed_time)
 
 PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
+	, m_Actor(nullptr)
+	, m_StaticActor(nullptr)
 {
 	const glm::mat4& transform = owner->GetTransform();
 	glm::vec4 position = transform[3];
@@ -47,8 +53,13 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	if (geometry_type == "box")
 	{
 		m_Actor->createShape(physx::PxBoxGeometry(properties["dimensions"][0].as<float>(), properties["dimensions"][1].as<float>(), properties["dimensions"][2].as<float>()), *Physics::GetMaterial(material_name));
+		Physics::GetScene()->addActor(*m_Actor);
 	}
-	Physics::GetScene()->addActor(*m_Actor);
+	else if (geometry_type == "plane")
+	{
+		m_StaticActor = physx::PxCreatePlane(*Physics::GetPhysics(), physx::PxPlane(properties["vector"][0].as<float>(), properties["vector"][1].as<float>(), properties["vector"][2].as<float>(), properties["vector"][3].as<float>()), *Physics::GetMaterial(material_name));
+		Physics::GetScene()->addActor(*m_StaticActor);
+	}
 }
 
 void PhysicsComponent::OnSetActive(bool active)
