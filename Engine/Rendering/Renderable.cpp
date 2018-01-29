@@ -11,7 +11,7 @@ Renderable::Renderable(Mesh* mesh)
 	: m_Mesh(mesh)
 	, m_Active(true)
 {
-	m_Tint = glm::vec4(abs(sin(rand())), abs(sin(rand())), abs(sin(rand())), 1.0f);
+	m_Tint = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 Renderable::~Renderable()

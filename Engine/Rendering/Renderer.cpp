@@ -79,7 +79,15 @@ namespace Renderer
 
 	void SetActiveCamera(Camera* camera)
 	{
+		if (s_ActiveCamera)
+		{
+			s_ActiveCamera->SetActive(false);
+		}
 		s_ActiveCamera = camera;
+		if (s_ActiveCamera)
+		{
+			s_ActiveCamera->SetActive(true);
+		}
 	}
 
 	std::set<Renderable*> m_RenderablesInScene;

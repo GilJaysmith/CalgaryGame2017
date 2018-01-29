@@ -106,6 +106,9 @@
     <ClCompile Include="Audio\Audio.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Cameras\DebugCamera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -183,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="Audio\Audio.h">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\DebugCamera.h">
+      <Filter>Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

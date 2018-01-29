@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Cameras\Camera.cpp" />
+    <ClCompile Include="Cameras\DebugCamera.cpp" />
     <ClCompile Include="Entities\Component.cpp" />
     <ClCompile Include="Entities\ComponentRegistry.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
@@ -54,6 +55,7 @@
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Cameras\Camera.h" />
+    <ClInclude Include="Cameras\DebugCamera.h" />
     <ClInclude Include="Entities\Component.h" />
     <ClInclude Include="Entities\ComponentRegistry.h" />
     <ClInclude Include="Entities\Entity.h" />

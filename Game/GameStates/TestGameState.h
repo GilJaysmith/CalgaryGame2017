@@ -2,7 +2,7 @@
 
 #include "Engine/GameStates/GameState.h"
 
-class Camera;
+class DebugCamera;
 class Entity;
 class Time;
 
@@ -20,12 +20,7 @@ protected:
 	float m_Time;
 	bool m_UpdateTime;
 
-	Camera* m_Camera;
-	glm::vec3 m_CameraPos;
-	glm::vec3 m_CameraFront;
-	glm::vec3 m_CameraUp;
-	float m_CameraYaw;
-	float m_CameraPitch;
+	DebugCamera* m_Camera;
 
 	Entity* m_Entities[1000];
 	Entity* m_GroundPlane;

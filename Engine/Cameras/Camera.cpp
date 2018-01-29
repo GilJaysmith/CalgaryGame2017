@@ -4,6 +4,7 @@
 
 
 Camera::Camera()
+	: m_Active(false)
 {
 
 }
@@ -13,12 +14,12 @@ Camera::~Camera()
 
 }
 
-void Camera::SetViewMatrix(const glm::mat4& view_matrix)
-{
-	m_ViewMatrix = view_matrix;
-}
-
 glm::mat4 Camera::GetViewMatrix() const
 {
 	return m_ViewMatrix;
+}
+
+void Camera::SetActive(bool active)
+{
+	m_Active = active;
 }
