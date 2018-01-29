@@ -7,6 +7,8 @@
 
 namespace Memory
 {
+	bool s_TrackAllocations = true;
+
 	struct AllocatorDesc
 	{
 		MemoryPool::TYPE m_AllocatorId;
@@ -14,12 +16,14 @@ namespace Memory
 		MemoryAllocatorThreadSafeness::TYPE m_ThreadSafeness;
 		CRITICAL_SECTION m_cs;
 		std::map<void*, std::pair<const char*, int>> m_Allocations;
+		bool m_TrackAllocations;
 		AllocatorDesc(MemoryPool::TYPE allocator_id)
 		{
 			m_AllocatorId = allocator_id;
 			InitializeCriticalSection(&m_cs);
 			m_Allocator = nullptr;
 			m_ThreadSafeness = MemoryAllocatorThreadSafeness::Multithreaded;
+			m_TrackAllocations = s_TrackAllocations;
 		}
 		~AllocatorDesc()
 		{
@@ -49,50 +53,56 @@ namespace Memory
 		}
 		void LockAllocator()
 		{
-			if (m_ThreadSafeness == MemoryAllocatorThreadSafeness::Multithreaded)
+			if (m_TrackAllocations && m_ThreadSafeness == MemoryAllocatorThreadSafeness::Multithreaded)
 			{
 				EnterCriticalSection(&m_cs);
 			}
 		}
 		void UnlockAllocator()
 		{
-			if (m_ThreadSafeness == MemoryAllocatorThreadSafeness::Multithreaded)
+			if (m_TrackAllocations && m_ThreadSafeness == MemoryAllocatorThreadSafeness::Multithreaded)
 			{
 				LeaveCriticalSection(&m_cs);
 			}
 		}
 		void* MemAlloc(MemoryPool::TYPE allocator, size_t size, const char* filename, int line)
 		{
-			LockAllocator();
 			void* raw_ptr = m_Allocator->Allocate(size + 4 * sizeof(int*));
-			auto it = m_Allocations.find(raw_ptr);
-			if (it != m_Allocations.end())
+			if (m_TrackAllocations)
 			{
-				Logging::Log("Memory", "Address already registered as allocated!");
-				exit(1);
+				LockAllocator();
+				auto it = m_Allocations.find(raw_ptr);
+				if (it != m_Allocations.end())
+				{
+					Logging::Log("Memory", "Address already registered as allocated!");
+					exit(1);
+				}
+				m_Allocations[raw_ptr] = std::pair<const char*, int>(filename, line);
+				UnlockAllocator();
 			}
-			m_Allocations[raw_ptr] = std::pair<const char*, int>(filename, line);
 			int* mem_i = (int*)raw_ptr;
 			*mem_i++ = int(allocator);
 			*mem_i++ = (int)size;
 			mem_i++;
 			mem_i++;
-			UnlockAllocator();
 			return mem_i;
 		}
 		void MemFree(void* raw_ptr)
 		{
-			LockAllocator();
-			MemoryPool::TYPE allocator = (MemoryPool::TYPE)(*((int*)raw_ptr));
-			auto it = m_Allocations.find(raw_ptr);
-			if (it == m_Allocations.end())
+			if (m_TrackAllocations)
 			{
-				Logging::Log("Memory", "Freeing pointer not registered as allocated!");
-				exit(1);
+				LockAllocator();
+				MemoryPool::TYPE allocator = (MemoryPool::TYPE)(*((int*)raw_ptr));
+				auto it = m_Allocations.find(raw_ptr);
+				if (it == m_Allocations.end())
+				{
+					Logging::Log("Memory", "Freeing pointer not registered as allocated!");
+					exit(1);
+				}
+				m_Allocations.erase(raw_ptr);
+				UnlockAllocator();
 			}
-			m_Allocations.erase(raw_ptr);
 			m_Allocator->Destroy(raw_ptr);
-			UnlockAllocator();
 		}
 	};
 
