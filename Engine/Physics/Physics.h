@@ -4,6 +4,7 @@ class Time;
 
 namespace physx
 {
+	class PxMaterial;
 	class PxPhysics;
 	class PxScene;
 }
@@ -17,4 +18,6 @@ namespace Physics
 
 	physx::PxPhysics* GetPhysics();
 	physx::PxScene* GetScene();
+
+	physx::PxMaterial* GetMaterial(const std::string& material_name);
 };

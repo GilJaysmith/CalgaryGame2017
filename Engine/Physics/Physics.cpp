@@ -9,6 +9,7 @@
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
 #include "Engine/GameStates/Time.h"
+#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 namespace Physics
 {
@@ -26,7 +27,6 @@ namespace Physics
 			MemDelete(ptr);
 		}
 	};
-
 
 	class PhysicsErrorCallback : public physx::PxErrorCallback
 	{
@@ -47,8 +47,19 @@ namespace Physics
 	physx::PxScene* scene = nullptr;
 	physx::PxDefaultCpuDispatcher* dispatcher = nullptr;
 
-	physx::PxMaterial* gMaterial = nullptr;
 	physx::PxRigidStatic* groundPlane = nullptr;
+
+	std::map<std::string, physx::PxMaterial*> s_Materials;
+
+	physx::PxMaterial* GetMaterial(const std::string& material_name)
+	{
+		if (s_Materials.find(material_name) == s_Materials.end())
+		{
+			Logging::Log("Physics", "Couldn't find material!");
+			exit(1);
+		}
+		return s_Materials[material_name];
+	}
 
 	void Initialize()
 	{
@@ -68,8 +79,16 @@ namespace Physics
 		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
 		scene = physics->createScene(scene_desc);
 
-		gMaterial = physics->createMaterial(0.5f, 0.5f, 0.5f);
-		groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *gMaterial);
+		YAML::Node yaml = YAML::LoadFile("Data/Physics/materials.yaml");
+		for (auto material_desc : yaml["materials"])
+		{
+			std::string material_name = material_desc.first.as<std::string>();
+			std::vector<float> material_properties = material_desc.second.as<std::vector<float>>();
+			physx::PxMaterial* physx_material = physics->createMaterial(material_properties[0], material_properties[1], material_properties[2]);
+			s_Materials[material_name] = physx_material;
+		}
+
+		groundPlane = PxCreatePlane(*physics, physx::PxPlane(0, 1, 0, 0), *GetMaterial("floor"));
 		scene->addActor(*groundPlane);
 
 		Logging::Log("Physics", "Physics initialized");
@@ -80,7 +99,11 @@ namespace Physics
 		Logging::Log("Physics", "Physics terminating...");
 
 		groundPlane->release();
-		gMaterial->release();
+		
+		for (auto material : s_Materials)
+		{
+			material.second->release();
+		}
 
 		dispatcher->release();
 		scene->release();

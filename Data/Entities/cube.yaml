@@ -2,4 +2,7 @@
 behaviours: 
   render: 
     mesh: cube
-  physics: ~
+  physics:
+    shape: box
+    dimensions: [0.5, 0.5, 0.5]
+    material: cube

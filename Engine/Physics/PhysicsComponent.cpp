@@ -15,10 +15,6 @@ Component* PhysicsComponent::CreateComponent(Entity* owner, const YAML::Node& pr
 
 PhysicsComponent::~PhysicsComponent()
 {
-	if (m_Material)
-	{
-		m_Material->release();
-	}
 	if (m_Actor)
 	{
 		m_Actor->release();
@@ -45,8 +41,13 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	const glm::mat4& transform = owner->GetTransform();
 	glm::vec4 position = transform[3];
 	m_Actor = Physics::GetPhysics()->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
-	m_Material = Physics::GetPhysics()->createMaterial(0.2f, 0.2f, 0.6f);
-	m_Actor->createShape(physx::PxBoxGeometry(0.5f, 0.5f, 0.5f), *m_Material);
+
+	std::string material_name = properties["material"].as<std::string>();
+	std::string geometry_type = properties["shape"].as<std::string>();
+	if (geometry_type == "box")
+	{
+		m_Actor->createShape(physx::PxBoxGeometry(properties["dimensions"][0].as<float>(), properties["dimensions"][1].as<float>(), properties["dimensions"][2].as<float>()), *Physics::GetMaterial(material_name));
+	}
 	Physics::GetScene()->addActor(*m_Actor);
 }
 
