@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Audio/Audio.h"
+#include "Engine/Memory/Memory.h"
 
 #include "sdks/fmod/include/fmod.hpp"
 
@@ -9,20 +10,57 @@ namespace Audio
 {
 	FMOD::System* fmod;
 
+	void* alloc(unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
+	{
+		return MemAlloc(MemoryPool::Audio, size, sourcestr, 0);
+	}
+
+	void* realloc(void *ptr, unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
+	{
+		return nullptr;
+	}
+
+	void free(void *ptr, FMOD_MEMORY_TYPE type, const char *sourcestr)
+	{
+		MemDelete(ptr);
+	}
+
+	std::map<FMOD::Channel*, FMOD::Sound*> sounds_playing;
+
 	void Initialize()
 	{
 		CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
+		FMOD::Memory_Initialize(
+			nullptr,
+			0,
+			alloc,
+			realloc,
+			free,
+			0
+		);
+
 		FMOD::System_Create(&fmod);
 		fmod->init(512, FMOD_INIT_NORMAL, 0);
 	}
 
 	void Terminate()
 	{
+		for (auto it : sounds_playing)
+		{
+			FMOD::Channel* channel = it.first;
+			bool is_playing = false;
+			channel->isPlaying(&is_playing);
+			if (is_playing)
+			{
+				channel->stop();
+				FMOD::Sound* sound = it.second;
+				sound->release();
+			}
+		}
 		fmod->release();
 		CoUninitialize();
 	}
-
-	std::map<FMOD::Channel*, FMOD::Sound*> sounds_playing;
 
 	void Update(const Time& time)
 	{
