@@ -35,7 +35,6 @@ void TestGameState::OnEnter()
 
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 1000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
-	CheckGLError();
 
 	m_Camera = MemNew(MemoryPool::Rendering, Camera);
 	Renderer::SetActiveCamera(m_Camera);

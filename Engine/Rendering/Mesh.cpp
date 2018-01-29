@@ -27,7 +27,6 @@ void Mesh::LoadFromYaml(const std::string& filename)
 
 	// Shaders
 	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
-	CheckGLError();
 
 	// Load attribute bindings
 	struct AttributeBinding
@@ -54,13 +53,11 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	{
 		auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
 		SetTexture(GL_TEXTURE0 + texture_index, texture_id);
-		CheckGLError();
 		++texture_index;
 	}
 
 	glGenVertexArrays(1, &m_Vao);
 	glBindVertexArray(m_Vao);
-	CheckGLError();
 
 	// Vertices
 	std::vector<std::vector<float>> vertices;
@@ -88,11 +85,9 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	CheckGLError();
 
 	int vert_data_size = vertices.size() * vertices[0].size() * sizeof(float);
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
-	CheckGLError();
 
 	MemDelete(vert_data);
 
@@ -101,18 +96,13 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	for (auto ab : attribute_bindings)
 	{
 		GLint posAttrib = glGetAttribLocation(m_ShaderProgram, ab.name.c_str());
-		CheckGLError();
 		glEnableVertexAttribArray(posAttrib);
-		CheckGLError();
 		glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
-		CheckGLError();
 		offset += ab.num_floats;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	CheckGLError();
 	glBindVertexArray(0);
-	CheckGLError();
 }
 
 void Mesh::CreateEBO(unsigned int* elements, unsigned int num_elements)

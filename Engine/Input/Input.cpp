@@ -47,7 +47,6 @@ namespace Input
 					}
 					break;
 			}
-			CheckGLError();
 		}
 	}
 
