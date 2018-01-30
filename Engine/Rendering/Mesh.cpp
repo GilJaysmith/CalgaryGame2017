@@ -17,7 +17,6 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-
 }
 
 void Mesh::LoadFromYaml(const std::string& filename)
@@ -103,15 +102,6 @@ void Mesh::LoadFromYaml(const std::string& filename)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-}
-
-void Mesh::CreateEBO(unsigned int* elements, unsigned int num_elements)
-{
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements, elements, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Mesh::SetTexture(unsigned int texture_index, GLuint texture_id)

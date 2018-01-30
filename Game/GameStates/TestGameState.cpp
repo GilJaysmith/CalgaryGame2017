@@ -35,7 +35,7 @@ void TestGameState::OnEnter()
 		m_Entities[i]->SetTransform(world_transform);
 	}
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 1000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);

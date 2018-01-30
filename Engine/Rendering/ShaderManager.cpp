@@ -106,7 +106,8 @@ namespace ShaderManager
 		std::vector<unsigned int> shaders;
 		for (auto shader : node["shaders"])
 		{
-			auto shader_type = shader["type"].as<std::string>() == "vertex" ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
+			std::string shader_type_string = shader["type"].as<std::string>();
+			auto shader_type = shader_type_string == "vertex" ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
 			auto shader_name = shader["shader"].as<std::string>();
 			shaders.push_back(ShaderManager::LoadShader(shader_name, shader_type));
 		}

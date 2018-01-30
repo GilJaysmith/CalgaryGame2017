@@ -27,7 +27,16 @@ void DebugCamera::Update(const Time& frame_time)
 
 	if (Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::HELD)
 	{
-		camera_speed *= 10.0f;
+		camera_speed *= 20.0f;
+		camera_yaw_speed *= 10.0f;
+		camera_pitch_speed *= 10.0f;
+	}
+
+	if (Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::HELD)
+	{
+		camera_speed *= 20.0f;
+		camera_yaw_speed *= 10.0f;
+		camera_pitch_speed *= 10.0f;
 	}
 
 	if (Input::GetKeyEvent(GLFW_KEY_W) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_W) == Input::HELD)
@@ -71,7 +80,7 @@ void DebugCamera::Update(const Time& frame_time)
 		m_CameraPitch -= camera_pitch_speed * frame_time.toSeconds();
 	}
 
-	m_CameraPitch = glm::clamp(m_CameraPitch, -glm::pi<float>() / 3.0f, glm::pi<float>() / 3.0f);
+	m_CameraPitch = glm::clamp(m_CameraPitch, -glm::pi<float>() / 2.1f, glm::pi<float>() / 2.1f);
 
 	glm::vec3 front;
 	front.x = cos(m_CameraPitch) * cos(m_CameraYaw);

@@ -109,6 +109,9 @@
     <ClCompile Include="Cameras\DebugCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="GameStates\SplashScreenGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -189,6 +192,9 @@
     </ClInclude>
     <ClInclude Include="Cameras\DebugCamera.h">
       <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\SplashScreenGameState.h">
+      <Filter>GameStates</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

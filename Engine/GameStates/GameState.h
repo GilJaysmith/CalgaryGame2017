@@ -10,9 +10,9 @@ public:
 	GameState();
 	~GameState();
 
-	virtual void OnEnter();
-	virtual void OnUpdate(const Time& frame_time);
-	virtual void OnExit();
+	virtual void OnEnter() = 0;
+	virtual void OnUpdate(const Time& frame_time) = 0;
+	virtual void OnExit() = 0;
 
 protected:
 	Time m_TotalTimeInState;

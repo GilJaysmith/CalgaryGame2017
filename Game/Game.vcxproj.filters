@@ -59,6 +59,9 @@
     <ClInclude Include="GIS\GISManager.h">
       <Filter>GIS</Filter>
     </ClInclude>
+    <ClInclude Include="GameStates\CityGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="GIS\GISManager.cpp">
       <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\CityGameState.cpp">
+      <Filter>GameStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

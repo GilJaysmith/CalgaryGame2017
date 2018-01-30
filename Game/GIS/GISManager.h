@@ -7,5 +7,9 @@ namespace GIS
 
 	void Terminate();
 
+	void Render();
+
 	void LoadCity(const std::string& city);
+
+	void UnloadCity();
 }

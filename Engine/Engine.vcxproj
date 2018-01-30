@@ -29,6 +29,7 @@
     <ClCompile Include="Entities\Message.cpp" />
     <ClCompile Include="GameStates\GameState.cpp" />
     <ClCompile Include="GameStates\GameStateManager.cpp" />
+    <ClCompile Include="GameStates\SplashScreenGameState.cpp" />
     <ClCompile Include="GameStates\Time.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="Entities\MessageTypes.h" />
     <ClInclude Include="GameStates\GameState.h" />
     <ClInclude Include="GameStates\GameStateManager.h" />
+    <ClInclude Include="GameStates\SplashScreenGameState.h" />
     <ClInclude Include="GameStates\Time.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Logging\Logging.h" />

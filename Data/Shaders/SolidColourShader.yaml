@@ -1,0 +1,5 @@
+shaders:
+    - { type: vertex, shader: SolidColourVertexShader }
+    - { type: fragment, shader: SolidColourFragmentShader }
+ 
+outputs: [ outColor ]

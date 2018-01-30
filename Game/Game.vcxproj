@@ -176,6 +176,7 @@
     <ClInclude Include="Entities\PowerupComponent.h" />
     <ClInclude Include="Entities\WorldComponent.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameStates\CityGameState.h" />
     <ClInclude Include="GameStates\FrontEndState.h" />
     <ClInclude Include="GameStates\InGameState.h" />
     <ClInclude Include="GameStates\TestGameState.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Entities\PowerupComponent.cpp" />
     <ClCompile Include="Entities\WorldComponent.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameStates\CityGameState.cpp" />
     <ClCompile Include="GameStates\FrontEndState.cpp" />
     <ClCompile Include="GameStates\InGameState.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp" />
