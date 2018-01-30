@@ -13,6 +13,8 @@ namespace Renderer
 
 	void CreateWindow(unsigned int width, unsigned int height, bool full_screen);
 
+	void GetWindowDimensions(unsigned int& width, unsigned int& height, bool& full_screen);
+
 	void DestroyWindow();
 
 	GLFWwindow* GetWindow();

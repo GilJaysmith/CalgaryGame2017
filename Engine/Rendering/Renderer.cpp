@@ -35,9 +35,18 @@ namespace Renderer
 
 	GLFWwindow* s_Window = nullptr;
 
+	unsigned int s_Width;
+	unsigned int s_Height;
+	bool s_FullScreen;
+
 	void CreateWindow(unsigned int width, unsigned int height, bool full_screen)
 	{
 		DestroyWindow();
+
+		s_Width = width;
+		s_Height = height;
+		s_FullScreen = full_screen;
+
 		if (full_screen)
 		{
 			s_Window = glfwCreateWindow(width, height, "OpenGL", glfwGetPrimaryMonitor(), nullptr); // Fullscreen
@@ -53,6 +62,13 @@ namespace Renderer
 
 		glewExperimental = GL_TRUE;
 		glewInit();
+	}
+
+	void GetWindowDimensions(unsigned int& width, unsigned int& height, bool& full_screen)
+	{
+		width = s_Width;
+		height = s_Height;
+		full_screen = s_FullScreen;
 	}
 
 	void DestroyWindow()
