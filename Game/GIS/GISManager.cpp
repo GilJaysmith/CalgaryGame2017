@@ -33,22 +33,23 @@ namespace GIS
 	double y_centre;
 	std::vector<Building> s_Buildings;
 
-	void GenerateMesh(std::vector<SHPObject*> objects)
+	void GenerateMesh(const std::vector<SHPObject*>& objects, const std::vector<float>& heights, bool is_buildings)
 	{
 		Building building;
 
 		// Convert building verts to worldspace floorverts/roofverts.
 		std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
-		for (auto object : objects)
+		assert(objects.size() == heights.size());
+		for (int o = 0; o < objects.size(); ++o)
 		{
-			if (object->nVertices)
+			SHPObject* object = objects[o];
+			float height = heights[o];
+			if (object && object->nParts >= 1)
 			{
 				std::vector<glm::vec3> m_FloorVerts;
 				std::vector<glm::vec3> m_RoofVerts;
 
 				assert(object->nParts == 1);
-
-				float height = 3.0f + 3.f * rand() / (float)RAND_MAX;
 
 				std::vector<TPPLPoint> roof_points;
 
@@ -57,12 +58,25 @@ namespace GIS
 					// This is the longitude and latitude based around the centre of the map.
 					// x and y are in longitude and latitude, so we will use -y as our z
 					// See https://en.wikipedia.org/wiki/Geographic_coordinate_system#Expressing_latitude_and_longitude_as_linear_units for conversion.
-					double x = object->padfX[i] - x_centre;
-					double y = object->padfY[i] - y_centre;
-					x *= 111320;
-					y *= 110574;
-					float x_f = x / 10.0f;
-					float z_f = -y / 10.0f;
+
+					float x_f, z_f;
+					if (is_buildings)
+					{
+						double x = object->padfX[i] - x_centre;
+						double y = object->padfY[i] - y_centre;
+						x *= 111320;
+						y *= 110574;
+						x_f = (float)(x / 10.0);
+						z_f = (float)(-y / 10.0);
+					}
+					else
+					{
+						double x = object->padfX[i] - x_centre;
+						double y = object->padfY[i] - y_centre;
+						x_f = (float)(x / 10.0);
+						z_f = (float)(-y / 10.0);
+					}
+
 					m_FloorVerts.push_back(glm::vec3(x_f, 0.0f, z_f));
 					m_RoofVerts.push_back(glm::vec3(x_f, height, z_f));
 					
@@ -73,9 +87,14 @@ namespace GIS
 					roof_points.push_back(roof_point);
 				}
 
-				// Close the loop.
-				m_FloorVerts.push_back(m_FloorVerts[0]);
-				m_RoofVerts.push_back(m_RoofVerts[0]);
+				//// Close the loop if necessary.
+				//glm::vec3 first_vert = m_FloorVerts[0];
+				//glm::vec3 last_vert = m_FloorVerts.back();
+				//if (first_vert != last_vert)
+				//{
+				//	m_FloorVerts.push_back(m_FloorVerts[0]);
+				//	m_RoofVerts.push_back(m_RoofVerts[0]);
+				//}
 
 				// Make poly describing roof.
 				TPPLPoly roof_poly;
@@ -89,9 +108,9 @@ namespace GIS
 				// Triangulate roof poly.
 				std::list<TPPLPoly> roof_triangles;
 				TPPLPartition triangulator;
-				int triangulation_successful = triangulator.Triangulate_EC(&roof_poly, &roof_triangles);
-
-				if (triangulation_successful == 1 && roof_triangles.size() > 0)
+				//int triangulation_successful = triangulator.Triangulate_EC(&roof_poly, &roof_triangles);
+				int triangulation_successful = 1;
+				if (triangulation_successful == 1)
 				{
 					// Make vert stream for all the faces in the object.
 					glm::vec3 tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
@@ -106,18 +125,23 @@ namespace GIS
 					}
 
 					// Add verts for roof triangles, with new colour.
-					glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-					for (auto triangle : roof_triangles)
+					if (false)
 					{
-						assert(triangle.GetNumPoints() == 3);
-						vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
-						vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
-						vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
+						glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+						for (auto triangle : roof_triangles)
+						{
+							assert(triangle.GetNumPoints() == 3);
+							vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
+							vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
+							vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
+						}
 					}
 				}
 				else
 				{
-					Logging::Log("GIS", "Couldn't triangulate roof - skipping building!");
+					std::stringstream str;
+					str << "Couldn't triangulate roof - skipping building " << o;
+					Logging::Log("GIS", str.str());
 				}
 			}
 		}
@@ -181,75 +205,94 @@ namespace GIS
 	{
 		s_ShaderProgram = ShaderManager::LoadProgram("SolidColourShader");
 
-		std::string city_path = "Data/Shapefiles/" + city + "/buildings.shp";
-		SHPHandle shape_file = SHPOpen(city_path.c_str(), "r");
-
-		int num_entities;
-		int shape_type;
-		double min_bound[4];
-		double max_bound[4];
-		SHPGetInfo(shape_file, &num_entities, &shape_type, min_bound, max_bound);
-		x_centre = (max_bound[0] + min_bound[0]) / 2.0;
-		y_centre = (max_bound[1] + min_bound[1]) / 2.0;
-
-		const int NUM_BUILDINGS_IN_BLOCK = 1000;
-		for (int i = 0; i < shape_file->nRecords; i+= NUM_BUILDINGS_IN_BLOCK)
+		if (false)
 		{
-			std::vector<SHPObject*> objects;
-			for (int j = 0; j < NUM_BUILDINGS_IN_BLOCK; j++)
+			std::string city_path = "Data/Shapefiles/" + city + "/buildings.shp";
+			SHPHandle shape_file = SHPOpen(city_path.c_str(), "r");
+			int num_entities;
+			int shape_type;
+			double min_bound[4];
+			double max_bound[4];
+			SHPGetInfo(shape_file, &num_entities, &shape_type, min_bound, max_bound);
+			x_centre = (max_bound[0] + min_bound[0]) / 2.0;
+			y_centre = (max_bound[1] + min_bound[1]) / 2.0;
+
+			const int NUM_BUILDINGS_IN_BLOCK = 1000;
+			for (int i = 0; i < shape_file->nRecords; i += NUM_BUILDINGS_IN_BLOCK)
 			{
-				if (i + j == shape_file->nRecords)
+				std::vector<SHPObject*> objects;
+				std::vector<float> heights;
+				for (int j = 0; j < NUM_BUILDINGS_IN_BLOCK; j++)
 				{
-					break;
+					if (i + j == shape_file->nRecords)
+					{
+						break;
+					}
+					SHPObject* object = SHPReadObject(shape_file, i + j);
+					objects.push_back(object);
+					float height = 3.0f + 3.f * rand() / (float)RAND_MAX;
+					heights.push_back(height);
 				}
-				SHPObject* object = SHPReadObject(shape_file, i + j);
-				objects.push_back(object);
+				GenerateMesh(objects, heights, true);
+				for (auto object : objects)
+				{
+					SHPDestroyObject(object);
+				}
+
+				std::stringstream str;
+				str << "Creating buildings... block " << i;
+				Logging::Log("GIS", str.str());
 			}
 
-			GenerateMesh(objects);
-			for (auto object : objects)
-			{
-				SHPDestroyObject(object);
-			}
-
-			std::stringstream str;
-			str << "Creating buildings... block " << i;
-			Logging::Log("GIS", str.str());
+			SHPClose(shape_file);
 		}
 
-		SHPClose(shape_file);
+		if (true)
+		{
+			// Contours.
+			std::string contours_path = "Data/Shapefiles/" + city + "/2-metre_contour_lines.shp";
+			SHPHandle contours_file = SHPOpen(contours_path.c_str(), "r");
+			std::string contours_dbf = "Data/Shapefiles/" + city + "/2-metre_contour_lines.dbf";
+			DBFHandle dbf_file = DBFOpen(contours_dbf.c_str(), "r");
 
-		//// Contours.
-		//std::string contours_path = "Data/Shapefiles/" + city + "/10-metre_contour_lines.shp";
-		//SHPHandle contours_file = SHPOpen(contours_path.c_str(), "r");
-		//SHPGetInfo(contours_file, &num_entities, &shape_type, min_bound, max_bound);
-		//x_centre = (max_bound[0] + min_bound[0]) / 2.0;
-		//y_centre = (max_bound[1] + min_bound[1]) / 2.0;
-		//for (int i = 0; i < contours_file->nRecords; ++i)
-		//{
-		//	SHPObject* object = SHPReadObject(contours_file, i);
-		//	// Looks like we just subtract the centre and we're done?
-		//	double x = object->padfX[0] - x_centre;
-		//	double y = object->padfY[0] - y_centre;
-		//	std::stringstream str;
-		//	str << "Contour " << i << " x " << x << " y " << y;
-		//	Logging::Log("GIS", str.str());
-		//}
-		//SHPClose(contours_file);
+			int num_entities;
+			int shape_type;
+			double min_bound[4];
+			double max_bound[4];
+			SHPGetInfo(contours_file, &num_entities, &shape_type, min_bound, max_bound);
+			x_centre = (max_bound[0] + min_bound[0]) / 2.0;
+			y_centre = (max_bound[1] + min_bound[1]) / 2.0;
 
-		//// Database - to get elevations.
-		//std::string contours_dbf = "Data/Shapefiles/" + city + "/10-metre_contour_lines.dbf";
-		//DBFHandle dbf_file = DBFOpen(contours_dbf.c_str(), "r");
-		//int num_fields = DBFGetFieldCount(dbf_file);
-		//for (int i = 0; i < num_fields; ++i)
-		//{
-		//	char field_name[256];
-		//	int width;
-		//	int decimals;
-		//	DBFGetFieldInfo(dbf_file, i, field_name, &width, &decimals);
-		//	int a = 9;
-		//}
-		//DBFClose(dbf_file);
+			const int NUM_BUILDINGS_IN_BLOCK = 1000;
+			for (int i = 0; i < contours_file->nRecords; i += NUM_BUILDINGS_IN_BLOCK)
+			{
+				std::vector<SHPObject*> objects;
+				std::vector<float> heights;
+				for (int j = 0; j < NUM_BUILDINGS_IN_BLOCK; j++)
+				{
+					if (i + j == contours_file->nRecords)
+					{
+						break;
+					}
+					SHPObject* object = SHPReadObject(contours_file, i + j);
+					objects.push_back(object);
+					double elevation = DBFReadDoubleAttribute(dbf_file, i + j, 0);
+					heights.push_back(elevation);
+				}
+				GenerateMesh(objects, heights, false);
+				for (auto object : objects)
+				{
+					SHPDestroyObject(object);
+				}
+
+				std::stringstream str;
+				str << "Creating contours... block " << i;
+				Logging::Log("GIS", str.str());
+			}
+
+			SHPClose(contours_file);
+			DBFClose(dbf_file);
+		}
 	}
 
 	void UnloadCity()
