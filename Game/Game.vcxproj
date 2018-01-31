@@ -181,6 +181,7 @@
     <ClInclude Include="GameStates\InGameState.h" />
     <ClInclude Include="GameStates\TestGameState.h" />
     <ClInclude Include="GIS\GISManager.h" />
+    <ClInclude Include="GIS\polypartition\polypartition.h" />
     <ClInclude Include="GIS\shapelib\shapefil.h" />
     <ClInclude Include="Pch.h" />
   </ItemGroup>
@@ -196,6 +197,10 @@
     <ClCompile Include="GameStates\InGameState.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp" />
     <ClCompile Include="GIS\GISManager.cpp" />
+    <ClCompile Include="GIS\polypartition\polypartition.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="GIS\shapelib\dbfadd.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

@@ -44,6 +44,8 @@ namespace GIS
 				glm::vec3 tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
 				std::vector<glm::vec3> m_FloorVerts;
 				std::vector<glm::vec3> m_RoofVerts;
+				assert(object->nParts == 1);
+				float height = 5.0f + 10.f * rand() / (float)RAND_MAX;
 				for (int i = 0; i < object->nVertices; ++i)
 				{
 					// This is the longitude and latitude based around the centre of the map.
@@ -56,7 +58,7 @@ namespace GIS
 					float x_f = x / 10.0f;
 					float z_f = -y / 10.0f;
 					m_FloorVerts.push_back(glm::vec3(x_f, 0.0f, z_f));
-					m_RoofVerts.push_back(glm::vec3(x_f, 10.f, z_f));
+					m_RoofVerts.push_back(glm::vec3(x_f, height, z_f));
 				}
 				m_FloorVerts.push_back(m_FloorVerts[0]);
 				m_RoofVerts.push_back(m_RoofVerts[0]);
@@ -163,9 +165,45 @@ namespace GIS
 			{
 				SHPDestroyObject(object);
 			}
+
+			std::stringstream str;
+			str << "Creating buildings... " << i;
+			Logging::Log("GIS", str.str());
 		}
 
 		SHPClose(shape_file);
+
+		// Contours.
+		std::string contours_path = "Data/Shapefiles/" + city + "/10-metre_contour_lines.shp";
+		SHPHandle contours_file = SHPOpen(contours_path.c_str(), "r");
+		SHPGetInfo(contours_file, &num_entities, &shape_type, min_bound, max_bound);
+		x_centre = (max_bound[0] + min_bound[0]) / 2.0;
+		y_centre = (max_bound[1] + min_bound[1]) / 2.0;
+		for (int i = 0; i < contours_file->nRecords; ++i)
+		{
+			SHPObject* object = SHPReadObject(contours_file, i);
+			// Looks like we just subtract the centre and we're done?
+			double x = object->padfX[0] - x_centre;
+			double y = object->padfY[0] - y_centre;
+			std::stringstream str;
+			str << "Contour " << i << " x " << x << " y " << y;
+			Logging::Log("GIS", str.str());
+		}
+		SHPClose(contours_file);
+
+		// Database - to get elevations.
+		std::string contours_dbf = "Data/Shapefiles/" + city + "/10-metre_contour_lines.dbf";
+		DBFHandle dbf_file = DBFOpen(contours_dbf.c_str(), "r");
+		int num_fields = DBFGetFieldCount(dbf_file);
+		for (int i = 0; i < num_fields; ++i)
+		{
+			char field_name[256];
+			int width;
+			int decimals;
+			DBFGetFieldInfo(dbf_file, i, field_name, &width, &decimals);
+			int a = 9;
+		}
+		DBFClose(dbf_file);
 	}
 
 	void UnloadCity()

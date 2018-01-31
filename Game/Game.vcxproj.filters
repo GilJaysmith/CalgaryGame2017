@@ -23,6 +23,9 @@
     <Filter Include="GIS\shapelib\unused">
       <UniqueIdentifier>{7f5e19a6-8b8e-43d5-8e86-b4a6cda3186f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GIS\polypartition">
+      <UniqueIdentifier>{3496f01d-9a6c-4114-936c-fb7979bf030a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\BuildingComponent.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="GameStates\CityGameState.h">
       <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\polypartition\polypartition.h">
+      <Filter>GIS\polypartition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="GameStates\CityGameState.cpp">
       <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\polypartition\polypartition.cpp">
+      <Filter>GIS\polypartition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
