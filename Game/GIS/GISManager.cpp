@@ -113,7 +113,8 @@ namespace GIS
 				if (triangulation_successful == 1)
 				{
 					// Make vert stream for all the faces in the object.
-					glm::vec3 tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+					float c = (100 + 1.5 * height) / 256.0f;
+					glm::vec3 tint = glm::vec3(c, c, c);
 					for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
 					{
 						vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
