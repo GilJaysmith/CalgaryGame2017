@@ -37,13 +37,15 @@ namespace GIS
 	{
 		Building building;
 
+		double OVERALL_SCALE = 10.0;
+
 		// Convert building verts to worldspace floorverts/roofverts.
 		std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
 		assert(objects.size() == heights.size());
 		for (int o = 0; o < objects.size(); ++o)
 		{
 			SHPObject* object = objects[o];
-			float height = heights[o];
+			float height = heights[o] / OVERALL_SCALE;
 			if (object && object->nParts >= 1)
 			{
 				std::vector<glm::vec3> m_FloorVerts;
@@ -66,15 +68,15 @@ namespace GIS
 						double y = object->padfY[i] - y_centre;
 						x *= 111320;
 						y *= 110574;
-						x_f = (float)(x / 10.0);
-						z_f = (float)(-y / 10.0);
+						x_f = (float)(x / OVERALL_SCALE);
+						z_f = (float)(-y / OVERALL_SCALE);
 					}
 					else
 					{
 						double x = object->padfX[i] - x_centre;
 						double y = object->padfY[i] - y_centre;
-						x_f = (float)(x / 10.0);
-						z_f = (float)(-y / 10.0);
+						x_f = (float)(x / OVERALL_SCALE);
+						z_f = (float)(-y / OVERALL_SCALE);
 					}
 
 					m_FloorVerts.push_back(glm::vec3(x_f, 0.0f, z_f));
@@ -113,7 +115,7 @@ namespace GIS
 				if (triangulation_successful == 1)
 				{
 					// Make vert stream for all the faces in the object.
-					float c = (100 + 1.5 * height) / 256.0f;
+					float c = (96 + 20 * height) / 256.0f;
 					glm::vec3 tint = glm::vec3(c, c, c);
 					for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
 					{
