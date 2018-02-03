@@ -50,6 +50,7 @@
     <ClCompile Include="Rendering\Renderable.cpp" />
     <ClCompile Include="Rendering\RenderComponent.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
+    <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp" />
     <ClCompile Include="Rendering\ShaderManager.cpp" />
     <ClCompile Include="Rendering\TextureManager.cpp" />
   </ItemGroup>
@@ -80,6 +81,7 @@
     <ClInclude Include="Rendering\Renderable.h" />
     <ClInclude Include="Rendering\RenderComponent.h" />
     <ClInclude Include="Rendering\Renderer.h" />
+    <ClInclude Include="Rendering\ScreenSpaceRenderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
   </ItemGroup>

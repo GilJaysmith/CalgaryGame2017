@@ -4,6 +4,7 @@
 #include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
 
 #include <set>
@@ -17,27 +18,20 @@ namespace Renderer
 		Logging::Log("GLFW", s.str());
 	}
 
-	void Initialize()
-	{
-		glfwSetErrorCallback(GLFWErrorFunction);
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	}
-
-	void Terminate()
-	{
-		glfwTerminate();
-	}
-
 	GLFWwindow* s_Window = nullptr;
 
 	unsigned int s_Width;
 	unsigned int s_Height;
 	bool s_FullScreen;
+
+	void DestroyWindow()
+	{
+		if (s_Window)
+		{
+			glfwDestroyWindow(s_Window);
+			s_Window = nullptr;
+		}
+	}
 
 	void CreateWindow(unsigned int width, unsigned int height, bool full_screen)
 	{
@@ -64,20 +58,32 @@ namespace Renderer
 		glewInit();
 	}
 
-	void GetWindowDimensions(unsigned int& width, unsigned int& height, bool& full_screen)
+	void Initialize()
+	{
+		glfwSetErrorCallback(GLFWErrorFunction);
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+		int x = 800;
+		int y = 600;
+		bool full_screen = false;
+		CreateWindow(x, y, full_screen);
+	}
+
+	void Terminate()
+	{
+		DestroyWindow();
+		glfwTerminate();
+	}
+
+	void GetWindowDimensions(unsigned int& width, unsigned int& height)
 	{
 		width = s_Width;
 		height = s_Height;
-		full_screen = s_FullScreen;
-	}
-
-	void DestroyWindow()
-	{
-		if (s_Window)
-		{
-			glfwDestroyWindow(s_Window);
-			s_Window = nullptr;
-		}
 	}
 
 	GLFWwindow* GetWindow()
@@ -122,6 +128,8 @@ namespace Renderer
 				}
 			}
 		}
+
+		ScreenSpaceRenderer::Render();
 	}
 
 	void RegisterRenderable(Renderable* renderable)

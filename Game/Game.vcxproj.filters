@@ -163,5 +163,23 @@
     <None Include="..\Data\Shaders\TestShader.yaml">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Data\Shaders\SolidColourFragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\SolidColourShader.yaml">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\SolidColourVertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\ScreenSpaceFragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\ScreenSpaceShader.yaml">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

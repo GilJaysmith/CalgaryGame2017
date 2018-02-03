@@ -384,6 +384,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Data\Shaders\ScreenSpaceFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\ScreenSpaceShader.yaml" />
+    <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl" />
+    <None Include="..\Data\Shaders\SolidColourFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\SolidColourShader.yaml" />
+    <None Include="..\Data\Shaders\SolidColourVertexShader.glsl" />
     <None Include="..\Data\Shaders\TestFragmentShader.glsl" />
     <None Include="..\Data\Shaders\TestShader.yaml" />
     <None Include="..\Data\Shaders\TestVertexShader.glsl" />
