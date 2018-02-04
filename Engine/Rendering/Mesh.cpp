@@ -64,7 +64,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	{
 		vertices.push_back(vert.as<std::vector<float>>());
 	}
-	m_NumTriangles = vertices.size();
+	m_NumTriangles = (unsigned int)vertices.size();
 
 	float* vert_data = (float*) MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * vertices[0].size());
 	float* v = vert_data;
@@ -85,7 +85,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	int vert_data_size = vertices.size() * vertices[0].size() * sizeof(float);
+	int vert_data_size = (int)(vertices.size() * vertices[0].size() * sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 
 	MemDelete(vert_data);

@@ -32,7 +32,7 @@ namespace GIS
 
 	std::vector<Building> s_Buildings;
 
-	void GenerateMesh(const std::vector<glm::dvec3>& points, float height, const glm::vec3& tint)
+	void GenerateMesh(const std::vector<glm::dvec3>& points, double height, const glm::vec3& tint)
 	{
 		Building building;
 
@@ -71,7 +71,7 @@ namespace GIS
 
 		// Make poly describing roof.
 		TPPLPoly roof_poly;
-		roof_poly.Init(roof_points.size());
+		roof_poly.Init((long)roof_points.size());
 		for (int i = 0; i < roof_points.size(); ++i)
 		{
 			roof_poly[i] = roof_points[i];
@@ -115,7 +115,7 @@ namespace GIS
 		glBindVertexArray(building.vao);
 
 		// Vertices
-		building.num_triangles = vertices.size();
+		building.num_triangles = (int)vertices.size();
 
 		float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * 6);
 		float* v = vert_data;
@@ -135,7 +135,7 @@ namespace GIS
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		int vert_data_size = vertices.size() * 6 * sizeof(float);
+		int vert_data_size = (int)(vertices.size() * 6 * sizeof(float));
 		glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 
 		MemDelete(vert_data);

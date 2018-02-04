@@ -113,6 +113,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile>Game/Pch.h</PrecompiledHeaderFile>
       <MinimalRebuild>false</MinimalRebuild>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,6 +159,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeaderFile>Game/Pch.h</PrecompiledHeaderFile>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
