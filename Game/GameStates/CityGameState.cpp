@@ -1,6 +1,7 @@
 #include "Game/Pch.h"
 
 #include "Engine/Cameras/DebugCamera.h"
+#include "Engine/Entities/Entity.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
@@ -20,6 +21,8 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
+	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+
 	GIS::LoadCity("Vancouver");
 
 	unsigned int width, height;

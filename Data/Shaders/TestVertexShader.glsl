@@ -1,10 +1,10 @@
 #version 150 core
 
 in vec3 position;
-in vec3 color;
+in vec3 colour;
 in vec2 texcoord;
 
-out vec3 Color;
+out vec3 Colour;
 out vec2 Texcoord;
 
 uniform mat4 model;
@@ -14,7 +14,7 @@ uniform float time;
 
 void main()
 {
-	Color = color;
+	Colour = colour;
 	Texcoord = vec2(texcoord.x, texcoord.y);
 	gl_Position = proj * view * model * vec4(position, 1.0);
 }

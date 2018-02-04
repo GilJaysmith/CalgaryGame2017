@@ -38,6 +38,9 @@ namespace GIS
 
 		double OVERALL_SCALE = 10.0;
 
+		height /= OVERALL_SCALE;
+		height *= 2;
+
 		// Convert building verts to worldspace floorverts/roofverts.
 		std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
 
@@ -49,7 +52,7 @@ namespace GIS
 		for (glm::dvec3 point : points)
 		{
 			m_FloorVerts.push_back(glm::vec3(float(point.x) / OVERALL_SCALE, 0.0f, float(point.z) / OVERALL_SCALE));
-			m_RoofVerts.push_back(glm::vec3(float(point.x) / OVERALL_SCALE, height / OVERALL_SCALE, float(point.z) / OVERALL_SCALE));
+			m_RoofVerts.push_back(glm::vec3(float(point.x) / OVERALL_SCALE, height, float(point.z) / OVERALL_SCALE));
 					
 			// Save out a point for the roof point.
 			TPPLPoint roof_point;
@@ -79,7 +82,6 @@ namespace GIS
 		std::list<TPPLPoly> roof_triangles;
 		TPPLPartition triangulator;
 		int triangulation_successful = triangulator.Triangulate_MONO(&roof_poly, &roof_triangles);
-		//int triangulation_successful = 1;
 		if (triangulation_successful == 1)
 		{
 			// Make vert stream for all the faces in the object.
@@ -94,17 +96,14 @@ namespace GIS
 			}
 
 			// Add verts for roof triangles, with new colour.
-			if (true)
+			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+			//glm::vec3 roof_tint = tint;
+			for (auto triangle : roof_triangles)
 			{
-//				glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-				glm::vec3 roof_tint = tint;
-				for (auto triangle : roof_triangles)
-				{
-					assert(triangle.GetNumPoints() == 3);
-					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
-					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
-					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
-				}
+				assert(triangle.GetNumPoints() == 3);
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
 			}
 		}
 		else
@@ -256,7 +255,7 @@ namespace GIS
 					double y = object->padfY[i] - y_centre;
 					contour.points.push_back(glm::dvec3(x, elevation, -y));
 				}
-				if (contour.points.size() >= 2)
+				if (contour.points.size() >= 2 && elevation >= 0.5f)
 				{
 					contours.push_back(contour);
 				}

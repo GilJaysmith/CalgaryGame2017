@@ -2,10 +2,10 @@
 
 in vec3 Colour;
 
-out vec4 outColor;
+out vec4 outColour;
 
 void main()
 {
 	// Solid colour
-	outColor = vec4(Colour, 1.0f);
+	outColour = vec4(Colour, 1.0f);
 }

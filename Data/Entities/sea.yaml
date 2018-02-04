@@ -1,0 +1,8 @@
+--- 
+behaviours: 
+  render: 
+    mesh: sea
+  physics:
+    shape: plane
+    vector: [0.0, 1.0, 0.0, 0.0]
+    material: floor
