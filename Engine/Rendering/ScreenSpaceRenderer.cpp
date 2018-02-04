@@ -21,11 +21,15 @@ namespace ScreenSpaceRenderer
 	}
 
 	std::map<GLuint, GLuint> s_ActiveSprites;
+	std::map<GLuint, glm::vec4> s_Tints;
 
-	GLuint AddSprite(int x, int y, GLuint texture)
+	GLuint AddSprite(int x, int y, GLuint texture, const glm::vec4& tint)
 	{
 		unsigned int width, height;
 		Renderer::GetWindowDimensions(width, height);
+
+		float xf = x / (float)width;
+		float yf = 1.0f - y / (float)height;
 
 		GLuint vao;
 		glGenVertexArrays(1, &vao);
@@ -48,33 +52,42 @@ namespace ScreenSpaceRenderer
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vert_data), vert_data, GL_STATIC_DRAW);
 
 		GLint posAttrib = glGetAttribLocation(s_ScreenSpaceShader, "position");
-		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(posAttrib);
 		GLint tcAttrib = glGetAttribLocation(s_ScreenSpaceShader, "texcoord");
-		glVertexAttribPointer(tcAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+		glVertexAttribPointer(tcAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(tcAttrib);
 
-		//glBindVertexArray(0);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 
 		s_ActiveSprites[vao] = texture;
+		s_Tints[vao] = tint;
 		return vao;
 	}
 
 	void RemoveSprite(GLuint sprite)
 	{
-		// TODO: release releases
+		// TODO: release GL resources?
 		s_ActiveSprites.erase(sprite);
+	}
+
+	void SetTint(GLuint sprite, const glm::vec4& tint)
+	{
+		s_Tints[sprite] = tint;
 	}
 
 	void Render()
 	{
-		glUseProgram(s_ScreenSpaceShader);
+		ShaderManager::SetActiveShader(s_ScreenSpaceShader);
+		GLint uniTint = glGetUniformLocation(s_ScreenSpaceShader, "tint");
 		glDisable(GL_DEPTH);
 		for (auto vao : s_ActiveSprites)
 		{
-			glActiveTexture(0);
+			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, vao.second);
+
+			glUniform4fv(uniTint, 1, glm::value_ptr(s_Tints[vao.first]));
 
 			glBindVertexArray(vao.first);
 			glDrawArrays(GL_TRIANGLES, 0, 6);

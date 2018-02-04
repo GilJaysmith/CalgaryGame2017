@@ -7,4 +7,5 @@ namespace TextureManager
 	void Terminate();
 
 	GLuint LoadTexture(const std::string& filename);
+	void UnloadTexture(GLuint texture);
 }

@@ -34,6 +34,26 @@ Time& Time::operator -=(const Time& other_time)
 	return *this;
 }
 
+bool Time::operator <(const Time& other_time)
+{
+	return m_TimeMS < other_time.m_TimeMS;
+}
+
+bool Time::operator >(const Time& other_time)
+{
+	return m_TimeMS > other_time.m_TimeMS;
+}
+
+Time operator +(const Time& time1, const Time& time2)
+{
+	return Time::fromMilliseconds(time1.m_TimeMS + time2.m_TimeMS);
+}
+
+Time operator -(const Time& time1, const Time& time2)
+{
+	return Time::fromMilliseconds(time1.m_TimeMS - time2.m_TimeMS);
+}
+
 Time::Time(float milliseconds)
 	: m_TimeMS(milliseconds)
 {

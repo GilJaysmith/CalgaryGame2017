@@ -20,27 +20,25 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-//	GIS::LoadCity("Vancouver");
+	GIS::LoadCity("Vancouver");
 
 	unsigned int width, height;
 	Renderer::GetWindowDimensions(width, height);
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), width / (float)height, 1.0f, 10000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), width / (float)height, 1.0f, 15000.0f);
 	ShaderManager::SetUniform4fv("proj", proj);
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
-
-	GLuint texture = TextureManager::LoadTexture("intro1.png");
-	ScreenSpaceRenderer::AddSprite(0, 0, texture);
 }
 
-void CityGameState::OnUpdate(const Time& frame_time)
+bool CityGameState::OnUpdate(const Time& frame_time)
 {
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 
 	GIS::Render();
+	return true;
 }
 
 void CityGameState::OnExit()

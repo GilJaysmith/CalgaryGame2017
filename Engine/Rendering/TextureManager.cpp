@@ -46,4 +46,9 @@ namespace TextureManager
 
 		return texture_id;
 	}
+
+	void UnloadTexture(GLuint texture)
+	{
+		glDeleteTextures(1, &texture);
+	}
 }

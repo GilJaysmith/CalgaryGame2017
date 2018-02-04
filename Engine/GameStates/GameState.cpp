@@ -18,9 +18,10 @@ void GameState::OnEnter()
 
 }
 
-void GameState::OnUpdate(const Time& frame_time)
+bool GameState::OnUpdate(const Time& frame_time)
 {
 	m_TotalTimeInState += frame_time;
+	return true;
 }
 
 void GameState::OnExit()

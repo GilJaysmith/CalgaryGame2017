@@ -11,7 +11,7 @@ public:
 	~GameState();
 
 	virtual void OnEnter() = 0;
-	virtual void OnUpdate(const Time& frame_time) = 0;
+	virtual bool OnUpdate(const Time& frame_time) = 0;
 	virtual void OnExit() = 0;
 
 protected:

@@ -45,7 +45,7 @@ void TestGameState::OnEnter()
 	m_UpdateTime = false;
 }
 
-void TestGameState::OnUpdate(const Time& frame_time)
+bool TestGameState::OnUpdate(const Time& frame_time)
 {
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
@@ -63,6 +63,7 @@ void TestGameState::OnUpdate(const Time& frame_time)
 	{
 		m_Time += 0.01f;
 	}
+	return true;
 }
 
 void TestGameState::OnExit()

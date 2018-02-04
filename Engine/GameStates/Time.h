@@ -15,6 +15,11 @@ public:
 
 	Time& operator +=(const Time& other_time);
 	Time& operator -=(const Time& other_time);
+	bool operator <(const Time& other_time);
+	bool operator >(const Time& other_time);
+
+	friend Time operator +(const Time& time1, const Time& time2);
+	friend Time operator -(const Time& time1, const Time& time2);
 
 protected:
 	Time(float milliseconds);
@@ -22,3 +27,6 @@ protected:
 protected:
 	float m_TimeMS;
 };
+
+Time operator +(const Time& time1, const Time& time2);
+Time operator -(const Time& time1, const Time& time2);
