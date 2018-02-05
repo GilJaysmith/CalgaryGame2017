@@ -18,6 +18,6 @@ protected:
 	std::string m_MeshName;
 	GLuint m_Vao;
 	GLuint m_ShaderProgram;
-	unsigned int m_NumTriangles;
+	unsigned int m_NumVerts;
 	std::map<unsigned int, GLuint> m_Textures;
 };

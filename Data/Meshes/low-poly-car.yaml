@@ -1,0 +1,7 @@
+obj: low-poly-car.obj
+
+attributes:
+    - { name: position, floats: 3 }
+    - { name: colour, floats: 3 }
+	
+shader: SolidColourShader

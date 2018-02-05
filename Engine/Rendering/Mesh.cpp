@@ -6,6 +6,10 @@
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
 
+#include "sdks/assimp/include/Importer.hpp"
+#include "sdks/assimp/include/scene.h"
+#include "sdks/assimp/include/postprocess.h"
+
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 #include <vector>
@@ -26,9 +30,6 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	std::string mesh_filename = "data/meshes/" + filename + ".yaml";
 	YAML::Node node = YAML::LoadFile(mesh_filename);
 
-	// Shaders
-	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
-
 	// Load attribute bindings
 	struct AttributeBinding
 	{
@@ -45,27 +46,35 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		total_floats += ab.num_floats;
 	}
 
-	// Textures
-	unsigned int texture_index = 0;
-	for (auto texture : node["textures"])
-	{
-		auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
-		SetTexture(texture_index, texture_id);
-		++texture_index;
-	}
-
-	glGenVertexArrays(1, &m_Vao);
-	glBindVertexArray(m_Vao);
-
 	// Vertices
 	std::vector<std::vector<float>> vertices;
-	for (auto vert : node["vertices"])
+	if (node["vertices"])
 	{
-		vertices.push_back(vert.as<std::vector<float>>());
+		for (auto vert : node["vertices"])
+		{
+			vertices.push_back(vert.as<std::vector<float>>());
+		}
 	}
-	m_NumTriangles = (unsigned int)vertices.size();
+	else if (node["obj"])
+	{
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile("data/meshes/" + node["obj"].as<std::string>(), aiProcess_Triangulate);
+		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)
+		{
+			const aiMesh* mesh = scene->mMeshes[mesh_idx];
+			for (unsigned int face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
+			{
+				aiFace& face = mesh->mFaces[face_idx];
+			}
+		}
+	}
 
-	float* vert_data = (float*) MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * vertices[0].size());
+	m_NumVerts = (unsigned int)vertices.size();
+	if (!m_NumVerts)
+	{
+		return;
+	}
+	float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * vertices[0].size());
 	float* v = vert_data;
 	for (auto vert : vertices)
 	{
@@ -80,12 +89,27 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		}
 	}
 
+	glGenVertexArrays(1, &m_Vao);
+	glBindVertexArray(m_Vao);
+
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	int vert_data_size = (int)(vertices.size() * vertices[0].size() * sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
+
+	// Shaders
+	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
+
+	// Textures
+	unsigned int texture_index = 0;
+	for (auto texture : node["textures"])
+	{
+		auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
+		SetTexture(texture_index, texture_id);
+		++texture_index;
+	}
 
 	// Apply attribute bindings;
 	int offset = 0;
@@ -131,7 +155,7 @@ void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 	}
 
 	glBindVertexArray(m_Vao);
-	glDrawArrays(GL_TRIANGLES, 0, m_NumTriangles);
+	glDrawArrays(GL_TRIANGLES, 0, m_NumVerts);
 
 
 	ShaderManager::SetActiveShader(0);
