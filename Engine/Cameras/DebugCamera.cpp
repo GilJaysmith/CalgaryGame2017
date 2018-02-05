@@ -101,9 +101,19 @@ void DebugCamera::Update(const Time& frame_time)
 		glm::mat4 transform;
 		transform = glm::translate(transform, m_CameraPos);
 		Entity* pandacube = Entity::CreateEntity("cube", transform);
+		
 		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * 100.0f;
 		Message_PhysicsSetLinearVelocity pslv(linear_velocity);
 		pandacube->OnMessage(&pslv);
+
+		glm::vec3 angular_velocity(
+			((rand() - rand()) / (float)RAND_MAX) * 10.0f, 
+			((rand() - rand()) / (float)RAND_MAX) * 10.0f, 
+			((rand() - rand()) / (float)RAND_MAX) * 10.0f
+			);
+		Message_PhysicsSetAngularVelocity psav(angular_velocity);
+		pandacube->OnMessage(&psav);
+
 		if (Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::HELD)
 		{
 			Message_PhysicsDisableGravity pdg(true);

@@ -8,6 +8,7 @@ namespace PhysicsMessageSubtype
 	enum TYPE
 	{
 		SetLinearVelocity,
+		SetAngularVelocity,
 		DisableGravity,		
 	};
 };
@@ -21,6 +22,17 @@ struct Message_PhysicsSetLinearVelocity : Message
 	{}
 
 	glm::vec3 m_LinearVelocity;
+};
+
+
+struct Message_PhysicsSetAngularVelocity : Message
+{
+	Message_PhysicsSetAngularVelocity(const glm::vec3& angular_velocity)
+		: Message(MessageType::Physics, PhysicsMessageSubtype::SetAngularVelocity)
+		, m_AngularVelocity(angular_velocity)
+	{}
+
+	glm::vec3 m_AngularVelocity;
 };
 
 

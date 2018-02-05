@@ -41,6 +41,16 @@ bool PhysicsComponent::OnMessage(Message* message)
 				}
 				return true;
 			}
+			
+			case PhysicsMessageSubtype::SetAngularVelocity:
+			{
+				Message_PhysicsSetAngularVelocity* psav = dynamic_cast<Message_PhysicsSetAngularVelocity*>(message);
+				if (m_Actor)
+				{
+					m_Actor->setAngularVelocity(physx::PxVec3(psav->m_AngularVelocity.x, psav->m_AngularVelocity.y, psav->m_AngularVelocity.z));
+				}
+				return true;
+			}
 
 			case PhysicsMessageSubtype::DisableGravity:
 			{
@@ -49,6 +59,7 @@ bool PhysicsComponent::OnMessage(Message* message)
 				{
 					m_Actor->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, pdg->m_DisableGravity);
 				}
+				return true;
 			}
 		}
 	}
