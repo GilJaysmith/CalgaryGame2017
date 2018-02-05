@@ -21,6 +21,8 @@ Mesh::~Mesh()
 
 void Mesh::LoadFromYaml(const std::string& filename)
 {
+	m_MeshName = filename;
+
 	std::string mesh_filename = "data/meshes/" + filename + ".yaml";
 	YAML::Node node = YAML::LoadFile(mesh_filename);
 
@@ -34,15 +36,12 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		int num_floats;
 	};
 	std::vector<AttributeBinding> attribute_bindings;
+	int total_floats = 0;
 	for (unsigned int i = 0; i < node["attributes"].size(); ++i)
 	{
 		auto binding = node["attributes"][i];
 		AttributeBinding ab = { binding["name"].as<std::string>(), binding["floats"].as<int>() };
 		attribute_bindings.push_back(ab);
-	}
-	int total_floats = 0;
-	for (auto ab : attribute_bindings)
-	{
 		total_floats += ab.num_floats;
 	}
 
@@ -51,7 +50,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	for (auto texture : node["textures"])
 	{
 		auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
-		SetTexture(GL_TEXTURE0 + texture_index, texture_id);
+		SetTexture(texture_index, texture_id);
 		++texture_index;
 	}
 
@@ -88,20 +87,20 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	int vert_data_size = (int)(vertices.size() * vertices[0].size() * sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 
-	MemDelete(vert_data);
-
-	// Apply attribute bindings
+	// Apply attribute bindings;
 	int offset = 0;
 	for (auto ab : attribute_bindings)
 	{
 		GLint posAttrib = glGetAttribLocation(m_ShaderProgram, ab.name.c_str());
-		glEnableVertexAttribArray(posAttrib);
-		glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
+		if (posAttrib != -1)
+		{
+			glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
+			glEnableVertexAttribArray(posAttrib);
+		}
 		offset += ab.num_floats;
 	}
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	MemDelete(vert_data);
 }
 
 void Mesh::SetTexture(unsigned int texture_index, GLuint texture_id)
@@ -115,17 +114,25 @@ void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 
 	for (auto it : m_Textures)
 	{
-		glActiveTexture(it.first);
+		glActiveTexture(GL_TEXTURE0 + it.first);
 		glBindTexture(GL_TEXTURE_2D, it.second);
 	}
 
 	GLint uniModel = glGetUniformLocation(m_ShaderProgram, "model");
-	glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(world_transform));
+	if (uniModel > -1)
+	{
+		glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(world_transform));
+	}
 
 	GLint uniTint = glGetUniformLocation(m_ShaderProgram, "tint");
-	glUniform4fv(uniTint, 1, glm::value_ptr(tint));
+	if (uniTint > -1)
+	{
+		glUniform4fv(uniTint, 1, glm::value_ptr(tint));
+	}
 
 	glBindVertexArray(m_Vao);
 	glDrawArrays(GL_TRIANGLES, 0, m_NumTriangles);
-	glBindVertexArray(0);
+
+
+	ShaderManager::SetActiveShader(0);
 }

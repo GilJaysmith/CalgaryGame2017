@@ -1,7 +1,10 @@
 #pragma once
 
 
-enum MessageType
+namespace MessageType
 {
-	FIRST_GAME_MESSAGE_TYPE,
+	enum TYPE
+	{
+		Physics,
+	};
 };

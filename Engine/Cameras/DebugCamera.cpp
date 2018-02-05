@@ -1,8 +1,10 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/DebugCamera.h"
+#include "Engine/Entities/Entity.h"
 #include "Engine/GameStates/Time.h"
 #include "Engine/Input/Input.h"
+#include "Engine/Physics/PhysicsMessages.h"
 
 
 DebugCamera::DebugCamera()
@@ -92,4 +94,21 @@ void DebugCamera::Update(const Time& frame_time)
 		m_CameraPos,
 		m_CameraPos + m_CameraFront,
 		m_CameraUp);
+
+	if (Input::GetKeyEvent(GLFW_KEY_SPACE) == Input::PRESSED)
+	{
+		// Fire a pandacube.
+		glm::mat4 transform;
+		transform = glm::translate(transform, m_CameraPos);
+		Entity* pandacube = Entity::CreateEntity("cube", transform);
+		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * 100.0f;
+		Message_PhysicsSetLinearVelocity pslv(linear_velocity);
+		pandacube->OnMessage(&pslv);
+		if (Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::HELD)
+		{
+			Message_PhysicsDisableGravity pdg(true);
+			pandacube->OnMessage(&pdg);
+		}
+
+	}
 }

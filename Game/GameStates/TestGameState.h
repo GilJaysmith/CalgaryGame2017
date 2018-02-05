@@ -17,9 +17,6 @@ public:
 	virtual void OnExit() override;
 
 protected:
-	float m_Time;
-	bool m_UpdateTime;
-
 	DebugCamera* m_Camera;
 
 	Entity* m_Entities[1000];

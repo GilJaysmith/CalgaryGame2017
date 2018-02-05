@@ -142,15 +142,18 @@ namespace GIS
 
 		// Apply attribute bindings
 		GLint posAttrib = glGetAttribLocation(s_ShaderProgram, "position");
-		glEnableVertexAttribArray(posAttrib);
-		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
+		if (posAttrib > -1)
+		{
+			glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
+			glEnableVertexAttribArray(posAttrib);
+		}
 
 		GLint colourAttrib = glGetAttribLocation(s_ShaderProgram, "colour");
-		glEnableVertexAttribArray(colourAttrib);
-		glVertexAttribPointer(colourAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+		if (colourAttrib > -1)
+		{
+			glVertexAttribPointer(colourAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(colourAttrib);
+		}
 
 		s_Buildings.push_back(building);
 	}
@@ -162,7 +165,6 @@ namespace GIS
 		{
 			glBindVertexArray(building.vao);
 			glDrawArrays(GL_TRIANGLES, 0, building.num_triangles);
-			glBindVertexArray(0);
 		}
 	}
 
@@ -387,7 +389,5 @@ namespace GIS
 			glDeleteVertexArrays(1, &building.vao);
 		}
 		s_Buildings.clear();
-
-		glDeleteShader(s_ShaderProgram);
 	}
 }

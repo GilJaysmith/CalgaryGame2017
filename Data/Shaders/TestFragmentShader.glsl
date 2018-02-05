@@ -12,10 +12,10 @@ uniform vec4 tint;
 void main()
 {
 	// All white
-	//outColour = vec4(1.0, 1.0, 1.0, 1.0)
+	//outColour = vec4(1.0, 1.0, 1.0, 1.0);
 	
 	// Sampled from texture
-	outColour = texture(tex, Texcoord) * tint;
+	outColour = texture(tex, Texcoord) * Colour * tint;
 
 	// Based on screen position of pixel
 //	outColour = vec4(0.0, gl_FragCoord.y / 600.0, 0.0, 1.0);

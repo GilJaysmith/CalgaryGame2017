@@ -21,6 +21,7 @@ public:
 public:
 	virtual ~PhysicsComponent();
 
+	bool OnMessage(Message*) override;
 	void OnUpdate(const Time& elapsed_time) override;
 
 protected:

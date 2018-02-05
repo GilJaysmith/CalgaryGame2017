@@ -4,6 +4,7 @@
 #include "Engine/Memory/Memory.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Physics/PhysicsComponent.h"
+#include "Engine/Physics/PhysicsMessages.h"
 
 #include "PxPhysicsAPI.h"
 #include "foundation/PxFoundation.h"
@@ -23,6 +24,35 @@ PhysicsComponent::~PhysicsComponent()
 	{
 		m_StaticActor->release();
 	}
+}
+
+bool PhysicsComponent::OnMessage(Message* message)
+{
+	if (message->GetMessageType() == MessageType::Physics)
+	{
+		switch (message->GetMessageSubtype())
+		{
+			case PhysicsMessageSubtype::SetLinearVelocity:
+			{
+				Message_PhysicsSetLinearVelocity* pslv = dynamic_cast<Message_PhysicsSetLinearVelocity*>(message);
+				if (m_Actor)
+				{
+					m_Actor->setLinearVelocity(physx::PxVec3(pslv->m_LinearVelocity.x, pslv->m_LinearVelocity.y, pslv->m_LinearVelocity.z));
+				}
+				return true;
+			}
+
+			case PhysicsMessageSubtype::DisableGravity:
+			{
+				Message_PhysicsDisableGravity* pdg = dynamic_cast<Message_PhysicsDisableGravity*>(message);
+				if (m_Actor)
+				{
+					m_Actor->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, pdg->m_DisableGravity);
+				}
+			}
+		}
+	}
+	return false;
 }
 
 void PhysicsComponent::OnUpdate(const Time& elapsed_time)

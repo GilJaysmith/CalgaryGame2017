@@ -9,7 +9,15 @@ namespace Input
 
 	void Initialize()
 	{
-		for (int i = GLFW_KEY_UNKNOWN; i <= GLFW_KEY_LAST; ++i)
+		s_KeyEvents[GLFW_KEY_ESCAPE] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_SPACE] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_LEFT_CONTROL] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_LEFT_SHIFT] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_LEFT] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_RIGHT] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_UP] = TYPE::NONE;
+		s_KeyEvents[GLFW_KEY_DOWN] = TYPE::NONE;
+		for (int i = GLFW_KEY_A; i <= GLFW_KEY_Z; ++i)
 		{
 			s_KeyEvents[i] = TYPE::NONE;
 		}
@@ -22,28 +30,29 @@ namespace Input
 
 	void Update(GLFWwindow* window)
 	{
-		for (int i = GLFW_KEY_SPACE; i <= GLFW_KEY_LAST; ++i)
+		for (auto key : s_KeyEvents)
 		{
-			switch (glfwGetKey(window, i))
+			unsigned int key_code = key.first;
+			switch (glfwGetKey(window, key_code))
 			{ 
 				case GLFW_PRESS:
-					if (s_KeyEvents[i] == TYPE::NONE)
+					if (s_KeyEvents[key_code] == TYPE::NONE)
 					{
-						s_KeyEvents[i] = TYPE::PRESSED;
+						s_KeyEvents[key_code] = TYPE::PRESSED;
 					}
-					else if (s_KeyEvents[i] == TYPE::PRESSED)
+					else if (s_KeyEvents[key_code] == TYPE::PRESSED)
 					{
-						s_KeyEvents[i] = TYPE::HELD;
+						s_KeyEvents[key_code] = TYPE::HELD;
 					}
 					break;
 				case GLFW_RELEASE:
-					if (s_KeyEvents[i] == TYPE::PRESSED || s_KeyEvents[i] == HELD)
+					if (s_KeyEvents[key_code] == TYPE::PRESSED || s_KeyEvents[key_code] == HELD)
 					{
-						s_KeyEvents[i] = TYPE::RELEASED;
+						s_KeyEvents[key_code] = TYPE::RELEASED;
 					}
-					else if (s_KeyEvents[i] == TYPE::RELEASED)
+					else if (s_KeyEvents[key_code] == TYPE::RELEASED)
 					{
-						s_KeyEvents[i] = TYPE::NONE;
+						s_KeyEvents[key_code] = TYPE::NONE;
 					}
 					break;
 			}

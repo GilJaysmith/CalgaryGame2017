@@ -25,12 +25,6 @@ void CityGameState::OnEnter()
 
 	GIS::LoadCity("Vancouver");
 
-	unsigned int width, height;
-	Renderer::GetWindowDimensions(width, height);
-
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), width / (float)height, 1.0f, 15000.0f);
-	ShaderManager::SetUniform4fv("proj", proj);
-
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 }

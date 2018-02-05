@@ -76,6 +76,7 @@
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsComponent.h" />
+    <ClInclude Include="Physics\PhysicsMessages.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\MeshManager.h" />
     <ClInclude Include="Rendering\Renderable.h" />

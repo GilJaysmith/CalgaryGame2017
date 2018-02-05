@@ -140,9 +140,12 @@ namespace ShaderManager
 		for (auto shader : s_Programs)
 		{
 			unsigned int shader_program = shader.second;
-			SetActiveShader(shader_program);
 			GLint uniView = glGetUniformLocation(shader_program, uniform_name.c_str());
-			glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(v));
+			if (uniView > -1)
+			{
+				SetActiveShader(shader_program);
+				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(v));
+			}
 		}
 	}
 }

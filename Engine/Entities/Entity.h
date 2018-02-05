@@ -29,6 +29,8 @@ public:
 	void AddTag(const std::string& tag);
 	void RemoveTag(const std::string& tag);
 
+	void SetActive(bool active);
+
 protected:
 	std::vector<Component*> m_Components;
 	glm::mat4 m_Transform;

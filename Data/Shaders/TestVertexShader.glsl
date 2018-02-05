@@ -10,7 +10,6 @@ out vec2 Texcoord;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
-uniform float time;
 
 void main()
 {

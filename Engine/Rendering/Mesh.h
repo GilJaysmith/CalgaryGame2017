@@ -15,6 +15,7 @@ protected:
 
 	void SetTexture(unsigned int texture_index, GLuint texture_id);
 
+	std::string m_MeshName;
 	GLuint m_Vao;
 	GLuint m_ShaderProgram;
 	unsigned int m_NumTriangles;

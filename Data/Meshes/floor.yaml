@@ -12,6 +12,8 @@ attributes:
     - { name: texcoord, floats: 2 }
 	
 shader: TestShader
-    
+
 textures:
-    - Panda_Hugs.png
+    - SquarePanda.jpg
+
+

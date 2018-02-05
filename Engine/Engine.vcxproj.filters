@@ -202,5 +202,8 @@
     <ClInclude Include="Rendering\ScreenSpaceRenderer.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PhysicsMessages.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

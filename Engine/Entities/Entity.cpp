@@ -72,3 +72,11 @@ void Entity::RemoveTag(const std::string& tag)
 {
 	EntityManager::RemoveTag(this, tag);
 }
+
+void Entity::SetActive(bool active)
+{
+	for (auto component : m_Components)
+	{
+		component->SetActive(active);
+	}
+}

@@ -52,14 +52,17 @@ namespace ScreenSpaceRenderer
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vert_data), vert_data, GL_STATIC_DRAW);
 
 		GLint posAttrib = glGetAttribLocation(s_ScreenSpaceShader, "position");
-		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
-		glEnableVertexAttribArray(posAttrib);
+		if (posAttrib > -1)
+		{
+			glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+			glEnableVertexAttribArray(posAttrib);
+		}
 		GLint tcAttrib = glGetAttribLocation(s_ScreenSpaceShader, "texcoord");
-		glVertexAttribPointer(tcAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
-		glEnableVertexAttribArray(tcAttrib);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+		if (tcAttrib > -1)
+		{
+			glVertexAttribPointer(tcAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(tcAttrib);
+		}
 
 		s_ActiveSprites[vao] = texture;
 		s_Tints[vao] = tint;
@@ -81,18 +84,17 @@ namespace ScreenSpaceRenderer
 	{
 		ShaderManager::SetActiveShader(s_ScreenSpaceShader);
 		GLint uniTint = glGetUniformLocation(s_ScreenSpaceShader, "tint");
-		glDisable(GL_DEPTH);
+		glDisable(GL_DEPTH_TEST);
 		for (auto vao : s_ActiveSprites)
 		{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, vao.second);
 
 			glUniform4fv(uniTint, 1, glm::value_ptr(s_Tints[vao.first]));
-
 			glBindVertexArray(vao.first);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-			glBindVertexArray(0);
 		}
-		glEnable(GL_DEPTH);
+		glEnable(GL_DEPTH_TEST);
+		ShaderManager::SetActiveShader(0);
 	}
 }

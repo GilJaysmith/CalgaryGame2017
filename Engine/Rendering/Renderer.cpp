@@ -118,7 +118,8 @@ namespace Renderer
 	{
 		if (s_ActiveCamera)
 		{
-			ShaderManager::SetUniform4fv("view", glm::mat4(s_ActiveCamera->GetViewMatrix()));
+			ShaderManager::SetUniform4fv("proj", s_ActiveCamera->GetProjMatrix());
+			ShaderManager::SetUniform4fv("view", s_ActiveCamera->GetViewMatrix());
 
 			for (auto it : m_RenderablesInScene)
 			{
