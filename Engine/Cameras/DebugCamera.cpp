@@ -100,16 +100,18 @@ void DebugCamera::Update(const Time& frame_time)
 		// Fire a pandacube.
 		glm::mat4 transform;
 		transform = glm::translate(transform, m_CameraPos);
-		Entity* pandacube = Entity::CreateEntity("cube", transform);
+		Entity* pandacube = Entity::CreateEntity("low-poly-car", transform);
 		
-		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * 100.0f;
+		const float LV_SCALE = 20.0f;
+		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * LV_SCALE;
 		Message_PhysicsSetLinearVelocity pslv(linear_velocity);
 		pandacube->OnMessage(&pslv);
 
+		const float AV_SCALE = 10.0f;
 		glm::vec3 angular_velocity(
-			((rand() - rand()) / (float)RAND_MAX) * 10.0f, 
-			((rand() - rand()) / (float)RAND_MAX) * 10.0f, 
-			((rand() - rand()) / (float)RAND_MAX) * 10.0f
+			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
+			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
+			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE
 			);
 		Message_PhysicsSetAngularVelocity psav(angular_velocity);
 		pandacube->OnMessage(&psav);

@@ -1,0 +1,9 @@
+--- 
+behaviours: 
+  render: 
+    mesh: bugatti
+  physics:
+    shape: box
+    dimensions: [1.0, 1.0, 1.0]
+    material: cube
+    

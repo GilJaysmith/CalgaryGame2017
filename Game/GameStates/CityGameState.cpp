@@ -2,7 +2,9 @@
 
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/Entities/Entity.h"
+#include "Engine/Memory/Memory.h"
 #include "Engine/Rendering/MeshManager.h"
+#include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
@@ -22,8 +24,6 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Mesh* mesh = MeshManager::LoadMeshFromFile("low-poly-car");
-
 	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
 	GIS::LoadCity("Vancouver");

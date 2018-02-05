@@ -47,36 +47,47 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	}
 
 	// Vertices
-	std::vector<std::vector<float>> vertices;
+	std::vector<std::vector<float>> final_vertices;
 	if (node["vertices"])
 	{
 		for (auto vert : node["vertices"])
 		{
-			vertices.push_back(vert.as<std::vector<float>>());
+			final_vertices.push_back(vert.as<std::vector<float>>());
 		}
 	}
 	else if (node["obj"])
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile("data/meshes/" + node["obj"].as<std::string>(), aiProcess_Triangulate);
+		std::string obj_filename = "data/meshes/" + node["obj"].as<std::string>();
+		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate);
 		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)
 		{
 			const aiMesh* mesh = scene->mMeshes[mesh_idx];
+			aiVector3D* vertices = mesh->mVertices;
 			for (unsigned int face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
 			{
 				aiFace& face = mesh->mFaces[face_idx];
+				unsigned int* vert_indices = face.mIndices;
+				float c = rand() / (float)RAND_MAX;
+				for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
+				{
+					unsigned int vert_idx = vert_indices[vert_idx_loop];
+					aiVector3D vert = vertices[vert_idx];
+					std::vector<float> this_vert = { vert.x, vert.y, vert.z, c, c, c };
+					final_vertices.push_back(this_vert);
+				}
 			}
 		}
 	}
 
-	m_NumVerts = (unsigned int)vertices.size();
+	m_NumVerts = (unsigned int)final_vertices.size();
 	if (!m_NumVerts)
 	{
 		return;
 	}
-	float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * vertices[0].size());
+	float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * final_vertices.size() * final_vertices[0].size());
 	float* v = vert_data;
-	for (auto vert : vertices)
+	for (auto vert : final_vertices)
 	{
 		if (vert.size() != total_floats)
 		{
@@ -96,7 +107,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	int vert_data_size = (int)(vertices.size() * vertices[0].size() * sizeof(float));
+	int vert_data_size = (int)(final_vertices.size() * final_vertices[0].size() * sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
 
 	// Shaders
