@@ -15,7 +15,7 @@ void main()
 	//outColour = vec4(1.0, 1.0, 1.0, 1.0);
 	
 	// Sampled from texture
-	outColour = texture(tex, Texcoord) * Colour * tint;
+	outColour = texture(tex, Texcoord) * vec4(Colour, 1.0) * tint;
 
 	// Based on screen position of pixel
 //	outColour = vec4(0.0, gl_FragCoord.y / 600.0, 0.0, 1.0);
