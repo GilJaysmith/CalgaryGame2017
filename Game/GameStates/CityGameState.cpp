@@ -24,9 +24,10 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
+	Entity::CreateEntity("Audi_R8_2017", glm::mat4());
 	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
-	GIS::LoadCity("Vancouver");
+//	GIS::LoadCity("Vancouver");
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);

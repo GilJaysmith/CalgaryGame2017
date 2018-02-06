@@ -6,6 +6,7 @@
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
 
+#include "sdks/assimp/include/Exporter.hpp"
 #include "sdks/assimp/include/Importer.hpp"
 #include "sdks/assimp/include/scene.h"
 #include "sdks/assimp/include/postprocess.h"
@@ -15,13 +16,257 @@
 #include <vector>
 
 
+struct AttributeBinding
+{
+	std::string name;
+	int num_floats;
+};
+
+void CopyMat(const aiMatrix4x4& from, glm::mat4& to)
+{
+	to[0][0] = from.a1; to[1][0] = from.a2;
+	to[2][0] = from.a3; to[3][0] = from.a4;
+	to[0][1] = from.b1; to[1][1] = from.b2;
+	to[2][1] = from.b3; to[3][1] = from.b4;
+	to[0][2] = from.c1; to[1][2] = from.c2;
+	to[2][2] = from.c3; to[3][2] = from.c4;
+	to[0][3] = from.d1; to[1][3] = from.d2;
+	to[2][3] = from.d3; to[3][3] = from.d4;
+}
+
 Mesh::Mesh()
+	: m_RootNode(nullptr)
 {
 }
 
 Mesh::~Mesh()
 {
 }
+
+struct SubMesh
+{
+	GLuint m_Vao;
+	unsigned int m_NumVerts;
+	GLuint m_Program;
+	std::map<unsigned int, GLuint> m_Textures;
+
+	SubMesh(const YAML::Node& node, GLuint program, const std::vector<AttributeBinding>& attribute_bindings)
+		: m_Program(program)
+	{
+		unsigned int total_floats = 0;
+		for (auto ab : attribute_bindings)
+		{
+			total_floats += ab.num_floats;
+		}
+
+		std::vector<std::vector<float>> final_vertices;
+
+		for (auto vert : node["vertices"])
+		{
+			final_vertices.push_back(vert.as<std::vector<float>>());
+		}
+
+		m_NumVerts = (unsigned int)final_vertices.size();
+		if (!m_NumVerts)
+		{
+			return;
+		}
+
+		float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * final_vertices.size() * final_vertices[0].size());
+		float* v = vert_data;
+		for (auto vert : final_vertices)
+		{
+			if (vert.size() != total_floats)
+			{
+				Logging::Log("Mesh", "Mesh vertex data has incorrect length");
+				exit(1);
+			}
+			for (auto f : vert)
+			{
+				*v++ = f;
+			}
+		}
+
+		glGenVertexArrays(1, &m_Vao);
+		glBindVertexArray(m_Vao);
+
+		GLuint vbo;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		int vert_data_size = (int)(final_vertices.size() * final_vertices[0].size() * sizeof(float));
+		glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
+
+		// Textures
+		unsigned int texture_index = 0;
+		for (auto texture : node["textures"])
+		{
+			auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
+			m_Textures[texture_index] = texture_id;
+			++texture_index;
+		}
+
+		// Apply attribute bindings;
+		int offset = 0;
+		for (auto ab : attribute_bindings)
+		{
+			GLint posAttrib = glGetAttribLocation(m_Program, ab.name.c_str());
+			if (posAttrib != -1)
+			{
+				glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
+				glEnableVertexAttribArray(posAttrib);
+			}
+			offset += ab.num_floats;
+		}
+
+		MemDelete(vert_data);
+	}
+
+	SubMesh(aiMesh* mesh, GLuint program, const std::vector<AttributeBinding>& attribute_bindings)
+		: m_Program(program)
+	{
+		unsigned int total_floats = 0;
+		for (auto ab : attribute_bindings)
+		{
+			total_floats += ab.num_floats;
+		}
+
+		std::vector<std::vector<float>> final_vertices;
+
+		aiVector3D* vertices = mesh->mVertices;
+
+		float c = rand() / (float)RAND_MAX;
+		for (unsigned int face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
+		{
+			aiFace& face = mesh->mFaces[face_idx];
+			unsigned int* vert_indices = face.mIndices;
+			for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
+			{
+				unsigned int vert_idx = vert_indices[vert_idx_loop];
+				aiVector3D vert = vertices[vert_idx];
+				std::vector<float> this_vert = { vert.x, vert.y, vert.z, c, c, c };
+				final_vertices.push_back(this_vert);
+			}
+		}
+		
+		m_NumVerts = (unsigned int)final_vertices.size();
+
+		if (m_NumVerts == 0)
+		{
+			return;
+		}
+
+		float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * final_vertices.size() * final_vertices[0].size());
+		float* v = vert_data;
+		for (auto vert : final_vertices)
+		{
+			if (vert.size() != total_floats)
+			{
+				Logging::Log("Mesh", "Mesh vertex data has incorrect length");
+				exit(1);
+			}
+			for (auto f : vert)
+			{
+				*v++ = f;
+			}
+		}
+
+		glGenVertexArrays(1, &m_Vao);
+		glBindVertexArray(m_Vao);
+
+		GLuint vbo;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		int vert_data_size = (int)(final_vertices.size() * final_vertices[0].size() * sizeof(float));
+		glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
+
+		// Apply attribute bindings;
+		int offset = 0;
+		for (auto ab : attribute_bindings)
+		{
+			GLint posAttrib = glGetAttribLocation(m_Program, ab.name.c_str());
+			if (posAttrib != -1)
+			{
+				glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
+				glEnableVertexAttribArray(posAttrib);
+			}
+			offset += ab.num_floats;
+		}
+
+		MemDelete(vert_data);
+	}
+
+	void Render(const glm::mat4& transform, const glm::vec4& tint)
+	{
+		if (m_NumVerts)
+		{
+			ShaderManager::SetActiveShader(m_Program);
+
+			for (auto it : m_Textures)
+			{
+				glActiveTexture(GL_TEXTURE0 + it.first);
+				glBindTexture(GL_TEXTURE_2D, it.second);
+			}
+
+			GLint uniModel = glGetUniformLocation(m_Program, "model");
+			if (uniModel > -1)
+			{
+				glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(transform));
+			}
+
+			GLint uniTint = glGetUniformLocation(m_Program, "tint");
+			if (uniTint > -1)
+			{
+				glUniform4fv(uniTint, 1, glm::value_ptr(tint));
+			}
+
+			glBindVertexArray(m_Vao);
+			glDrawArrays(GL_TRIANGLES, 0, m_NumVerts);
+		}
+	}
+};
+
+struct MeshNode
+{
+	std::vector<SubMesh*> m_SubMeshes;
+	glm::mat4 m_Transform;
+	std::vector<MeshNode*> m_Children;
+
+	MeshNode(SubMesh* sub_mesh)
+	{
+		m_SubMeshes.push_back(sub_mesh);
+	}
+
+	MeshNode(aiNode* node, const std::vector<SubMesh*>& meshes)
+	{
+		Logging::Log("Render", std::string("Node ") + node->mName.C_Str());
+		CopyMat(node->mTransformation, m_Transform);
+		for (unsigned int mesh_idx = 0; mesh_idx < node->mNumMeshes; ++mesh_idx)
+		{
+			m_SubMeshes.push_back(meshes[*(node->mMeshes + mesh_idx)]);
+		}
+		for (unsigned int child_idx = 0; child_idx < node->mNumChildren; ++child_idx)
+		{
+			m_Children.push_back(MemNew(MemoryPool::Rendering, MeshNode)(*(node->mChildren + child_idx), meshes));
+		}
+	}
+
+	void Render(glm::mat4 transform, const glm::vec4& tint)
+	{
+		transform = transform * m_Transform;
+
+		for (auto sub_mesh : m_SubMeshes)
+		{
+			sub_mesh->Render(transform, tint);
+		}
+
+		for (auto child_node : m_Children)
+		{
+			child_node->Render(transform, tint);
+		}
+	}
+};
 
 void Mesh::LoadFromYaml(const std::string& filename)
 {
@@ -31,11 +276,6 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	YAML::Node node = YAML::LoadFile(mesh_filename);
 
 	// Load attribute bindings
-	struct AttributeBinding
-	{
-		std::string name;
-		int num_floats;
-	};
 	std::vector<AttributeBinding> attribute_bindings;
 	int total_floats = 0;
 	for (unsigned int i = 0; i < node["attributes"].size(); ++i)
@@ -46,128 +286,36 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		total_floats += ab.num_floats;
 	}
 
+	// Shaders
+	GLuint program = ShaderManager::LoadProgram(node["shader"].as<std::string>());
+
 	// Vertices
 	std::vector<std::vector<float>> final_vertices;
 	if (node["vertices"])
 	{
-		for (auto vert : node["vertices"])
-		{
-			final_vertices.push_back(vert.as<std::vector<float>>());
-		}
+		SubMesh* sub_mesh = MemNew(MemoryPool::Rendering, SubMesh)(node, program, attribute_bindings);
+		m_SubMeshes.push_back(sub_mesh);
+		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(sub_mesh);
 	}
 	else if (node["obj"])
 	{
 		Assimp::Importer importer;
 		std::string obj_filename = "data/meshes/" + node["obj"].as<std::string>();
 		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate);
+
+		// Make VAOs for all the meshes.
 		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)
 		{
-			const aiMesh* mesh = scene->mMeshes[mesh_idx];
-			aiVector3D* vertices = mesh->mVertices;
-			for (unsigned int face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
-			{
-				aiFace& face = mesh->mFaces[face_idx];
-				unsigned int* vert_indices = face.mIndices;
-				float c = rand() / (float)RAND_MAX;
-				for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
-				{
-					unsigned int vert_idx = vert_indices[vert_idx_loop];
-					aiVector3D vert = vertices[vert_idx];
-					std::vector<float> this_vert = { vert.x, vert.y, vert.z, c, c, c };
-					final_vertices.push_back(this_vert);
-				}
-			}
+			aiMesh* mesh = scene->mMeshes[mesh_idx];
+			SubMesh* sub_mesh = MemNew(MemoryPool::Rendering, SubMesh)(mesh, program, attribute_bindings);
+			m_SubMeshes.push_back(sub_mesh);
 		}
+
+		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(scene->mRootNode, m_SubMeshes);
 	}
-
-	m_NumVerts = (unsigned int)final_vertices.size();
-	if (!m_NumVerts)
-	{
-		return;
-	}
-	float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * final_vertices.size() * final_vertices[0].size());
-	float* v = vert_data;
-	for (auto vert : final_vertices)
-	{
-		if (vert.size() != total_floats)
-		{
-			Logging::Log("Mesh", "Mesh vertex data has incorrect length");
-			exit(1);
-		}
-		for (auto f : vert)
-		{
-			*v++ = f;
-		}
-	}
-
-	glGenVertexArrays(1, &m_Vao);
-	glBindVertexArray(m_Vao);
-
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	int vert_data_size = (int)(final_vertices.size() * final_vertices[0].size() * sizeof(float));
-	glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
-
-	// Shaders
-	m_ShaderProgram = ShaderManager::LoadProgram(node["shader"].as<std::string>());
-
-	// Textures
-	unsigned int texture_index = 0;
-	for (auto texture : node["textures"])
-	{
-		auto texture_id = TextureManager::LoadTexture(texture.as<std::string>());
-		SetTexture(texture_index, texture_id);
-		++texture_index;
-	}
-
-	// Apply attribute bindings;
-	int offset = 0;
-	for (auto ab : attribute_bindings)
-	{
-		GLint posAttrib = glGetAttribLocation(m_ShaderProgram, ab.name.c_str());
-		if (posAttrib != -1)
-		{
-			glVertexAttribPointer(posAttrib, ab.num_floats, GL_FLOAT, GL_FALSE, total_floats * sizeof(GLfloat), (void*)(offset * sizeof(GLfloat)));
-			glEnableVertexAttribArray(posAttrib);
-		}
-		offset += ab.num_floats;
-	}
-
-	MemDelete(vert_data);
-}
-
-void Mesh::SetTexture(unsigned int texture_index, GLuint texture_id)
-{
-	m_Textures[texture_index] = texture_id;
 }
 
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 {
-	ShaderManager::SetActiveShader(m_ShaderProgram);
-
-	for (auto it : m_Textures)
-	{
-		glActiveTexture(GL_TEXTURE0 + it.first);
-		glBindTexture(GL_TEXTURE_2D, it.second);
-	}
-
-	GLint uniModel = glGetUniformLocation(m_ShaderProgram, "model");
-	if (uniModel > -1)
-	{
-		glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(world_transform));
-	}
-
-	GLint uniTint = glGetUniformLocation(m_ShaderProgram, "tint");
-	if (uniTint > -1)
-	{
-		glUniform4fv(uniTint, 1, glm::value_ptr(tint));
-	}
-
-	glBindVertexArray(m_Vao);
-	glDrawArrays(GL_TRIANGLES, 0, m_NumVerts);
-
-
-	ShaderManager::SetActiveShader(0);
+	m_RootNode->Render(world_transform, tint);
 }

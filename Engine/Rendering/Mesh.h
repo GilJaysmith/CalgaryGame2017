@@ -2,6 +2,9 @@
 
 #include <map>
 
+struct MeshNode;
+struct SubMesh;
+
 class Mesh
 {
 public:
@@ -13,11 +16,7 @@ public:
 
 protected:
 
-	void SetTexture(unsigned int texture_index, GLuint texture_id);
-
 	std::string m_MeshName;
-	GLuint m_Vao;
-	GLuint m_ShaderProgram;
-	unsigned int m_NumVerts;
-	std::map<unsigned int, GLuint> m_Textures;
+	MeshNode* m_RootNode;
+	std::vector<SubMesh*> m_SubMeshes;
 };
