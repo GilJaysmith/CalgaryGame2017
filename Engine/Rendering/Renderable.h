@@ -15,6 +15,9 @@ public:
 	void SetActive(bool active) { m_Active = active;  }
 	bool IsActive() const { return m_Active;  }
 
+	unsigned int GetNumMeshes() const;
+	unsigned int GetNumVerts() const;
+
 protected:
 	Mesh* m_Mesh;
 	glm::vec4 m_Tint;

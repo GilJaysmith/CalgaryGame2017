@@ -119,8 +119,12 @@ namespace Renderer
 
 	std::set<Renderable*> m_RenderablesInScene;
 
+	unsigned int s_PeakVertsInScene = 0;
+
 	void RenderScene()
 	{
+		unsigned int num_meshes = 0;
+		unsigned int num_verts = 0;
 		if (s_ActiveCamera)
 		{
 			ShaderManager::SetUniform4fv("proj", s_ActiveCamera->GetProjMatrix());
@@ -131,8 +135,18 @@ namespace Renderer
 				if (it->IsActive())
 				{
 					it->Render();
+					num_meshes += it->GetNumMeshes();
+					num_verts += it->GetNumVerts();
 				}
 			}
+		}
+
+		if (num_verts > s_PeakVertsInScene)
+		{
+			s_PeakVertsInScene = num_verts;
+			std::stringstream str;
+			str << "New peak verts: " << s_PeakVertsInScene;
+			Logging::Log("Rendering", str.str());
 		}
 
 		ScreenSpaceRenderer::Render();

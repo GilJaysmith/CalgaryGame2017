@@ -257,23 +257,30 @@ struct MeshNode
 	std::vector<SubMesh*> m_SubMeshes;
 	glm::mat4 m_Transform;
 	std::vector<MeshNode*> m_Children;
+	unsigned int m_NumVerts;
 
 	MeshNode(SubMesh* sub_mesh)
 	{
 		m_SubMeshes.push_back(sub_mesh);
+		m_NumVerts = sub_mesh->m_NumVerts;
 	}
 
 	MeshNode(aiNode* node, const std::vector<SubMesh*>& meshes)
 	{
 		Logging::Log("Render", std::string("Node ") + node->mName.C_Str());
 		CopyMat(node->mTransformation, m_Transform);
+		m_NumVerts = 0;
 		for (unsigned int mesh_idx = 0; mesh_idx < node->mNumMeshes; ++mesh_idx)
 		{
-			m_SubMeshes.push_back(meshes[*(node->mMeshes + mesh_idx)]);
+			SubMesh* submesh = meshes[*(node->mMeshes + mesh_idx)];
+			m_SubMeshes.push_back(submesh);
+			m_NumVerts += submesh->m_NumVerts;
 		}
 		for (unsigned int child_idx = 0; child_idx < node->mNumChildren; ++child_idx)
 		{
-			m_Children.push_back(MemNew(MemoryPool::Rendering, MeshNode)(*(node->mChildren + child_idx), meshes));
+			MeshNode* child_node = MemNew(MemoryPool::Rendering, MeshNode)(*(node->mChildren + child_idx), meshes);
+			m_Children.push_back(child_node);
+			m_NumVerts += child_node->m_NumVerts;
 		}
 	}
 
@@ -379,4 +386,9 @@ void Mesh::LoadFromYaml(const std::string& filename)
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 {
 	m_RootNode->Render(world_transform, tint);
+}
+
+unsigned int Mesh::GetNumVerts() const
+{
+	return m_RootNode->m_NumVerts;
 }

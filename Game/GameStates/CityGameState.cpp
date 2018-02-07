@@ -24,9 +24,9 @@ CityGameState::~CityGameState()
 void CityGameState::OnEnter()
 {
 //	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
-	for (unsigned int x = 0; x < 10; x++)
+	for (unsigned int x = 0; x < 20; x++)
 	{
-		for (unsigned int z = 0; z < 10; z++)
+		for (unsigned int z = 0; z < 15; z++)
 		{
 			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 0, z * 6));
 			Entity::CreateEntity("Porsche_911_GT2", transform);

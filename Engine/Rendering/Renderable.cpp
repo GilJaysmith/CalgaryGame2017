@@ -27,3 +27,13 @@ void Renderable::Render()
 {
 	m_Mesh->Render(m_WorldTransform, m_Tint);
 }
+
+unsigned int Renderable::GetNumMeshes() const
+{
+	return 1;
+}
+
+unsigned int Renderable::GetNumVerts() const
+{
+	return m_Mesh->GetNumVerts();
+}
