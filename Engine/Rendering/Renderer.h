@@ -18,6 +18,7 @@ namespace Renderer
 	void ClearWindow();
 
 	void SetActiveCamera(Camera*);
+	Camera* GetActiveCamera();
 
 	void RenderScene();
 

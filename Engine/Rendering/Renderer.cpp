@@ -112,6 +112,11 @@ namespace Renderer
 		}
 	}
 
+	Camera* GetActiveCamera()
+	{
+		return s_ActiveCamera;
+	}
+
 	std::set<Renderable*> m_RenderablesInScene;
 
 	void RenderScene()

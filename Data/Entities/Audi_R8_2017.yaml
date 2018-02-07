@@ -2,8 +2,3 @@
 behaviours: 
   render: 
     mesh: Audi_R8_2017
-  physics:
-    shape: box
-    dimensions: [1.0, 1.0, 1.0]
-    material: cube
-    

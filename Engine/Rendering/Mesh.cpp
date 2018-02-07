@@ -1,8 +1,10 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Cameras/Camera.h"
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
 #include "Engine/Rendering/Mesh.h"
+#include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
 
@@ -134,17 +136,20 @@ struct SubMesh
 		std::vector<std::vector<float>> final_vertices;
 
 		aiVector3D* vertices = mesh->mVertices;
+		aiVector3D* normals = mesh->mNormals;
 
-		float c = rand() / (float)RAND_MAX;
 		for (unsigned int face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
 		{
 			aiFace& face = mesh->mFaces[face_idx];
 			unsigned int* vert_indices = face.mIndices;
+			glm::vec3 tint(1.0f, 1.0f, 1.0f);
 			for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
 			{
 				unsigned int vert_idx = vert_indices[vert_idx_loop];
 				aiVector3D vert = vertices[vert_idx];
-				std::vector<float> this_vert = { vert.x, vert.y, vert.z, c, c, c };
+				aiVector3D normal = normals[vert_idx];
+				normal.Normalize();
+				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z};
 				final_vertices.push_back(this_vert);
 			}
 		}
@@ -219,6 +224,34 @@ struct SubMesh
 			if (uniTint > -1)
 			{
 				glUniform4fv(uniTint, 1, glm::value_ptr(tint));
+			}
+
+			glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
+			GLint uniAmbientColour = glGetUniformLocation(m_Program, "ambient_colour");
+			if (uniAmbientColour > -1)
+			{
+				glUniform3fv(uniAmbientColour, 1, glm::value_ptr(ambient_colour));
+			}
+
+			glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
+			GLint uniDiffusePosition = glGetUniformLocation(m_Program, "diffuse_position");
+			if (uniDiffusePosition > -1)
+			{
+				glUniform3fv(uniDiffusePosition, 1, glm::value_ptr(diffuse_position));
+			}
+
+			glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
+			GLint uniDiffuseColour = glGetUniformLocation(m_Program, "diffuse_colour");
+			if (uniDiffuseColour > -1)
+			{
+				glUniform3fv(uniDiffuseColour, 1, glm::value_ptr(diffuse_colour));
+			}
+
+			glm::vec3 camera_pos = Renderer::GetActiveCamera()->GetPosition();
+			GLint uniViewPosition = glGetUniformLocation(m_Program, "view_position");
+			if (uniViewPosition > -1)
+			{
+				glUniform3fv(uniViewPosition, 1, glm::value_ptr(camera_pos));
 			}
 
 			glBindVertexArray(m_Vao);

@@ -13,6 +13,8 @@ public:
 	glm::mat4 GetProjMatrix() const;
 	void SetActive(bool active);
 
+	virtual glm::vec3 GetPosition() const = 0;
+
 protected:
 	glm::mat4 m_ViewMatrix;
 	glm::mat4 m_ProjMatrix;

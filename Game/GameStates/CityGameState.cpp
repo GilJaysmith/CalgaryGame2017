@@ -3,12 +3,11 @@
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/Memory/Memory.h"
-#include "Engine/Rendering/MeshManager.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
-#include "Engine/Rendering/TextureManager.h"
+//#include "Engine/Rendering/TextureManager.h"
 
 #include "Game/GameStates/CityGameState.h"
 #include "Game/GIS/GISManager.h"
@@ -24,8 +23,8 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
+//	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 	Entity::CreateEntity("Audi_R8_2017", glm::mat4());
-	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
 //	GIS::LoadCity("Vancouver");
 

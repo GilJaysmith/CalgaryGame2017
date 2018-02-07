@@ -2,6 +2,7 @@ obj: Audi_R8_2017.mdl
 
 attributes:
     - { name: position, floats: 3 }
+    - { name: normal, floats: 3 }
     - { name: colour, floats: 3 }
 	
-shader: SolidColourObjectShader
+shader: LightingShader
