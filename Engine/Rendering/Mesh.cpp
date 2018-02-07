@@ -36,14 +36,6 @@ void CopyMat(const aiMatrix4x4& from, glm::mat4& to)
 	to[2][3] = from.d3; to[3][3] = from.d4;
 }
 
-Mesh::Mesh()
-	: m_RootNode(nullptr)
-{
-}
-
-Mesh::~Mesh()
-{
-}
 
 struct SubMesh
 {
@@ -149,11 +141,11 @@ struct SubMesh
 				aiVector3D vert = vertices[vert_idx];
 				aiVector3D normal = normals[vert_idx];
 				normal.Normalize();
-				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z};
+				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z };
 				final_vertices.push_back(this_vert);
 			}
 		}
-		
+
 		m_NumVerts = (unsigned int)final_vertices.size();
 
 		if (m_NumVerts == 0)
@@ -285,6 +277,14 @@ struct MeshNode
 		}
 	}
 
+	~MeshNode()
+	{
+		for (auto child : m_Children)
+		{
+			MemDelete(child);
+		}
+	}
+
 	void Render(glm::mat4 transform, const glm::vec4& tint)
 	{
 		transform = transform * m_Transform;
@@ -300,6 +300,25 @@ struct MeshNode
 		}
 	}
 };
+
+
+Mesh::Mesh()
+	: m_RootNode(nullptr)
+{
+}
+
+Mesh::~Mesh()
+{
+	if (m_RootNode)
+	{
+		MemDelete(m_RootNode);
+	}
+	for (auto submesh : m_SubMeshes)
+	{
+		MemDelete(submesh);
+	}
+}
+
 
 void Mesh::LoadFromYaml(const std::string& filename)
 {
@@ -323,12 +342,15 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	GLuint program = ShaderManager::LoadProgram(node["shader"].as<std::string>());
 
 	// Vertices
-	std::vector<std::vector<float>> final_vertices;
+	unsigned int num_verts = 0;
+	unsigned int num_meshes = 0;
 	if (node["vertices"])
 	{
 		SubMesh* sub_mesh = MemNew(MemoryPool::Rendering, SubMesh)(node, program, attribute_bindings);
 		m_SubMeshes.push_back(sub_mesh);
 		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(sub_mesh);
+		num_verts = sub_mesh->m_NumVerts;
+		num_meshes = 1;
 	}
 	else if (node["obj"])
 	{
@@ -342,10 +364,16 @@ void Mesh::LoadFromYaml(const std::string& filename)
 			aiMesh* mesh = scene->mMeshes[mesh_idx];
 			SubMesh* sub_mesh = MemNew(MemoryPool::Rendering, SubMesh)(mesh, program, attribute_bindings);
 			m_SubMeshes.push_back(sub_mesh);
+			num_verts += sub_mesh->m_NumVerts;
 		}
+		num_meshes = scene->mNumMeshes;
 
 		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(scene->mRootNode, m_SubMeshes);
 	}
+
+	std::stringstream str;
+	str << "Mesh " << filename << " loaded, " << num_verts << " verts in " << num_meshes << " meshes";
+	Logging::Log("Rendering", str.str());
 }
 
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
