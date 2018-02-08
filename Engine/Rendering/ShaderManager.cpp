@@ -12,6 +12,7 @@
 namespace ShaderManager
 {
 	std::map<std::pair<std::string, unsigned int>, unsigned int> s_Shaders;
+	std::map<GLuint, std::map<std::string, GLint>> s_ShaderUniforms;
 
 	void Initialize()
 	{
@@ -135,17 +136,45 @@ namespace ShaderManager
 		}
 	}
 
-	void SetUniform4fv(const std::string& uniform_name, const glm::mat4& v)
+	GLint GetUniformLocation(GLuint program, const std::string& uniform_name)
+	{
+		std::map<std::string, GLint>& uniforms = s_ShaderUniforms[program];
+		auto it = uniforms.find(uniform_name);
+		if (it != uniforms.end())
+		{
+			return it->second;
+		}
+		GLint uniform_location = glGetUniformLocation(program, uniform_name.c_str());
+		s_ShaderUniforms[program][uniform_name] = uniform_location;
+		return uniform_location;
+	}
+
+	void SetUniformMatrix4fv(const std::string& uniform_name, const glm::mat4& v)
 	{
 		for (auto shader : s_Programs)
 		{
 			unsigned int shader_program = shader.second;
-			GLint uniView = glGetUniformLocation(shader_program, uniform_name.c_str());
-			if (uniView > -1)
+			GLint uniformLocation = GetUniformLocation(shader_program, uniform_name.c_str());
+			if (uniformLocation > -1)
 			{
 				SetActiveShader(shader_program);
-				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(v));
+				glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(v));
 			}
 		}
 	}
+	
+	void SetUniform3fv(const std::string& uniform_name, const glm::vec3& v)
+	{
+		for (auto shader : s_Programs)
+		{
+			unsigned int shader_program = shader.second;
+			GLint uniformLocation = GetUniformLocation(shader_program, uniform_name.c_str());
+			if (uniformLocation > -1)
+			{
+				SetActiveShader(shader_program);
+				glUniform3fv(uniformLocation, 1, glm::value_ptr(v));
+			}
+		}
+	}
+
 }

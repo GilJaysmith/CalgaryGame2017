@@ -386,10 +386,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Data\Shaders\LightingFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\LightingShader.yaml" />
+    <None Include="..\Data\Shaders\LightingVertexShader.glsl" />
     <None Include="..\Data\Shaders\ScreenSpaceFragmentShader.glsl" />
     <None Include="..\Data\Shaders\ScreenSpaceShader.yaml" />
     <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl" />
     <None Include="..\Data\Shaders\SolidColourFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\SolidColourObjectFragmentShader.glsl" />
+    <None Include="..\Data\Shaders\SolidColourObjectShader.yaml" />
+    <None Include="..\Data\Shaders\SolidColourObjectVertexShader.glsl" />
     <None Include="..\Data\Shaders\SolidColourShader.yaml" />
     <None Include="..\Data\Shaders\SolidColourVertexShader.glsl" />
     <None Include="..\Data\Shaders\TestFragmentShader.glsl" />

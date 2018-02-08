@@ -100,7 +100,7 @@ void DebugCamera::Update(const Time& frame_time)
 		// Fire a pandacube.
 		glm::mat4 transform;
 		transform = glm::translate(transform, m_CameraPos);
-		Entity* pandacube = Entity::CreateEntity("low-poly-car", transform);
+		Entity* pandacube = Entity::CreateEntity("Porsche_911_GT2", transform);
 		
 		const float LV_SCALE = 20.0f;
 		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * LV_SCALE;

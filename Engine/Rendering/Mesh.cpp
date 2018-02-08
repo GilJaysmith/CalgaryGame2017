@@ -206,44 +206,16 @@ struct SubMesh
 				glBindTexture(GL_TEXTURE_2D, it.second);
 			}
 
-			GLint uniModel = glGetUniformLocation(m_Program, "model");
+			GLint uniModel = glGetUniformLocation(m_Program, "model_transform");
 			if (uniModel > -1)
 			{
 				glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(transform));
 			}
 
-			GLint uniTint = glGetUniformLocation(m_Program, "tint");
+			GLint uniTint = glGetUniformLocation(m_Program, "model_tint");
 			if (uniTint > -1)
 			{
 				glUniform4fv(uniTint, 1, glm::value_ptr(tint));
-			}
-
-			glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
-			GLint uniAmbientColour = glGetUniformLocation(m_Program, "ambient_colour");
-			if (uniAmbientColour > -1)
-			{
-				glUniform3fv(uniAmbientColour, 1, glm::value_ptr(ambient_colour));
-			}
-
-			glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
-			GLint uniDiffusePosition = glGetUniformLocation(m_Program, "diffuse_position");
-			if (uniDiffusePosition > -1)
-			{
-				glUniform3fv(uniDiffusePosition, 1, glm::value_ptr(diffuse_position));
-			}
-
-			glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
-			GLint uniDiffuseColour = glGetUniformLocation(m_Program, "diffuse_colour");
-			if (uniDiffuseColour > -1)
-			{
-				glUniform3fv(uniDiffuseColour, 1, glm::value_ptr(diffuse_colour));
-			}
-
-			glm::vec3 camera_pos = Renderer::GetActiveCamera()->GetPosition();
-			GLint uniViewPosition = glGetUniformLocation(m_Program, "view_position");
-			if (uniViewPosition > -1)
-			{
-				glUniform3fv(uniViewPosition, 1, glm::value_ptr(camera_pos));
 			}
 
 			glBindVertexArray(m_Vao);

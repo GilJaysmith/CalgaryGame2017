@@ -2,3 +2,8 @@
 behaviours: 
   render: 
     mesh: Porsche_911_GT2
+  physics:
+    shape: box
+    dimensions: [1.0, 1.0, 1.0]
+    material: cube
+    

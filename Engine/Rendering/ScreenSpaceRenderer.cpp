@@ -83,7 +83,7 @@ namespace ScreenSpaceRenderer
 	void Render()
 	{
 		ShaderManager::SetActiveShader(s_ScreenSpaceShader);
-		GLint uniTint = glGetUniformLocation(s_ScreenSpaceShader, "tint");
+		GLint uniTint = glGetUniformLocation(s_ScreenSpaceShader, "model_tint");
 		glDisable(GL_DEPTH_TEST);
 		for (auto vao : s_ActiveSprites)
 		{

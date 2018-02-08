@@ -23,12 +23,12 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-//	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
-	for (unsigned int x = 0; x < 20; x++)
+	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+	for (unsigned int x = 0; x < 10; x++)
 	{
-		for (unsigned int z = 0; z < 15; z++)
+		for (unsigned int z = 0; z < 10; z++)
 		{
-			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 0, z * 6));
+			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
 			Entity::CreateEntity("Porsche_911_GT2", transform);
 		}
 	}
@@ -45,6 +45,7 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	m_Camera->Update(frame_time);
 
 	GIS::Render();
+	
 	return true;
 }
 

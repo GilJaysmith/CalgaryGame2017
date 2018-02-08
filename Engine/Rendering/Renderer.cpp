@@ -127,8 +127,20 @@ namespace Renderer
 		unsigned int num_verts = 0;
 		if (s_ActiveCamera)
 		{
-			ShaderManager::SetUniform4fv("proj", s_ActiveCamera->GetProjMatrix());
-			ShaderManager::SetUniform4fv("view", s_ActiveCamera->GetViewMatrix());
+			ShaderManager::SetUniformMatrix4fv("camera_projection", s_ActiveCamera->GetProjMatrix());
+			ShaderManager::SetUniformMatrix4fv("camera_view", s_ActiveCamera->GetViewMatrix());
+
+			glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
+			ShaderManager::SetUniform3fv("lighting_ambient_colour", ambient_colour);
+
+			glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
+			ShaderManager::SetUniform3fv("lighting_directional_vector", diffuse_position);
+
+			glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
+			ShaderManager::SetUniform3fv("lighting_directional_colour", diffuse_colour);
+
+			glm::vec3 camera_pos = s_ActiveCamera->GetPosition();
+			ShaderManager::SetUniform3fv("camera_position", diffuse_colour);
 
 			for (auto it : m_RenderablesInScene)
 			{
@@ -145,7 +157,7 @@ namespace Renderer
 		{
 			s_PeakVertsInScene = num_verts;
 			std::stringstream str;
-			str << "New peak verts: " << s_PeakVertsInScene;
+			str << "New peak verts: " << s_PeakVertsInScene << " (" << num_meshes << " meshes in scene)";
 			Logging::Log("Rendering", str.str());
 		}
 

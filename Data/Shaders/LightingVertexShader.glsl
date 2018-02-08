@@ -8,14 +8,14 @@ out vec3 Normal;
 out vec3 Colour;
 out vec3 FragPos;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 proj;
+uniform mat4 model_transform;
+uniform mat4 camera_view;
+uniform mat4 camera_projection;
 
 void main()
 {
 	Colour = colour;
     Normal = normal;
-    FragPos = vec3(model * vec4(position, 1.0));
-    gl_Position = proj * view * model * vec4(position, 1.0);
+    FragPos = vec3(model_transform * vec4(position, 1.0));
+    gl_Position = camera_projection * camera_view * model_transform * vec4(position, 1.0);
 }

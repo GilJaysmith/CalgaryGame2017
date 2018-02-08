@@ -4,10 +4,10 @@ in vec2 Texcoord;
 out vec4 outColour;
 
 uniform sampler2D tex;
-uniform vec4 tint;
+uniform vec4 model_tint;
 
 void main()
 {
 //	outColour = vec4(1.0, 0.0, 0.0, 1.0);
-	outColour = texture(tex, Texcoord) * tint;
+	outColour = texture(tex, Texcoord) * model_tint;
 }

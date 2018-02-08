@@ -181,5 +181,23 @@
     <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Data\Shaders\LightingFragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\LightingShader.yaml">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\LightingVertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\SolidColourObjectFragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\SolidColourObjectShader.yaml">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Data\Shaders\SolidColourObjectVertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
