@@ -1,11 +1,13 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Input/Input.h"
+#include "Engine/Input/InputHandler.h"
 #include "Engine/Logging/Logging.h"
 
 namespace Input
 {
 	std::map<unsigned int, TYPE> s_KeyEvents;
+	std::vector<InputHandler*> s_Handlers;
 
 	void Initialize()
 	{
@@ -57,6 +59,11 @@ namespace Input
 					break;
 			}
 		}
+
+		for (auto handler : s_Handlers)
+		{
+			handler->Update();
+		}
 	}
 
 	Input::TYPE GetKeyEvent(int key)
@@ -68,5 +75,22 @@ namespace Input
 			return TYPE::NONE;
 		}
 		return s_KeyEvents[key];
+	}
+
+	void RegisterInputHandler(InputHandler* handler)
+	{
+		s_Handlers.push_back(handler);
+	}
+
+	void UnregisterInputHandler(InputHandler* handler)
+	{
+		for (auto it = s_Handlers.begin(); it != s_Handlers.end(); ++it)
+		{
+			if (*it == handler)
+			{
+				s_Handlers.erase(it);
+				break;
+			}
+		}
 	}
 }

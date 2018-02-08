@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "Engine/Math/AABB.h"
+
 struct MeshNode;
 struct SubMesh;
 
@@ -22,4 +24,5 @@ protected:
 	MeshNode* m_RootNode;
 	std::vector<SubMesh*> m_SubMeshes;
 	unsigned int m_NumVerts;
+	math::AABB m_AABB;
 };

@@ -30,4 +30,5 @@ glm::mat4 Camera::GetProjMatrix() const
 void Camera::SetActive(bool active)
 {
 	m_Active = active;
+	OnSetActive(active);
 }

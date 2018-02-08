@@ -1,13 +1,16 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/DebugCamera.h"
+#include "Engine/Cameras/DebugCameraInputHandler.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/GameStates/Time.h"
 #include "Engine/Input/Input.h"
+#include "Engine/Memory/Memory.h"
 #include "Engine/Physics/PhysicsMessages.h"
 
 
 DebugCamera::DebugCamera()
+	: m_InputHandler(MemNew(MemoryPool::Rendering, DebugCameraInputHandler))
 {
 	m_CameraPos = glm::vec3(0.0f, 20.0f, 15.0f);
 	m_CameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -19,6 +22,7 @@ DebugCamera::DebugCamera()
 
 DebugCamera::~DebugCamera()
 {
+	MemDelete(m_InputHandler);
 }
 
 void DebugCamera::Update(const Time& frame_time)
@@ -27,57 +31,57 @@ void DebugCamera::Update(const Time& frame_time)
 	float camera_yaw_speed = 0.2f;
 	float camera_pitch_speed = 0.2f;
 
-	if (Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_SHIFT) == Input::HELD)
+	if (m_InputHandler->Fast())
 	{
 		camera_speed *= 20.0f;
 		camera_yaw_speed *= 10.0f;
 		camera_pitch_speed *= 10.0f;
 	}
 
-	if (Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT_CONTROL) == Input::HELD)
+	if (m_InputHandler->SuperFast())
 	{
 		camera_speed *= 20.0f;
 		camera_yaw_speed *= 10.0f;
 		camera_pitch_speed *= 10.0f;
 	}
 
-	if (Input::GetKeyEvent(GLFW_KEY_W) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_W) == Input::HELD)
+	if (m_InputHandler->Forward())
 	{
 		m_CameraPos += m_CameraFront * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_S) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_S) == Input::HELD)
+	if (m_InputHandler->Backward())
 	{
 		m_CameraPos -= m_CameraFront * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_A) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_A) == Input::HELD)
+	if (m_InputHandler->Left())
 	{
 		m_CameraPos -= glm::normalize(glm::cross(m_CameraFront, m_CameraUp)) * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_D) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_D) == Input::HELD)
+	if (m_InputHandler->Right())
 	{
 		m_CameraPos += glm::normalize(glm::cross(m_CameraFront, m_CameraUp)) * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_Q) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_Q) == Input::HELD)
+	if (m_InputHandler->Up())
 	{
 		m_CameraPos += m_CameraUp * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_E) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_E) == Input::HELD)
+	if (m_InputHandler->Down())
 	{
 		m_CameraPos -= m_CameraUp * camera_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_LEFT) == Input::HELD)
+	if (m_InputHandler->YawLeft())
 	{
 		m_CameraYaw -= camera_yaw_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_RIGHT) == Input::HELD)
+	if (m_InputHandler->YawRight())
 	{
 		m_CameraYaw += camera_yaw_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_UP) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_UP) == Input::HELD)
+	if (m_InputHandler->PitchUp())
 	{
 		m_CameraPitch += camera_pitch_speed * frame_time.toSeconds();
 	}
-	if (Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::PRESSED || Input::GetKeyEvent(GLFW_KEY_DOWN) == Input::HELD)
+	if (m_InputHandler->PitchDown())
 	{
 		m_CameraPitch -= camera_pitch_speed * frame_time.toSeconds();
 	}
@@ -122,5 +126,17 @@ void DebugCamera::Update(const Time& frame_time)
 			pandacube->OnMessage(&pdg);
 		}
 
+	}
+}
+
+void DebugCamera::OnSetActive(bool active)
+{
+	if (active)
+	{
+		Input::RegisterInputHandler(m_InputHandler);
+	}
+	else
+	{
+		Input::UnregisterInputHandler(m_InputHandler);
 	}
 }

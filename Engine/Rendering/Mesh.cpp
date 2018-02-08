@@ -43,6 +43,7 @@ struct SubMesh
 	unsigned int m_NumVerts;
 	GLuint m_Program;
 	std::map<unsigned int, GLuint> m_Textures;
+	math::AABB m_AABB;
 
 	SubMesh(const YAML::Node& node, GLuint program, const std::vector<AttributeBinding>& attribute_bindings)
 		: m_Program(program)
@@ -75,6 +76,7 @@ struct SubMesh
 				Logging::Log("Mesh", "Mesh vertex data has incorrect length");
 				exit(1);
 			}
+			m_AABB.Expand(glm::vec3(vert[0], vert[1], vert[2]));
 			for (auto f : vert)
 			{
 				*v++ = f;
@@ -143,6 +145,7 @@ struct SubMesh
 				normal.Normalize();
 				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z };
 				final_vertices.push_back(this_vert);
+				m_AABB.Expand(glm::vec3(vert.x, vert.y, vert.z));
 			}
 		}
 
@@ -224,17 +227,24 @@ struct SubMesh
 	}
 };
 
+struct MeshNodeVisitor
+{
+	virtual void operator()(MeshNode*) {}
+};
+
 struct MeshNode
 {
 	std::vector<SubMesh*> m_SubMeshes;
 	glm::mat4 m_Transform;
 	std::vector<MeshNode*> m_Children;
 	unsigned int m_NumVerts;
+	math::AABB m_AABB;
 
 	MeshNode(SubMesh* sub_mesh)
 	{
 		m_SubMeshes.push_back(sub_mesh);
 		m_NumVerts = sub_mesh->m_NumVerts;
+		m_AABB.Expand(sub_mesh->m_AABB);
 	}
 
 	MeshNode(aiNode* node, const std::vector<SubMesh*>& meshes)
@@ -247,6 +257,7 @@ struct MeshNode
 			SubMesh* submesh = meshes[*(node->mMeshes + mesh_idx)];
 			m_SubMeshes.push_back(submesh);
 			m_NumVerts += submesh->m_NumVerts;
+			m_AABB.Expand(submesh->m_AABB);
 		}
 		for (unsigned int child_idx = 0; child_idx < node->mNumChildren; ++child_idx)
 		{
@@ -350,8 +361,39 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(scene->mRootNode, m_SubMeshes);
 	}
 
+	struct AABBVisitor : MeshNodeVisitor
+	{
+		math::AABB aabb;
+		void Expand(MeshNode* node, glm::mat4 transform)
+		{
+			math::AABB node_aabb = node->m_AABB;
+			glm::mat4 node_transform = transform * node->m_Transform;
+			node_aabb.Transform(node->m_Transform);
+			aabb.Expand(node_aabb);
+			for (auto child_node : node->m_Children)
+			{
+				Expand(child_node, node_transform);
+			}
+		}
+	};
+
+	AABBVisitor aabb_visitor;
+	aabb_visitor.Expand(m_RootNode, glm::mat4());
+	m_AABB = aabb_visitor.aabb;
+
 	std::stringstream str;
 	str << "Mesh " << filename << " loaded, " << num_verts << " verts in " << num_meshes << " meshes";
+	Logging::Log("Rendering", str.str());
+	str.str("");
+	str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
+	Logging::Log("Rendering", str.str());
+	str.str("");
+	glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
+	str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
+	Logging::Log("Rendering", str.str());
+	str.str("");
+	glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
+	str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
 	Logging::Log("Rendering", str.str());
 }
 

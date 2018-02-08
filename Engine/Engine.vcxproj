@@ -22,6 +22,7 @@
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Cameras\Camera.cpp" />
     <ClCompile Include="Cameras\DebugCamera.cpp" />
+    <ClCompile Include="Cameras\DebugCameraInputHandler.cpp" />
     <ClCompile Include="Entities\Component.cpp" />
     <ClCompile Include="Entities\ComponentRegistry.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="GameStates\SplashScreenGameState.cpp" />
     <ClCompile Include="GameStates\Time.cpp" />
     <ClCompile Include="Input\Input.cpp" />
+    <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Memory\Allocators\DLAllocator.cpp" />
     <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp" />
@@ -58,6 +60,7 @@
     <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Cameras\Camera.h" />
     <ClInclude Include="Cameras\DebugCamera.h" />
+    <ClInclude Include="Cameras\DebugCameraInputHandler.h" />
     <ClInclude Include="Entities\Component.h" />
     <ClInclude Include="Entities\ComponentRegistry.h" />
     <ClInclude Include="Entities\Entity.h" />
@@ -69,7 +72,9 @@
     <ClInclude Include="GameStates\SplashScreenGameState.h" />
     <ClInclude Include="GameStates\Time.h" />
     <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Math\AABB.h" />
     <ClInclude Include="Memory\Allocators\DLAllocator.h" />
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />

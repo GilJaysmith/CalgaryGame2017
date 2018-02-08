@@ -31,6 +31,9 @@
     <Filter Include="Audio">
       <UniqueIdentifier>{06f8edec-4cd6-4515-a2a5-973195a137e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{991b5742-5cd0-4cf2-ad3b-6ce6a528bd5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -114,6 +117,12 @@
     </ClCompile>
     <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputHandler.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\DebugCameraInputHandler.cpp">
+      <Filter>Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +213,15 @@
     </ClInclude>
     <ClInclude Include="Physics\PhysicsMessages.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputHandler.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\DebugCameraInputHandler.h">
+      <Filter>Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
