@@ -34,6 +34,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{991b5742-5cd0-4cf2-ad3b-6ce6a528bd5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="imGUI">
+      <UniqueIdentifier>{1d43ab43-42d3-4c5d-9771-12a7dd483503}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -123,6 +126,15 @@
     </ClCompile>
     <ClCompile Include="Cameras\DebugCameraInputHandler.cpp">
       <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui.cpp">
+      <Filter>imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_demo.cpp">
+      <Filter>imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_draw.cpp">
+      <Filter>imGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +234,24 @@
     </ClInclude>
     <ClInclude Include="Cameras\DebugCameraInputHandler.h">
       <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imconfig.h">
+      <Filter>imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui.h">
+      <Filter>imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui_internal.h">
+      <Filter>imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\stb_rect_pack.h">
+      <Filter>imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\stb_textedit.h">
+      <Filter>imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\stb_truetype.h">
+      <Filter>imGUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
