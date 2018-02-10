@@ -1,13 +1,10 @@
-#version 150 core
+#version 150
 
-in vec2 Texcoord;
-in vec4 Colour;
-
-out vec4 outColour;
-
-uniform sampler2D tex;
-
+uniform sampler2D Texture;
+in vec2 Frag_UV;
+in vec4 Frag_Color;
+out vec4 Out_Color;
 void main()
 {
-	outColour = texture(tex, Texcoord) * Colour;
+    Out_Color = Frag_Color * texture( Texture, Frag_UV.st);
 }
