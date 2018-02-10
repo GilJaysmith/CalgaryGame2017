@@ -11,9 +11,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{4b35ffd9-4120-4f09-b7b4-de2a9a1b5f2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GIS">
       <UniqueIdentifier>{e1c5014f-9128-4410-94ca-f1466d835da9}</UniqueIdentifier>
     </Filter>
@@ -152,52 +149,5 @@
     <ClCompile Include="GIS\polypartition\polypartition.cpp">
       <Filter>GIS\polypartition</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Data\Shaders\TestFragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\TestVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\TestShader.yaml">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourFragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourShader.yaml">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\ScreenSpaceFragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\ScreenSpaceShader.yaml">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\LightingFragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\LightingShader.yaml">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\LightingVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourObjectFragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourObjectShader.yaml">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Data\Shaders\SolidColourObjectVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

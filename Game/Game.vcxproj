@@ -386,23 +386,6 @@
       <Project>{a4995b33-b3d6-41e9-933c-855755b24c46}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Data\Shaders\LightingFragmentShader.glsl" />
-    <None Include="..\Data\Shaders\LightingShader.yaml" />
-    <None Include="..\Data\Shaders\LightingVertexShader.glsl" />
-    <None Include="..\Data\Shaders\ScreenSpaceFragmentShader.glsl" />
-    <None Include="..\Data\Shaders\ScreenSpaceShader.yaml" />
-    <None Include="..\Data\Shaders\ScreenSpaceVertexShader.glsl" />
-    <None Include="..\Data\Shaders\SolidColourFragmentShader.glsl" />
-    <None Include="..\Data\Shaders\SolidColourObjectFragmentShader.glsl" />
-    <None Include="..\Data\Shaders\SolidColourObjectShader.yaml" />
-    <None Include="..\Data\Shaders\SolidColourObjectVertexShader.glsl" />
-    <None Include="..\Data\Shaders\SolidColourShader.yaml" />
-    <None Include="..\Data\Shaders\SolidColourVertexShader.glsl" />
-    <None Include="..\Data\Shaders\TestFragmentShader.glsl" />
-    <None Include="..\Data\Shaders\TestShader.yaml" />
-    <None Include="..\Data\Shaders\TestVertexShader.glsl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
