@@ -49,6 +49,8 @@ namespace Physics
 
 	std::map<std::string, physx::PxMaterial*> s_Materials;
 
+	bool s_IsPaused = false;
+
 	physx::PxMaterial* GetMaterial(const std::string& material_name)
 	{
 		if (s_Materials.find(material_name) == s_Materials.end())
@@ -112,9 +114,12 @@ namespace Physics
 
 	void Simulate(const Time& time)
 	{
-		float seconds = time.toSeconds();
-		scene->simulate(seconds);
-		scene->fetchResults(true);
+		if (!s_IsPaused)
+		{
+			float seconds = time.toSeconds();
+			scene->simulate(seconds);
+			scene->fetchResults(true);
+		}
 	}
 
 	physx::PxPhysics* GetPhysics()
@@ -125,5 +130,15 @@ namespace Physics
 	physx::PxScene* GetScene()
 	{
 		return scene;
+	}
+
+	bool IsPaused()
+	{
+		return s_IsPaused;
+	}
+
+	void Pause(bool pause)
+	{
+		s_IsPaused = pause;
 	}
 }

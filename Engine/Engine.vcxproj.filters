@@ -34,8 +34,11 @@
     <Filter Include="Math">
       <UniqueIdentifier>{991b5742-5cd0-4cf2-ad3b-6ce6a528bd5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="imGUI">
-      <UniqueIdentifier>{1d43ab43-42d3-4c5d-9771-12a7dd483503}</UniqueIdentifier>
+    <Filter Include="DebugPanels">
+      <UniqueIdentifier>{1302035c-5581-4f1f-be7c-7f0f149afacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DebugPanels\imgui">
+      <UniqueIdentifier>{54fb5edc-7032-4469-82c4-37c7002da972}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,14 +130,17 @@
     <ClCompile Include="Cameras\DebugCameraInputHandler.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui.cpp">
-      <Filter>imGUI</Filter>
+    <ClCompile Include="DebugPanels\DebugPanels.cpp">
+      <Filter>DebugPanels</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_demo.cpp">
-      <Filter>imGUI</Filter>
+    <ClCompile Include="DebugPanels\imgui\imgui.cpp">
+      <Filter>DebugPanels\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_draw.cpp">
-      <Filter>imGUI</Filter>
+    <ClCompile Include="DebugPanels\imgui\imgui_demo.cpp">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp">
+      <Filter>DebugPanels\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,23 +241,26 @@
     <ClInclude Include="Cameras\DebugCameraInputHandler.h">
       <Filter>Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imconfig.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\DebugPanels.h">
+      <Filter>DebugPanels</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\imgui\imconfig.h">
+      <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui_internal.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\imgui\imgui.h">
+      <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\stb_rect_pack.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\imgui\imgui_internal.h">
+      <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\stb_textedit.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\imgui\stb_rect_pack.h">
+      <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\stb_truetype.h">
-      <Filter>imGUI</Filter>
+    <ClInclude Include="DebugPanels\imgui\stb_textedit.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\stb_truetype.h">
+      <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -20,4 +20,7 @@ namespace Physics
 	physx::PxScene* GetScene();
 
 	physx::PxMaterial* GetMaterial(const std::string& material_name);
+
+	bool IsPaused();
+	void Pause(bool pause);
 };

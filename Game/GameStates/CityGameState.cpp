@@ -2,8 +2,9 @@
 
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/Entities/Entity.h"
-#include "Engine/imGUI/imgui.h"
+#include "Engine/DebugPanels/imgui/imgui.h"
 #include "Engine/Memory/Memory.h"
+#include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
@@ -41,12 +42,26 @@ void CityGameState::OnEnter()
 	Renderer::SetActiveCamera(m_Camera);
 }
 
+char buffer[60];
+
 bool CityGameState::OnUpdate(const Time& frame_time)
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(400, 100));
+	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
+	ImGui::SetNextWindowBgAlpha(0.5f);
 	ImGui::Begin("Car debug");
-	ImGui::Text("Car altitude is: %f and here's a rand %d", car->GetTransform()[3][1], rand());
+	ImGui::Text("Car altitude is: %fm and here's a random number: %d", car->GetTransform()[3][1], rand());
+	if (ImGui::Button("Click me to toggle physics"))
+	{
+		Physics::Pause(!Physics::IsPaused());
+	}
+	ImGui::InputText("<- Type here", buffer, sizeof(buffer));
+	ImGui::LabelText("<- What you typed", buffer);
+	ImGui::End();
+
+	ImGui::Begin("Another window");
+	ImGui::Text("More text!");
+	ImGui::Text("Every piece of text you'd want!");
 	ImGui::End();
 
 	GameState::OnUpdate(frame_time);

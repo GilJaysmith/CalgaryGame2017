@@ -23,6 +23,10 @@
     <ClCompile Include="Cameras\Camera.cpp" />
     <ClCompile Include="Cameras\DebugCamera.cpp" />
     <ClCompile Include="Cameras\DebugCameraInputHandler.cpp" />
+    <ClCompile Include="DebugPanels\DebugPanels.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui_demo.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp" />
     <ClCompile Include="Entities\Component.cpp" />
     <ClCompile Include="Entities\ComponentRegistry.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
@@ -32,9 +36,6 @@
     <ClCompile Include="GameStates\GameStateManager.cpp" />
     <ClCompile Include="GameStates\SplashScreenGameState.cpp" />
     <ClCompile Include="GameStates\Time.cpp" />
-    <ClCompile Include="imGUI\imgui.cpp" />
-    <ClCompile Include="imGUI\imgui_demo.cpp" />
-    <ClCompile Include="imGUI\imgui_draw.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
@@ -64,6 +65,13 @@
     <ClInclude Include="Cameras\Camera.h" />
     <ClInclude Include="Cameras\DebugCamera.h" />
     <ClInclude Include="Cameras\DebugCameraInputHandler.h" />
+    <ClInclude Include="DebugPanels\DebugPanels.h" />
+    <ClInclude Include="DebugPanels\imgui\imconfig.h" />
+    <ClInclude Include="DebugPanels\imgui\imgui.h" />
+    <ClInclude Include="DebugPanels\imgui\imgui_internal.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_rect_pack.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_textedit.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_truetype.h" />
     <ClInclude Include="Entities\Component.h" />
     <ClInclude Include="Entities\ComponentRegistry.h" />
     <ClInclude Include="Entities\Entity.h" />
@@ -74,12 +82,6 @@
     <ClInclude Include="GameStates\GameStateManager.h" />
     <ClInclude Include="GameStates\SplashScreenGameState.h" />
     <ClInclude Include="GameStates\Time.h" />
-    <ClInclude Include="imGUI\imconfig.h" />
-    <ClInclude Include="imGUI\imgui.h" />
-    <ClInclude Include="imGUI\imgui_internal.h" />
-    <ClInclude Include="imGUI\stb_rect_pack.h" />
-    <ClInclude Include="imGUI\stb_textedit.h" />
-    <ClInclude Include="imGUI\stb_truetype.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="Logging\Logging.h" />

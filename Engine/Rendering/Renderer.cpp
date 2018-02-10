@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/Camera.h"
+#include "Engine/DebugPanels/DebugPanels.h"
 #include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
@@ -162,6 +163,7 @@ namespace Renderer
 		}
 
 		ScreenSpaceRenderer::Render();
+		DebugPanels::Render();
 	}
 
 	void RegisterRenderable(Renderable* renderable)
