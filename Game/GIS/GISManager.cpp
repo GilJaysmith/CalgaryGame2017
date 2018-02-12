@@ -2,6 +2,7 @@
 
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
+#include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/ShaderManager.h"
 
@@ -10,6 +11,8 @@
 
 #include "Game/GIS/polypartition/polypartition.h"
 
+#include "PxPhysicsAPI.h"
+#include "foundation/PxFoundation.h"
 
 namespace GIS
 {
@@ -36,10 +39,11 @@ namespace GIS
 	{
 		Building building;
 
-		double OVERALL_SCALE = 10.0;
+		double OVERALL_SCALE = 0.1;
+		double HEIGHT_SCALE = 2.0;
 
-		height /= OVERALL_SCALE;
-		height *= 2;
+		height *= OVERALL_SCALE;
+		height *= HEIGHT_SCALE;
 
 		// Convert building verts to worldspace floorverts/roofverts.
 		std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
@@ -51,13 +55,13 @@ namespace GIS
 
 		for (glm::dvec3 point : points)
 		{
-			m_FloorVerts.push_back(glm::vec3(float(point.x) / OVERALL_SCALE, 0.0f, float(point.z) / OVERALL_SCALE));
-			m_RoofVerts.push_back(glm::vec3(float(point.x) / OVERALL_SCALE, height, float(point.z) / OVERALL_SCALE));
+			m_FloorVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, 0.0f, float(point.z) * OVERALL_SCALE));
+			m_RoofVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, height, float(point.z) * OVERALL_SCALE));
 					
 			// Save out a point for the roof point.
 			TPPLPoint roof_point;
-			roof_point.x = point.x / OVERALL_SCALE;
-			roof_point.y = point.z / OVERALL_SCALE;
+			roof_point.x = point.x * OVERALL_SCALE;
+			roof_point.y = point.z * OVERALL_SCALE;
 			roof_points.push_back(roof_point);
 		}
 
@@ -96,8 +100,8 @@ namespace GIS
 			}
 
 			// Add verts for roof triangles, with new colour.
-			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-			//glm::vec3 roof_tint = tint;
+//			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+			glm::vec3 roof_tint = tint;
 			for (auto triangle : roof_triangles)
 			{
 				assert(triangle.GetNumPoints() == 3);
@@ -105,57 +109,103 @@ namespace GIS
 				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
 				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
 			}
+
+			glGenVertexArrays(1, &building.vao);
+			glBindVertexArray(building.vao);
+
+			// Vertices
+			building.num_triangles = (int)vertices.size();
+
+			float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * 6);
+			float* v = vert_data;
+			for (auto vert : vertices)
+			{
+				glm::vec3 pos = vert.first;
+				glm::vec3 colour = vert.second;
+				*v++ = pos.x;
+				*v++ = pos.y;
+				*v++ = pos.z;
+				*v++ = colour.r;
+				*v++ = colour.g;
+				*v++ = colour.b;
+			}
+
+			GLuint vbo;
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+			int vert_data_size = (int)(vertices.size() * 6 * sizeof(float));
+			glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
+
+			MemDelete(vert_data);
+
+			// Apply attribute bindings
+			GLint posAttrib = glGetAttribLocation(s_ShaderProgram, "position");
+			if (posAttrib > -1)
+			{
+				glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
+				glEnableVertexAttribArray(posAttrib);
+			}
+
+			GLint colourAttrib = glGetAttribLocation(s_ShaderProgram, "colour");
+			if (colourAttrib > -1)
+			{
+				glVertexAttribPointer(colourAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+				glEnableVertexAttribArray(colourAttrib);
+			}
+
+			s_Buildings.push_back(building);
+
+			// Physics.
+			physx::PxVec3* physx_vert_data = (physx::PxVec3*)MemNewBytes(MemoryPool::Rendering, sizeof(physx::PxVec3) * vertices.size());
+			physx::PxU32* physx_tri_data = (physx::PxU32*)MemNewBytes(MemoryPool::Rendering, sizeof(physx::PxU32) * vertices.size());
+
+			physx::PxVec3* physx_vert_data_p = physx_vert_data;
+			physx::PxU32* physx_tri_data_p = physx_tri_data;
+
+			physx::PxU32 vert_idx = 0;
+			for (auto vert : vertices)
+			{
+				glm::vec3 pos = vert.first;
+				physx::PxVec3 vec(pos.x, pos.y, pos.z);
+				*physx_vert_data_p++ = vec;
+				*physx_tri_data_p++ = vert_idx++;
+			}
+
+			for (auto vert_idx = 0; vert_idx < vertices.size(); vert_idx += 3)
+			{
+				std::swap(physx_tri_data[vert_idx], physx_tri_data[vert_idx + 2]);
+			}
+
+			physx::PxTriangleMeshDesc meshDesc;
+			meshDesc.points.count = static_cast<physx::PxU32>(vertices.size());
+			meshDesc.points.stride = static_cast<physx::PxU32>(sizeof(physx::PxVec3));
+			meshDesc.points.data = physx_vert_data;
+
+			meshDesc.triangles.count = static_cast<physx::PxU32>(vertices.size() / 3);
+			meshDesc.triangles.stride = 3 * sizeof(physx::PxU32);
+			meshDesc.triangles.data = physx_tri_data;
+
+			physx::PxDefaultMemoryOutputStream writeBuffer;
+			physx::PxTriangleMeshCookingResult::Enum result;
+			bool status = Physics::GetCooking()->cookTriangleMesh(meshDesc, writeBuffer, &result);
+
+			MemDelete(physx_vert_data);
+			MemDelete(physx_tri_data);
+
+			physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+
+			physx::PxTriangleMesh* triangle_mesh = Physics::GetPhysics()->createTriangleMesh(readBuffer);
+			std::string material_name = "floor";
+			physx::PxShape* shape = Physics::GetPhysics()->createShape(physx::PxTriangleMeshGeometry(triangle_mesh), *Physics::GetMaterial(material_name));
+			physx::PxRigidStatic* m_StaticActor = physx::PxCreateStatic(*Physics::GetPhysics(), physx::PxTransform(physx::PxVec3(0.0f, 0.0f, 0.0f)), *shape);
+
+			Physics::GetScene()->addActor(*m_StaticActor);
 		}
 		else
 		{
 			Logging::Log("GIS", "Couldn't triangulate roof.");
 		}
-
-		glGenVertexArrays(1, &building.vao);
-		glBindVertexArray(building.vao);
-
-		// Vertices
-		building.num_triangles = (int)vertices.size();
-
-		float* vert_data = (float*)MemNewBytes(MemoryPool::Rendering, sizeof(float) * vertices.size() * 6);
-		float* v = vert_data;
-		for (auto vert : vertices)
-		{
-			glm::vec3 pos = vert.first;
-			glm::vec3 colour = vert.second;
-			*v++ = pos.x;
-			*v++ = pos.y;
-			*v++ = pos.z;
-			*v++ = colour.r;
-			*v++ = colour.g;
-			*v++ = colour.b;
-		}
-
-		GLuint vbo;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-		int vert_data_size = (int)(vertices.size() * 6 * sizeof(float));
-		glBufferData(GL_ARRAY_BUFFER, vert_data_size, vert_data, GL_STATIC_DRAW);
-
-		MemDelete(vert_data);
-
-		// Apply attribute bindings
-		GLint posAttrib = glGetAttribLocation(s_ShaderProgram, "position");
-		if (posAttrib > -1)
-		{
-			glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
-			glEnableVertexAttribArray(posAttrib);
-		}
-
-		GLint colourAttrib = glGetAttribLocation(s_ShaderProgram, "colour");
-		if (colourAttrib > -1)
-		{
-			glVertexAttribPointer(colourAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-			glEnableVertexAttribArray(colourAttrib);
-		}
-
-		s_Buildings.push_back(building);
 	}
 
 	void Render()

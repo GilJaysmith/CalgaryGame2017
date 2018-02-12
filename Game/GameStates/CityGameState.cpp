@@ -22,21 +22,20 @@ CityGameState::~CityGameState()
 
 }
 
-Entity* car = nullptr;
-
 void CityGameState::OnEnter()
 {
 	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
-	for (unsigned int x = 0; x < 10; x++)
-	{
-		for (unsigned int z = 0; z < 10; z++)
-		{
-			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
-			car = Entity::CreateEntity("Porsche_911_GT2", transform);
-		}
-	}
 
-//	GIS::LoadCity("Vancouver");
+	//for (unsigned int x = 0; x < 10; x++)
+	//{
+	//	for (unsigned int z = 0; z < 10; z++)
+	//	{
+	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
+	//		Entity::CreateEntity("Porsche_911_GT2", transform);
+	//	}
+	//}
+
+	GIS::LoadCity("Vancouver");
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
@@ -49,8 +48,8 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 	ImGui::SetNextWindowBgAlpha(0.5f);
-	ImGui::Begin("Car debug");
-	ImGui::Text("Car altitude is: %fm and here's a random number: %d", car->GetTransform()[3][1], rand());
+	ImGui::Begin("Fun debug");
+//	ImGui::Text("Car altitude is: %fm and here's a random number: %d", car->GetTransform()[3][1], rand());
 	if (ImGui::Button("Click me to toggle physics"))
 	{
 		Physics::Pause(!Physics::IsPaused());
@@ -67,7 +66,7 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 
-	GIS::Render();
+//	GIS::Render();
 	
 	return true;
 }

@@ -161,9 +161,6 @@ namespace Renderer
 			str << "New peak verts: " << s_PeakVertsInScene << " (" << num_meshes << " meshes in scene)";
 			Logging::Log("Rendering", str.str());
 		}
-
-		ScreenSpaceRenderer::Render();
-		DebugPanels::Render();
 	}
 
 	void RegisterRenderable(Renderable* renderable)

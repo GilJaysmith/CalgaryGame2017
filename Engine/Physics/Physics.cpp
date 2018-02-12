@@ -132,6 +132,11 @@ namespace Physics
 		return scene;
 	}
 
+	physx::PxCooking* GetCooking()
+	{
+		return cooking;
+	}
+
 	bool IsPaused()
 	{
 		return s_IsPaused;
