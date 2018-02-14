@@ -1,3 +1,4 @@
+
 #include "Game/Pch.h"
 
 #include "Engine/Logging/Logging.h"
@@ -35,81 +36,109 @@ namespace GIS
 
 	std::vector<Building> s_Buildings;
 
-	void GenerateMesh(const std::vector<glm::dvec3>& points, double height, const glm::vec3& tint)
+	struct VectorObject {
+		std::vector<glm::dvec3> points;
+		double height;
+		glm::vec3 tint;
+	};
+
+	void GenerateMesh(const std::vector<VectorObject>& objects, bool is_contour)
 	{
 		Building building;
 
-		double OVERALL_SCALE = 0.1;
-		double HEIGHT_SCALE = 2.0;
+		double OVERALL_SCALE = 1.0;
+		double HEIGHT_SCALE = 1.0;
 
-		height *= OVERALL_SCALE;
-		height *= HEIGHT_SCALE;
-
-		// Convert building verts to worldspace floorverts/roofverts.
 		std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
 
-		std::vector<glm::vec3> m_FloorVerts;
-		std::vector<glm::vec3> m_RoofVerts;
-
-		std::vector<TPPLPoint> roof_points;
-
-		for (glm::dvec3 point : points)
+		for (auto object : objects)
 		{
-			m_FloorVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, 0.0f, float(point.z) * OVERALL_SCALE));
-			m_RoofVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, height, float(point.z) * OVERALL_SCALE));
-					
-			// Save out a point for the roof point.
-			TPPLPoint roof_point;
-			roof_point.x = point.x * OVERALL_SCALE;
-			roof_point.y = point.z * OVERALL_SCALE;
-			roof_points.push_back(roof_point);
-		}
+			double height = object.height;
+			height *= OVERALL_SCALE;
+			height *= HEIGHT_SCALE;
 
-		// Close the loop if necessary.
-		glm::vec3 first_vert = m_FloorVerts[0];
-		glm::vec3 last_vert = m_FloorVerts.back();
-		if (first_vert == last_vert)
-		{
-			roof_points.erase(roof_points.begin());
-		}
+			glm::vec3 tint = object.tint;
 
-		// Make poly describing roof.
-		TPPLPoly roof_poly;
-		roof_poly.Init((long)roof_points.size());
-		for (int i = 0; i < roof_points.size(); ++i)
-		{
-			roof_poly[i] = roof_points[i];
-		}
-		roof_poly.SetOrientation(TPPL_CCW);
+			// Convert building verts to worldspace floorverts/roofverts.
 
-		// Triangulate roof poly.
-		std::list<TPPLPoly> roof_triangles;
-		TPPLPartition triangulator;
-		int triangulation_successful = triangulator.Triangulate_MONO(&roof_poly, &roof_triangles);
-		if (triangulation_successful == 1)
-		{
-			// Make vert stream for all the faces in the object.
-			for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
+			std::vector<glm::vec3> m_FloorVerts;
+			std::vector<glm::vec3> m_RoofVerts;
+
+			std::vector<TPPLPoint> roof_points;
+
+			for (glm::dvec3 point : object.points)
 			{
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
+				m_FloorVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, 0.0f, float(point.z) * OVERALL_SCALE));
+				m_RoofVerts.push_back(glm::vec3(float(point.x) * OVERALL_SCALE, height, float(point.z) * OVERALL_SCALE));
+
+				// Save out a point for the roof point.
+				TPPLPoint roof_point;
+				roof_point.x = point.x * OVERALL_SCALE;
+				roof_point.y = point.z * OVERALL_SCALE;
+				roof_points.push_back(roof_point);
 			}
 
-			// Add verts for roof triangles, with new colour.
-//			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-			glm::vec3 roof_tint = tint;
-			for (auto triangle : roof_triangles)
+			// Close the loop if necessary.
+			glm::vec3 first_vert = m_FloorVerts[0];
+			glm::vec3 last_vert = m_FloorVerts.back();
+			if (first_vert == last_vert)
 			{
-				assert(triangle.GetNumPoints() == 3);
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
+				roof_points.erase(roof_points.begin());
 			}
 
+			// Make poly describing roof.
+			TPPLPoly roof_poly;
+			roof_poly.Init((long)roof_points.size());
+			for (int i = 0; i < roof_points.size(); ++i)
+			{
+				roof_poly[i] = roof_points[i];
+			}
+			roof_poly.SetOrientation(TPPL_CCW);
+
+			// Triangulate roof poly.
+			std::list<TPPLPoly> roof_triangles;
+			TPPLPartition triangulator;
+			int triangulation_successful;
+			if (!is_contour)
+			{
+				triangulation_successful = triangulator.Triangulate_EC(&roof_poly, &roof_triangles);
+			}
+			else
+			{
+				triangulation_successful = triangulator.Triangulate_MONO(&roof_poly, &roof_triangles);
+			}
+			if (triangulation_successful == 1)
+			{
+				// Make vert stream for all the faces in the object.
+				for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
+				{
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
+				}
+
+				// Add verts for roof triangles, with new colour.
+	//			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+				glm::vec3 roof_tint = tint;
+				for (auto triangle : roof_triangles)
+				{
+					assert(triangle.GetNumPoints() == 3);
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, height, triangle[0].y), roof_tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, height, triangle[1].y), roof_tint));
+					vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, height, triangle[2].y), roof_tint));
+				}
+			}
+			else
+			{
+				Logging::Log("GIS", "Couldn't triangulate roof.");
+			}
+		}
+
+		if (vertices.size() > 0)
+		{
 			glGenVertexArrays(1, &building.vao);
 			glBindVertexArray(building.vao);
 
@@ -202,10 +231,6 @@ namespace GIS
 
 			Physics::GetScene()->addActor(*m_StaticActor);
 		}
-		else
-		{
-			Logging::Log("GIS", "Couldn't triangulate roof.");
-		}
 	}
 
 	void Render()
@@ -228,54 +253,70 @@ namespace GIS
 
 	void LoadCity(const std::string& city)
 	{
-		//if (false)
-		//{
-		//	std::string city_path = "Data/Shapefiles/" + city + "/buildings.shp";
-		//	SHPHandle shape_file = SHPOpen(city_path.c_str(), "r");
-		//	int num_entities;
-		//	int shape_type;
-		//	double min_bound[4];
-		//	double max_bound[4];
-		//	SHPGetInfo(shape_file, &num_entities, &shape_type, min_bound, max_bound);
-		//	double x_centre = (max_bound[0] + min_bound[0]) / 2.0;
-		//	double y_centre = (max_bound[1] + min_bound[1]) / 2.0;
+		if (true)
+		{
+			std::string city_path = "Data/Shapefiles/" + city + "/buildings-gcs2.shp";
+			SHPHandle shape_file = SHPOpen(city_path.c_str(), "r");
+			int num_entities;
+			int shape_type;
+			double min_bound[4];
+			double max_bound[4];
+			SHPGetInfo(shape_file, &num_entities, &shape_type, min_bound, max_bound);
+			double x_centre = (max_bound[0] + min_bound[0]) / 2.0;
+			double y_centre = (max_bound[1] + min_bound[1]) / 2.0;
 
-		//	const int NUM_BUILDINGS_IN_BLOCK = 1000;
-		//	for (int i = 0; i < shape_file->nRecords; ++i)
-		//	{
-		//		std::vector<SHPObject*> objects;
-		//		std::vector<float> heights;
-		//		for (int j = 0; j < NUM_BUILDINGS_IN_BLOCK; j++)
-		//		{
-		//			if (i + j == shape_file->nRecords)
-		//			{
-		//				break;
-		//			}
-		//			SHPObject* object = SHPReadObject(shape_file, i + j);
-		//			objects.push_back(object);
-		//			float height = 3.0f + 3.f * rand() / (float)RAND_MAX;
-		//			heights.push_back(height);
-		//		}
-		//		GenerateMesh(objects, heights, true);
-		//		for (auto object : objects)
-		//		{
-		//			SHPDestroyObject(object);
-		//		}
+			const int NUM_BUILDINGS_IN_BLOCK = 1000;
+			for (int i = 0; i < shape_file->nRecords; i += NUM_BUILDINGS_IN_BLOCK)
+			{
+				std::vector<VectorObject> vector_objects;
 
-		//		std::stringstream str;
-		//		str << "Creating buildings... block " << i;
-		//		Logging::Log("GIS", str.str());
-		//	}
+				for (int j = 0; j < NUM_BUILDINGS_IN_BLOCK; j++)
+				{
+					if (i + j == shape_file->nRecords)
+					{
+						break;
+					}
 
-		//	SHPClose(shape_file);
-		//}
+					SHPObject* object = SHPReadObject(shape_file, i + j);
+
+//					float height = 3.0f + 3.f * rand() / (float)RAND_MAX;
+					float height = 50.0f + 30 * (rand() / (float)RAND_MAX);
+					
+					VectorObject vector_object;
+					vector_object.height = height;
+//					float c = rand() / (float)RAND_MAX;
+					vector_object.tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+
+					assert(object->nParts == 1);
+					for (int v = object->panPartStart[0]; v < object->nVertices; ++v)
+					{
+						double x = object->padfX[v] - x_centre;
+						double y = object->padfY[v] - y_centre;
+						x *= 111320;
+						y *= 110574;
+						vector_object.points.push_back(glm::dvec3(x, vector_object.height, -y));
+					}
+
+					vector_objects.push_back(vector_object);
+					SHPDestroyObject(object);
+				}
+
+				GenerateMesh(vector_objects, false);
+
+				std::stringstream str;
+				str << "Creating buildings... block " << i;
+				Logging::Log("GIS", str.str());
+			}
+
+			SHPClose(shape_file);
+		}
 
 		if (true)
 		{
 			// Contours.
-			std::string contours_path = "Data/Shapefiles/" + city + "/2-metre_contour_lines.shp";
+			std::string contours_path = "Data/Shapefiles/" + city + "/2-metre_contour_lines-gcs2.shp";
 			SHPHandle contours_file = SHPOpen(contours_path.c_str(), "r");
-			std::string contours_dbf = "Data/Shapefiles/" + city + "/2-metre_contour_lines.dbf";
+			std::string contours_dbf = "Data/Shapefiles/" + city + "/2-metre_contour_lines-gcs2.dbf";
 			DBFHandle dbf_file = DBFOpen(contours_dbf.c_str(), "r");
 
 			// Read header, set bounds.
@@ -287,42 +328,44 @@ namespace GIS
 			double x_centre = (max_bound[0] + min_bound[0]) / 2.0;
 			double y_centre = (max_bound[1] + min_bound[1]) / 2.0;
 
-			struct Contour {
-				std::vector<glm::dvec3> points;
-				double height;
-			};
-
 			// Read contour data.
-			std::vector<Contour> contours;
+			std::vector<VectorObject> contours;
 			for (int i = 0; i < contours_file->nRecords; ++i)
 			{
-				Contour contour;
+				VectorObject contour;
 				double elevation = DBFReadDoubleAttribute(dbf_file, i, 0);
 				contour.height = elevation;
 				SHPObject* object = SHPReadObject(contours_file, i);
-				assert(object->nParts == 1);
-				for (int i = object->panPartStart[0]; i < object->nVertices; ++i)
+				if (object && object->nParts == 1)
 				{
-					double x = object->padfX[i] - x_centre;
-					double y = object->padfY[i] - y_centre;
-					contour.points.push_back(glm::dvec3(x, elevation, -y));
+					assert(object->nParts == 1);
+					for (int i = object->panPartStart[0]; i < object->nVertices; ++i)
+					{
+						double x = object->padfX[i] - x_centre;
+						double y = object->padfY[i] - y_centre;
+
+						x *= 111320;
+						y *= 110574;
+
+						contour.points.push_back(glm::dvec3(x, elevation, -y));
+					}
+					if (contour.points.size() >= 2 && elevation >= 0.5f)
+					{
+						contours.push_back(contour);
+					}
+					else
+					{
+						Logging::Log("GIS", "Contour rejected, <2 points!");
+					}
+					SHPDestroyObject(object);
 				}
-				if (contour.points.size() >= 2 && elevation >= 0.5f)
-				{
-					contours.push_back(contour);
-				}
-				else
-				{
-					Logging::Log("GIS", "Contour rejected, <2 points!");
-				}
-				SHPDestroyObject(object);
 			}
 
 			SHPClose(contours_file);
 			DBFClose(dbf_file);
 
 			// Loop through the contours looking for those where the first and last points are the same, and move them to a separate list.
-			std::vector<Contour> final_contours;
+			std::vector<VectorObject> final_contours;
 
 			bool something_moved = true;
 			while (something_moved)
@@ -330,7 +373,7 @@ namespace GIS
 				something_moved = false;
 				for (auto it = contours.begin(); it != contours.end(); )
 				{
-					Contour& contour = *it;
+					VectorObject& contour = *it;
 					if (NearEnough(contour.points[0], contour.points.back()))
 					{
 						final_contours.push_back(contour);
@@ -345,13 +388,13 @@ namespace GIS
 				}
 				for (auto it = contours.begin(); it != contours.end(); )
 				{
-					Contour& contour = *it;
+					VectorObject& contour = *it;
 					bool contour_moved = false;
 					for (auto candidate_it = contours.begin(); candidate_it != contours.end(); ++candidate_it)
 					{
 						if (it != candidate_it)
 						{
-							Contour& candidate = *candidate_it;
+							VectorObject& candidate = *candidate_it;
 							// Contour could be appended to this contour.
 							if (NearEnough(candidate.points.back(), contour.points[0]))
 							{
@@ -421,11 +464,15 @@ namespace GIS
 			for (auto& contour : final_contours)
 			{
 				glm::vec3 tint(rand() / (float) RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-				GenerateMesh(contour.points, contour.height, tint);
-				//++n;
-				//std::stringstream str;
-				//str << "Generated contour " << n << " of " << final_contours.size();
-				//Logging::Log("GIS", str.str());
+				contour.tint = tint;
+				std::vector<VectorObject> objects;
+				objects.push_back(contour);
+				GenerateMesh(objects, true);
+
+				++n;
+				std::stringstream str;
+				str << "Generated contour " << n << " of " << final_contours.size();
+				Logging::Log("GIS", str.str());
 			}
 
 			Logging::Log("GIS", "Combining finished!");
