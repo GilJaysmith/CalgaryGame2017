@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /Data/Shapefiles/Paris
 /Data/Shapefiles/Paris
+/Data/Shapefiles/Vancouver/cooked.bin
