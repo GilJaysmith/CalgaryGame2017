@@ -249,7 +249,7 @@ struct MeshNode
 
 	MeshNode(aiNode* node, const std::vector<SubMesh*>& meshes)
 	{
-		Logging::Log("Render", std::string("Node ") + node->mName.C_Str());
+		Logging::Log("Mesh", std::string("Node ") + node->mName.C_Str());
 		CopyMat(node->mTransformation, m_Transform);
 		m_NumVerts = 0;
 		for (unsigned int mesh_idx = 0; mesh_idx < node->mNumMeshes; ++mesh_idx)
@@ -383,18 +383,18 @@ void Mesh::LoadFromYaml(const std::string& filename)
 
 	std::stringstream str;
 	str << "Mesh " << filename << " loaded, " << num_verts << " verts in " << num_meshes << " meshes";
-	Logging::Log("Rendering", str.str());
+	Logging::Log("Mesh", str.str());
 	str.str("");
 	str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
-	Logging::Log("Rendering", str.str());
+	Logging::Log("Mesh", str.str());
 	str.str("");
 	glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
 	str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
-	Logging::Log("Rendering", str.str());
+	Logging::Log("Mesh", str.str());
 	str.str("");
 	glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
 	str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
-	Logging::Log("Rendering", str.str());
+	Logging::Log("Mesh", str.str());
 }
 
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)

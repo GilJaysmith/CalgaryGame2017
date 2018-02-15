@@ -183,6 +183,9 @@
     <ClInclude Include="GameStates\FrontEndState.h" />
     <ClInclude Include="GameStates\InGameState.h" />
     <ClInclude Include="GameStates\TestGameState.h" />
+    <ClInclude Include="GIS\City.h" />
+    <ClInclude Include="GIS\CityLoaderFromCooked.h" />
+    <ClInclude Include="GIS\CityLoaderFromSource.h" />
     <ClInclude Include="GIS\GISManager.h" />
     <ClInclude Include="GIS\polypartition\polypartition.h" />
     <ClInclude Include="GIS\shapelib\shapefil.h" />
@@ -199,6 +202,9 @@
     <ClCompile Include="GameStates\FrontEndState.cpp" />
     <ClCompile Include="GameStates\InGameState.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp" />
+    <ClCompile Include="GIS\City.cpp" />
+    <ClCompile Include="GIS\CityLoaderFromCooked.cpp" />
+    <ClCompile Include="GIS\CityLoaderFromSource.cpp" />
     <ClCompile Include="GIS\GISManager.cpp" />
     <ClCompile Include="GIS\polypartition\polypartition.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

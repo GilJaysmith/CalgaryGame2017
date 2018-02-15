@@ -71,7 +71,7 @@ namespace Input
 		auto it = s_KeyEvents.find(key);
 		if (it == s_KeyEvents.end())
 		{
-			Logging::Log("Logging", "Unknown key in GetKeyEvent");
+			Logging::Log("Input", "Unknown key in GetKeyEvent");
 			return TYPE::NONE;
 		}
 		return s_KeyEvents[key];

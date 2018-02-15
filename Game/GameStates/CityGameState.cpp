@@ -3,7 +3,6 @@
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/DebugPanels/imgui/imgui.h"
-#include "Engine/Memory/Memory.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
@@ -35,7 +34,8 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-	GIS::LoadCity("Vancouver");
+//	GIS::LoadCityFromSource("Vancouver");
+	GIS::LoadCityFromCooked("Vancouver");
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);

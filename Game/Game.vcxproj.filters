@@ -65,6 +65,15 @@
     <ClInclude Include="GIS\polypartition\polypartition.h">
       <Filter>GIS\polypartition</Filter>
     </ClInclude>
+    <ClInclude Include="GIS\CityLoaderFromSource.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\City.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\CityLoaderFromCooked.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -148,6 +157,15 @@
     </ClCompile>
     <ClCompile Include="GIS\polypartition\polypartition.cpp">
       <Filter>GIS\polypartition</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\CityLoaderFromSource.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\City.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\CityLoaderFromCooked.cpp">
+      <Filter>GIS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -159,7 +159,7 @@ namespace Renderer
 			s_PeakVertsInScene = num_verts;
 			std::stringstream str;
 			str << "New peak verts: " << s_PeakVertsInScene << " (" << num_meshes << " meshes in scene)";
-			Logging::Log("Rendering", str.str());
+			Logging::Log("Renderer", str.str());
 		}
 	}
 
