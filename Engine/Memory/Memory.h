@@ -15,6 +15,7 @@ namespace MemoryPool
 		Rendering,
 		Entities,
 		Audio,
+		Vehicles,
 		COUNT
 	};
 }
@@ -25,6 +26,7 @@ namespace MemoryAllocatorThreadSafeness
 	{
 		SingleThreaded,
 		Multithreaded,
+		COUNT
 	};
 }
 
@@ -58,7 +60,6 @@ namespace Memory
 	void Terminate();
 
 	Allocator* CreateFreeStoreAllocator();
-	Allocator* CreateDougLeaAllocator();
 
 	void RegisterAllocator(MemoryPool::TYPE memory_pool_type, Allocator* allocator, MemoryAllocatorThreadSafeness::TYPE thread_safeness);
 }

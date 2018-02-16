@@ -2,7 +2,6 @@
 
 #include "Engine/Cameras/Camera.h"
 #include "Engine/DebugPanels/DebugPanels.h"
-#include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"

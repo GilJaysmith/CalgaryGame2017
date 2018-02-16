@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 class Component;
 class Entity;

@@ -22,7 +22,10 @@ namespace GIS
 
 	void Render()
 	{
-		s_City.Render();
+		if (s_City.IsFinalized())
+		{
+			s_City.Render();
+		}
 	}
 
 	void LoadCityFromSource(const std::string& city_name)

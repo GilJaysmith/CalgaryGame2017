@@ -5,7 +5,6 @@
 
 #include "Engine/GameStates/Time.h"
 
-#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 class Component;
 class Message;

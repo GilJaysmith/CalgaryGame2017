@@ -36,6 +36,7 @@ public:
 	void Render() const;
 	void AddObject(const CityObjectData& object_data);
 	void Finalize();
+	bool IsFinalized() const { return m_Finalized; }
 
 protected:
 

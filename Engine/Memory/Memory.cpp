@@ -1,6 +1,5 @@
 #include "Engine/Pch.h"
 
-#include "Engine/Memory/Memory.h"
 #include "Engine/Memory/Allocators/FreeStoreAllocator.h"
 
 #include <set>
@@ -141,10 +140,6 @@ namespace Memory
 		return new FreeStoreAllocator;
 	}
 
-	Allocator* CreateDougLeaAllocator()
-	{
-		return nullptr;
-	}
 
 	void RegisterAllocator(MemoryPool::TYPE memory_pool_type, Allocator* allocator, MemoryAllocatorThreadSafeness::TYPE thread_safeness)
 	{

@@ -6,8 +6,6 @@
 #include "PxScene.h"
 #include "PxSceneDesc.h"
 
-#include "Engine/Logging/Logging.h"
-#include "Engine/Memory/Memory.h"
 #include "Engine/GameStates/Time.h"
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
@@ -61,6 +59,25 @@ namespace Physics
 		return s_Materials[material_name];
 	}
 
+	physx::PxFilterFlags FilterShader
+	(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
+		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
+		physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
+	{
+		PX_UNUSED(attributes0);
+		PX_UNUSED(attributes1);
+		PX_UNUSED(constantBlock);
+		PX_UNUSED(constantBlockSize);
+
+		if ((0 == (filterData0.word0 & filterData1.word1)) && (0 == (filterData1.word0 & filterData0.word1)))
+			return physx::PxFilterFlag::eSUPPRESS;
+
+		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+		pairFlags |= physx::PxPairFlags(physx::PxU16(filterData0.word2 | filterData1.word2));
+
+		return physx::PxFilterFlags();
+	}
+
 	void Initialize()
 	{
 		Logging::Log("Physics", "Physics initializing...");
@@ -77,6 +94,7 @@ namespace Physics
 		dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		scene_desc.cpuDispatcher = dispatcher;
 		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
+//		scene_desc.filterShader = FilterShader;
 		scene = physics->createScene(scene_desc);
 
 		YAML::Node yaml = YAML::LoadFile("Data/Physics/materials.yaml");

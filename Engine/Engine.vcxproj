@@ -39,7 +39,6 @@
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
-    <ClCompile Include="Memory\Allocators\DLAllocator.cpp" />
     <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Pch.cpp">
@@ -59,6 +58,12 @@
     <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp" />
     <ClCompile Include="Rendering\ShaderManager.cpp" />
     <ClCompile Include="Rendering\TextureManager.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4W.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleTireFriction.cpp" />
+    <ClCompile Include="Vehicles\VehicleComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
@@ -86,7 +91,6 @@
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Math\AABB.h" />
-    <ClInclude Include="Memory\Allocators\DLAllocator.h" />
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Pch.h" />
@@ -101,6 +105,13 @@
     <ClInclude Include="Rendering\ScreenSpaceRenderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicle4W.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleFilterShader.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleTireFriction.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleWheelQueryResult.h" />
+    <ClInclude Include="Vehicles\VehicleComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

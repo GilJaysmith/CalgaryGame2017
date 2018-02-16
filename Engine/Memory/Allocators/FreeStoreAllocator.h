@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Engine/Memory/Memory.h"
-
 #include <set>
 
 namespace Memory

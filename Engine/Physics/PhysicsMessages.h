@@ -10,6 +10,7 @@ namespace PhysicsMessageSubtype
 		SetLinearVelocity,
 		SetAngularVelocity,
 		DisableGravity,		
+		COUNT
 	};
 };
 

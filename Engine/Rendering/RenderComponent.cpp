@@ -1,11 +1,13 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Entities/Entity.h"
-#include "Engine/Memory/Memory.h"
 #include "Engine/Rendering/MeshManager.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/RenderComponent.h"
 #include "Engine/Rendering/Renderer.h"
+
+#include <sdks/libyaml/include/yaml-cpp/yaml.h>
+
 
 Component* RenderComponent::CreateComponent(Entity* owner, const YAML::Node& properties)
 {

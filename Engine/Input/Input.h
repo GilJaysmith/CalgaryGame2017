@@ -12,6 +12,7 @@ namespace Input
 		PRESSED,
 		HELD,
 		RELEASED,
+		COUNT
 	};
 
 	void Initialize();

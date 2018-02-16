@@ -1,13 +1,14 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Entities/Entity.h"
-#include "Engine/Memory/Memory.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Physics/PhysicsComponent.h"
 #include "Engine/Physics/PhysicsMessages.h"
 
 #include "PxPhysicsAPI.h"
 #include "foundation/PxFoundation.h"
+
+#include <sdks/libyaml/include/yaml-cpp/yaml.h>
 
 Component* PhysicsComponent::CreateComponent(Entity* owner, const YAML::Node& properties)
 {

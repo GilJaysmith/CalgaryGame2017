@@ -1,8 +1,6 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/Camera.h"
-#include "Engine/Logging/Logging.h"
-#include "Engine/Memory/Memory.h"
 #include "Engine/Rendering/Mesh.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
@@ -346,7 +344,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	{
 		Assimp::Importer importer;
 		std::string obj_filename = "data/meshes/" + node["obj"].as<std::string>();
-		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate);
+		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate | aiProcess_GenNormals);
 
 		// Make VAOs for all the meshes.
 		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)

@@ -119,7 +119,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\sdks\PhysX\PhysX\Lib;..\sdks\PhysX\PxShared\Lib;..\sdks\glew\lib;..\sdks\glfw\lib;..\sdks\soil\lib;..\sdks\libyaml\lib;..\sdks\assimp\lib;..\sdks\fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PhysX3DEBUG_x64.lib;PhysX3CommonDEBUG_x64.lib;PxFoundationDEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;glfw3d.lib;opengl32.lib;libglew32d.lib;SOILd.lib;libyaml-cppmdd.lib;assimp-vc140-mt.lib;fmodL64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PhysX3DEBUG_x64.lib;PhysX3CommonDEBUG_x64.lib;PxFoundationDEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;glfw3d.lib;opengl32.lib;libglew32d.lib;SOILd.lib;libyaml-cppmdd.lib;assimp-vc140-mt.lib;fmodL64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
@@ -168,7 +168,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\sdks\PhysX\PhysX\Lib;..\sdks\PhysX\PxShared\Lib;..\sdks\glew\lib;..\sdks\glfw\lib;..\sdks\soil\lib;..\sdks\libyaml\lib;..\sdks\assimp\lib;..\sdks\fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PhysX3CHECKED_x64.lib;PhysX3CommonCHECKED_x64.lib;PxFoundationCHECKED_x64.lib;PhysX3CookingCHECKED_x64.lib;PhysX3ExtensionsCHECKED.lib;glfw3.lib;opengl32.lib;libglew32.lib;SOIL.lib;libyaml-cppmd.lib;assimp-vc140-mt.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PhysX3CHECKED_x64.lib;PhysX3CommonCHECKED_x64.lib;PxFoundationCHECKED_x64.lib;PhysX3CookingCHECKED_x64.lib;PhysX3ExtensionsCHECKED.lib;PhysX3VehicleCHECKED.lib;glfw3.lib;opengl32.lib;libglew32.lib;SOIL.lib;libyaml-cppmd.lib;assimp-vc140-mt.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>

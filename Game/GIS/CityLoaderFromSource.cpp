@@ -11,6 +11,8 @@
 
 #include <time.h>
 
+float random_colour() { return rand() / (float)RAND_MAX; }
+
 void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects, bool is_contour)
 {
 	double HEIGHT_SCALE = 1.0;
@@ -25,7 +27,8 @@ void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects
 		double roof_height = object.roof_height;
 		roof_height *= HEIGHT_SCALE;
 
-		glm::vec3 tint = object.tint;
+		glm::vec3 wall_tint = object.wall_tint;
+		glm::vec3 roof_tint = object.roof_tint;
 
 		// Convert building verts to worldspace floorverts/roofverts.
 
@@ -80,17 +83,15 @@ void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects
 			// Make vert stream for all the faces in the object.
 			for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
 			{
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], wall_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], wall_tint));
+				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
 			}
 
 			// Add verts for roof triangles, with new colour.
-			//			glm::vec3 roof_tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-			glm::vec3 roof_tint = tint;
 			for (auto triangle : roof_triangles)
 			{
 				assert(triangle.GetNumPoints() == 3);
@@ -287,10 +288,8 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 		int n = 0;
 		for (auto& contour : final_contours)
 		{
-			glm::vec3 tint(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-//			float c = float((50 + (contour.roof_height / OVERALL_SCALE)) / 256);
-//			glm::vec3 tint(c, c, c);
-			contour.tint = tint;
+			contour.wall_tint = glm::vec3(random_colour() * 0.8f, random_colour() * 0.8f, random_colour() * 0.8f);
+			contour.roof_tint = contour.wall_tint * 1.2f;
 			std::vector<VectorObject> objects;
 			objects.push_back(contour);
 			GenerateMesh(objects, true);
@@ -371,9 +370,8 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 				height *= (float)OVERALL_SCALE;
 				vector_object.ground_height = min_ground_height;
 				vector_object.roof_height = min_ground_height + height;
-				vector_object.tint = glm::vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
-				//float c = rand() / (float)RAND_MAX;
-				//vector_object.tint = glm::vec3(c, c, c);
+				vector_object.wall_tint = glm::vec3(random_colour() * 0.8f, random_colour() * 0.8f, random_colour() * 0.8f);
+				vector_object.roof_tint = vector_object.wall_tint * 1.2f;
 
 				vector_objects.push_back(vector_object);
 				SHPDestroyObject(object);

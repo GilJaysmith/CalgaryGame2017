@@ -16,7 +16,8 @@ protected:
 		std::vector<glm::dvec3> points;
 		double ground_height;
 		double roof_height;
-		glm::vec3 tint;
+		glm::vec3 wall_tint;
+		glm::vec3 roof_tint;
 	};
 
 	void GenerateMesh(const std::vector<VectorObject>& objects, bool is_contour);

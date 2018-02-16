@@ -40,6 +40,12 @@
     <Filter Include="DebugPanels\imgui">
       <UniqueIdentifier>{54fb5edc-7032-4469-82c4-37c7002da972}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vehicles">
+      <UniqueIdentifier>{945d731a-df55-4afc-865e-8460af0183a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles\Nvidia">
+      <UniqueIdentifier>{9d8d8431-897b-45fa-8e19-d916ef732cfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -53,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="Memory\Memory.cpp">
       <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory\Allocators\DLAllocator.cpp">
-      <Filter>Memory\Allocators</Filter>
     </ClCompile>
     <ClCompile Include="Logging\Logging.cpp">
       <Filter>Logging</Filter>
@@ -142,6 +145,24 @@
     <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp">
       <Filter>DebugPanels\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4W.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleTireFriction.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -155,9 +176,6 @@
     </ClInclude>
     <ClInclude Include="Memory\Memory.h">
       <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\Allocators\DLAllocator.h">
-      <Filter>Memory\Allocators</Filter>
     </ClInclude>
     <ClInclude Include="Logging\Logging.h">
       <Filter>Logging</Filter>
@@ -261,6 +279,27 @@
     </ClInclude>
     <ClInclude Include="DebugPanels\imgui\stb_truetype.h">
       <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicle4W.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleFilterShader.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleTireFriction.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleWheelQueryResult.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleComponent.h">
+      <Filter>Vehicles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

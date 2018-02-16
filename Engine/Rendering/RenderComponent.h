@@ -2,7 +2,6 @@
 
 #include "Engine/Entities/Component.h"
 
-#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 class Entity;
 class Mesh;

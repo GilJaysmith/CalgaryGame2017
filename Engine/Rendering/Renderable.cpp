@@ -2,7 +2,6 @@
 
 #include "Engine/Pch.h"
 
-#include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/Mesh.h"
 #include "Engine/Rendering/Renderable.h"
 

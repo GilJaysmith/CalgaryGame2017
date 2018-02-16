@@ -2,7 +2,6 @@
 
 #include "Engine/Input/Input.h"
 #include "Engine/Input/InputHandler.h"
-#include "Engine/Logging/Logging.h"
 
 namespace Input
 {

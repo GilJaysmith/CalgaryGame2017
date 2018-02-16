@@ -4,7 +4,6 @@
 #include <istream>
 #include <sstream>
 
-#include "Engine/Logging/Logging.h"
 #include "Engine/Rendering/ShaderManager.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"

@@ -1,7 +1,6 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Entities/ComponentRegistry.h"
-#include "Engine/Logging/Logging.h"
 
 namespace ComponentRegistry
 {
