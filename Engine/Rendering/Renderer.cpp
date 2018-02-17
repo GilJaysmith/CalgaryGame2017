@@ -150,14 +150,14 @@ namespace Renderer
 				glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
 				ShaderManager::SetUniform3fv("lighting_ambient_colour", ambient_colour);
 
-				glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
+				glm::vec3 diffuse_position(1.0f, 0.0f, 0.0f);
 				ShaderManager::SetUniform3fv("lighting_directional_vector", diffuse_position);
 
 				glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
 				ShaderManager::SetUniform3fv("lighting_directional_colour", diffuse_colour);
 
 				glm::vec3 camera_pos = s_ActiveCamera->GetPosition();
-				ShaderManager::SetUniform3fv("camera_position", diffuse_colour);
+				ShaderManager::SetUniform3fv("camera_position", camera_pos);
 
 				for (auto it : m_RenderablesInScene)
 				{
