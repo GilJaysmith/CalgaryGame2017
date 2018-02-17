@@ -22,10 +22,16 @@ RenderComponent::~RenderComponent()
 	}
 }
 
-void RenderComponent::OnUpdate(const Time& elapsed_time)
+void RenderComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass)
 {
-	const glm::mat4& world_transform = m_Entity->GetTransform();
-	m_Renderable->SetTransform(world_transform);
+	switch (update_pass)
+	{
+		case UpdatePass::AfterPhysics:
+		{
+			const glm::mat4& world_transform = m_Entity->GetTransform();
+			m_Renderable->SetTransform(world_transform);
+		}
+	}
 }
 
 RenderComponent::RenderComponent(Entity* owner, const YAML::Node& properties)

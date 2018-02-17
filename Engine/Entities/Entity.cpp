@@ -54,11 +54,11 @@ int Entity::OnMessage(Message * message)
 	return components_responding_to_message;
 }
 
-void Entity::OnUpdate(const Time& elapsed_time)
+void Entity::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass)
 {
 	for (auto component : m_Components)
 	{
-		component->OnUpdate(elapsed_time);
+		component->OnUpdate(elapsed_time, update_pass);
 	}
 }
 

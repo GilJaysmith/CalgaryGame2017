@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Engine/Entities/UpdatePass.h"
+
 class Entity;
 class Message;
 class Time;
@@ -11,7 +13,7 @@ public:
 	virtual ~Component();
 
 	virtual bool OnMessage(Message*) { return false; }
-	virtual void OnUpdate(const Time& elapsed_time) {}
+	virtual void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) {}
 
 	void SetActive(bool active);
 

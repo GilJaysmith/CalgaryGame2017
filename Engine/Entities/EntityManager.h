@@ -3,6 +3,8 @@
 #include <map>
 #include <set>
 
+#include "Engine/Entities/UpdatePass.h"
+
 class Entity;
 class Message;
 class Time;
@@ -12,7 +14,7 @@ namespace EntityManager
 	void Initialize();
 	void Terminate();
 
-	void Update(const Time& time);
+	void Update(const Time& time, UpdatePass::TYPE update_pass);
 
 	Entity* CreateEntity();
 	void DestroyEntity(Entity* entity);

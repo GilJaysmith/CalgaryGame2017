@@ -6,6 +6,7 @@
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
+#include "Engine/Rendering/Viewport.h"
 
 #include <set>
 
@@ -24,6 +25,8 @@ namespace Renderer
 	unsigned int s_Height;
 	bool s_FullScreen;
 
+	std::map<std::string, Viewport> s_Viewports;
+
 	void DestroyWindow()
 	{
 		if (s_Window)
@@ -31,6 +34,7 @@ namespace Renderer
 			glfwDestroyWindow(s_Window);
 			s_Window = nullptr;
 		}
+		s_Viewports.clear();
 	}
 
 	void CreateWindow(unsigned int width, unsigned int height, bool full_screen)
@@ -56,6 +60,9 @@ namespace Renderer
 
 		glewExperimental = GL_TRUE;
 		glewInit();
+
+		Viewport default_viewport(0, 0, width, height);
+		s_Viewports["default"] = default_viewport;
 	}
 
 	void Initialize()
@@ -125,40 +132,51 @@ namespace Renderer
 	{
 		unsigned int num_meshes = 0;
 		unsigned int num_verts = 0;
-		if (s_ActiveCamera)
+
+		for (auto viewport_it : s_Viewports)
 		{
-			ShaderManager::SetUniformMatrix4fv("camera_projection", s_ActiveCamera->GetProjMatrix());
-			ShaderManager::SetUniformMatrix4fv("camera_view", s_ActiveCamera->GetViewMatrix());
+			Viewport& viewport = viewport_it.second;
+			GLint x, y;
+			viewport.GetPosition(x, y);
+			GLsizei width, height;
+			viewport.GetSize(width, height);
+			glViewport(x, y, width, height);
 
-			glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
-			ShaderManager::SetUniform3fv("lighting_ambient_colour", ambient_colour);
-
-			glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
-			ShaderManager::SetUniform3fv("lighting_directional_vector", diffuse_position);
-
-			glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
-			ShaderManager::SetUniform3fv("lighting_directional_colour", diffuse_colour);
-
-			glm::vec3 camera_pos = s_ActiveCamera->GetPosition();
-			ShaderManager::SetUniform3fv("camera_position", diffuse_colour);
-
-			for (auto it : m_RenderablesInScene)
+			if (s_ActiveCamera)
 			{
-				if (it->IsActive())
+				ShaderManager::SetUniformMatrix4fv("camera_projection", s_ActiveCamera->GetProjMatrix());
+				ShaderManager::SetUniformMatrix4fv("camera_view", s_ActiveCamera->GetViewMatrix());
+
+				glm::vec3 ambient_colour(1.0f, 0.0f, 1.0f);
+				ShaderManager::SetUniform3fv("lighting_ambient_colour", ambient_colour);
+
+				glm::vec3 diffuse_position(-10.0f, 0.0f, 0.0f);
+				ShaderManager::SetUniform3fv("lighting_directional_vector", diffuse_position);
+
+				glm::vec3 diffuse_colour(0.5f, 0.5f, 0.5f);
+				ShaderManager::SetUniform3fv("lighting_directional_colour", diffuse_colour);
+
+				glm::vec3 camera_pos = s_ActiveCamera->GetPosition();
+				ShaderManager::SetUniform3fv("camera_position", diffuse_colour);
+
+				for (auto it : m_RenderablesInScene)
 				{
-					it->Render();
-					num_meshes += it->GetNumMeshes();
-					num_verts += it->GetNumVerts();
+					if (it->IsActive())
+					{
+						it->Render();
+						num_meshes += it->GetNumMeshes();
+						num_verts += it->GetNumVerts();
+					}
 				}
 			}
-		}
 
-		if (num_verts > s_PeakVertsInScene)
-		{
-			s_PeakVertsInScene = num_verts;
-			std::stringstream str;
-			str << "New peak verts: " << s_PeakVertsInScene << " (" << num_meshes << " meshes in scene)";
-			Logging::Log("Renderer", str.str());
+			if (num_verts > s_PeakVertsInScene)
+			{
+				s_PeakVertsInScene = num_verts;
+				std::stringstream str;
+				str << "New peak verts: " << s_PeakVertsInScene << " (" << num_meshes << " meshes in scene)";
+				Logging::Log("Renderer", str.str());
+			}
 		}
 	}
 
@@ -172,4 +190,18 @@ namespace Renderer
 		m_RenderablesInScene.erase(renderable);
 	}
 
+	void RegisterViewport(const Viewport& viewport, const std::string& viewport_name)
+	{
+		s_Viewports[viewport_name] = viewport;
+	}
+
+	void UnregisterViewport(const std::string& viewport_name)
+	{
+		s_Viewports.erase(viewport_name);
+	}
+
+	Viewport& GetViewport(const std::string& viewport_name)
+	{
+		return s_Viewports[viewport_name];
+	}
 }

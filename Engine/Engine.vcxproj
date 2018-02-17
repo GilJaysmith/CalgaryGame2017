@@ -57,8 +57,8 @@
     <ClCompile Include="Rendering\Renderer.cpp" />
     <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp" />
     <ClCompile Include="Rendering\ShaderManager.cpp" />
+    <ClCompile Include="Rendering\Viewport.cpp" />
     <ClCompile Include="Rendering\TextureManager.cpp" />
-    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4W.cpp" />
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp" />
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp" />
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp" />
@@ -83,6 +83,7 @@
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Entities\Message.h" />
     <ClInclude Include="Entities\MessageTypes.h" />
+    <ClInclude Include="Entities\UpdatePass.h" />
     <ClInclude Include="GameStates\GameState.h" />
     <ClInclude Include="GameStates\GameStateManager.h" />
     <ClInclude Include="GameStates\SplashScreenGameState.h" />
@@ -105,7 +106,7 @@
     <ClInclude Include="Rendering\ScreenSpaceRenderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
-    <ClInclude Include="Vehicles\Nvidia\SnippetVehicle4W.h" />
+    <ClInclude Include="Rendering\Viewport.h" />
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h" />
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleFilterShader.h" />
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h" />

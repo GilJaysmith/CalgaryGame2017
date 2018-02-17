@@ -2,6 +2,7 @@
 
 #include "Engine/Cameras/Camera.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/Viewport.h"
 
 
 Camera::Camera()

@@ -21,7 +21,7 @@ public:
 	virtual ~PhysicsComponent();
 
 	bool OnMessage(Message*) override;
-	void OnUpdate(const Time& elapsed_time) override;
+	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
 
 protected:
 	PhysicsComponent(Entity* owner, const YAML::Node& properties);

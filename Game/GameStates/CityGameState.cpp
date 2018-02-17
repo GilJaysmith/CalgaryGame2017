@@ -25,14 +25,14 @@ void CityGameState::OnEnter()
 {
 	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
-	for (unsigned int x = 0; x < 10; x++)
-	{
-		for (unsigned int z = 0; z < 10; z++)
-		{
-			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
-			Entity::CreateEntity("Porsche_911_GT2", transform);
-		}
-	}
+	//for (unsigned int x = 0; x < 10; x++)
+	//{
+	//	for (unsigned int z = 0; z < 10; z++)
+	//	{
+	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
+	//		Entity::CreateEntity("Porsche_911_GT2", transform);
+	//	}
+	//}
 
 //	GIS::LoadCityFromSource("Vancouver");
 //	GIS::LoadCityFromCooked("Vancouver");

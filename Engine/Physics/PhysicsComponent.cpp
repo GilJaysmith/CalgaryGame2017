@@ -67,18 +67,24 @@ bool PhysicsComponent::OnMessage(Message* message)
 	return false;
 }
 
-void PhysicsComponent::OnUpdate(const Time& elapsed_time)
+void PhysicsComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass)
 {
-	physx::PxMat44 matrix_transform(m_Actor->getGlobalPose());
-	glm::mat4 new_world_transform;
-	for(int i = 0; i < 4; ++i)
+	switch (update_pass)
 	{
-		for (int j = 0; j < 4; ++j)
+		case UpdatePass::AfterPhysics:
 		{
-			new_world_transform[i][j] = matrix_transform[i][j];
+			physx::PxMat44 matrix_transform(m_Actor->getGlobalPose());
+			glm::mat4 new_world_transform;
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					new_world_transform[i][j] = matrix_transform[i][j];
+				}
+			}
+			m_Entity->SetTransform(new_world_transform);
 		}
 	}
-	m_Entity->SetTransform(new_world_transform);
 }
 
 PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)

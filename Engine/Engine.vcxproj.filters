@@ -145,9 +145,6 @@
     <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp">
       <Filter>DebugPanels\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4W.cpp">
-      <Filter>Vehicles\Nvidia</Filter>
-    </ClCompile>
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp">
       <Filter>Vehicles\Nvidia</Filter>
     </ClCompile>
@@ -162,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="Vehicles\VehicleComponent.cpp">
       <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Viewport.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,9 +280,6 @@
     <ClInclude Include="DebugPanels\imgui\stb_truetype.h">
       <Filter>DebugPanels\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Vehicles\Nvidia\SnippetVehicle4W.h">
-      <Filter>Vehicles\Nvidia</Filter>
-    </ClInclude>
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h">
       <Filter>Vehicles\Nvidia</Filter>
     </ClInclude>
@@ -300,6 +297,12 @@
     </ClInclude>
     <ClInclude Include="Vehicles\VehicleComponent.h">
       <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Viewport.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\UpdatePass.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

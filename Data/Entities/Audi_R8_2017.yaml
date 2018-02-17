@@ -2,3 +2,4 @@
 behaviours: 
   render: 
     mesh: Audi_R8_2017
+  vehicle: ~

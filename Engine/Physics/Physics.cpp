@@ -93,9 +93,13 @@ namespace Physics
 		scene_desc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		scene_desc.cpuDispatcher = dispatcher;
-		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
-//		scene_desc.filterShader = FilterShader;
+//		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
+		scene_desc.filterShader = FilterShader;
 		scene = physics->createScene(scene_desc);
+
+		physx::PxInitVehicleSDK(*physics);
+		physx::PxVehicleSetBasisVectors(physx::PxVec3(0, 1, 0), physx::PxVec3(0, 0, 1));
+		physx::PxVehicleSetUpdateMode(physx::PxVehicleUpdateMode::eVELOCITY_CHANGE);
 
 		YAML::Node yaml = YAML::LoadFile("Data/Physics/materials.yaml");
 		for (auto material_desc : yaml["materials"])
@@ -117,6 +121,8 @@ namespace Physics
 		{
 			material.second->release();
 		}
+
+		physx::PxCloseVehicleSDK();
 
 		dispatcher->release();
 		scene->release();

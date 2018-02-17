@@ -4,6 +4,7 @@
 
 class Camera;
 class Renderable;
+class Viewport;
 
 namespace Renderer
 {
@@ -24,4 +25,8 @@ namespace Renderer
 
 	void RegisterRenderable(Renderable* renderable);
 	void UnregisterRenderable(Renderable* renderable);
+
+	void RegisterViewport(const Viewport& viewport, const std::string& viewport_name);
+	void UnregisterViewport(const std::string& viewport_name);
+	Viewport& GetViewport(const std::string& viewport_name);
 }

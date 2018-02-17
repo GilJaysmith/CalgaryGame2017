@@ -15,7 +15,7 @@ public:
 public:
 	virtual ~RenderComponent();
 
-	void OnUpdate(const Time& elapsed_time) override;
+	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
 
 protected:
 	RenderComponent(Entity* owner, const YAML::Node& properties);

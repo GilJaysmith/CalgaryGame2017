@@ -1,6 +1,7 @@
 #pragma once
 
 class Time;
+class Viewport;
 
 class Camera
 {

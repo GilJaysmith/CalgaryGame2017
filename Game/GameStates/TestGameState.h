@@ -18,7 +18,5 @@ public:
 
 protected:
 	DebugCamera* m_Camera;
-
-	Entity* m_Entities[1000];
-	Entity* m_GroundPlane;
+	float m_Time;
 };

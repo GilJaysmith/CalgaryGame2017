@@ -25,11 +25,11 @@ namespace EntityManager
 		s_AllEntities.clear();
 	}
 
-	void Update(const Time& time)
+	void Update(const Time& time, UpdatePass::TYPE update_pass)
 	{
 		for (auto entity : s_AllEntities)
 		{
-			entity->OnUpdate(time);
+			entity->OnUpdate(time, update_pass);
 		}
 	}
 

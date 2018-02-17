@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 
+#include "Engine/Entities/UpdatePass.h"
 #include "Engine/GameStates/Time.h"
 
 
 class Component;
 class Message;
 class Time;
+
 
 class Entity
 {
@@ -20,7 +22,7 @@ public:
 
 	void AddComponent(Component* component);
 	int OnMessage(Message* message);
-	void OnUpdate(const Time& elapsed_time);
+	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass);
 
 	glm::mat4 GetTransform() const { return m_Transform;  }
 	void SetTransform(const glm::mat4& transform) { m_Transform = transform; }
