@@ -29,8 +29,9 @@
 
 #include "Engine/Pch.h"
 
-#include "SnippetVehicleTireFriction.h"
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
+#include "Engine/Vehicles/Nvidia/SnippetVehicleTireFriction.h"
+
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
 namespace snippetvehicle
 {

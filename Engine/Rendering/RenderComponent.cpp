@@ -6,7 +6,7 @@
 #include "Engine/Rendering/RenderComponent.h"
 #include "Engine/Rendering/Renderer.h"
 
-#include <sdks/libyaml/include/yaml-cpp/yaml.h>
+#include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 
 Component* RenderComponent::CreateComponent(Entity* owner, const YAML::Node& properties)

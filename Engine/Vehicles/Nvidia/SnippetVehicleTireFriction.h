@@ -30,7 +30,7 @@
 #ifndef SNIPPET_VEHICLE_TIREFRICTION_H
 #define SNIPPET_VEHICLE_TIREFRICTION_H
 
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
 namespace snippetvehicle
 {
