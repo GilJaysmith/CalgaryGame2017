@@ -9,6 +9,9 @@
 #include "Engine/GameStates/Time.h"
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
+#include "Engine/Vehicles/Nvidia/SnippetVehicleCreate.h"
+#include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
+
 namespace Physics
 {
 
@@ -100,6 +103,12 @@ namespace Physics
 		physx::PxInitVehicleSDK(*physics);
 		physx::PxVehicleSetBasisVectors(physx::PxVec3(0, 1, 0), physx::PxVec3(0, 0, 1));
 		physx::PxVehicleSetUpdateMode(physx::PxVehicleUpdateMode::eVELOCITY_CHANGE);
+
+		////Create a plane to drive on.
+		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.6f);
+		physx::PxFilterData groundPlaneSimFilterData(snippetvehicle::COLLISION_FLAG_GROUND, snippetvehicle::COLLISION_FLAG_GROUND_AGAINST, 0, 0);
+		physx::PxRigidStatic* gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, gMaterial, physics);
+		scene->addActor(*gGroundPlane);
 
 		YAML::Node yaml = YAML::LoadFile("Data/Physics/materials.yaml");
 		for (auto material_desc : yaml["materials"])
