@@ -25,16 +25,16 @@ void TestGameState::OnEnter()
 {
 	Entity::CreateEntity("floor", glm::mat4());
 
-	//for (unsigned int x = 0; x < 10; x++)
-	//{
-	//	for (unsigned int z = 0; z < 10; z++)
-	//	{
-	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
-	//		Entity::CreateEntity("Porsche_911_GT2", transform);
-	//	}
-	//}
+	for (unsigned int x = 0; x < 7; x++)
+	{
+		for (unsigned int z = 0; z < 7; z++)
+		{
+			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 4, 1.0f, z * 8));
+			Entity::CreateEntity("Porsche_911_GT2", transform);
+		}
+	}
 
-	Entity::CreateEntity("Porsche_911_GT2", glm::mat4());
+	//Entity::CreateEntity("Porsche_911_GT2", glm::mat4());
 //	Entity::CreateEntity("Porsche_911_GT2", glm::translate(glm::mat4(), glm::vec3(5.0f, 0.0f, 0.0f)));
 
 	unsigned int screen_width, screen_height;

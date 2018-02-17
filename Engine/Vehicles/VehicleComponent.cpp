@@ -8,6 +8,11 @@
 
 #include <sdks/libyaml/include/yaml-cpp/yaml.h>
 
+#include "Nvidia/SnippetVehicleFilterShader.h"
+#include "Nvidia/SnippetVehicleTireFriction.h"
+
+#include "Engine/Physics/Physics.h"
+
 
 Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& properties)
 {
@@ -34,37 +39,6 @@ bool VehicleComponent::OnMessage(Message* message)
 	return false;
 }
 
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
-#include <sdks/PhysX/PhysX/Include/vehicle/PxVehicleUtil.h>
-
-#include "Nvidia/SnippetVehicleSceneQuery.h"
-#include "Nvidia/SnippetVehicleFilterShader.h"
-#include "Nvidia/SnippetVehicleTireFriction.h"
-#include "Nvidia/SnippetVehicleCreate.h"
-
-#include "Engine/Physics/Physics.h"
-
-
-physx::PxDefaultAllocator		gAllocator;
-physx::PxDefaultErrorCallback	gErrorCallback;
-
-physx::PxMaterial*				gMaterial = NULL;
-
-snippetvehicle::VehicleSceneQueryData*	gVehicleSceneQueryData = NULL;
-physx::PxBatchQuery*			gBatchQuery = NULL;
-
-physx::PxVehicleDrivableSurfaceToTireFrictionPairs* gFrictionPairs = NULL;
-
-physx::PxRigidStatic*			gGroundPlane = NULL;
-physx::PxVehicleDrive4W*		gVehicle4W = NULL;
-
-bool					gIsVehicleInAir = true;
-
-physx::PxF32					gVehicleModeLifetime = 2.0f;
-physx::PxF32					gVehicleModeTimer = 0.0f;
-physx::PxU32					gVehicleOrderProgress = 0;
-bool					gVehicleOrderComplete = false;
-bool					gMimicKeyInputs = false;
 
 physx::PxF32 gSteerVsForwardSpeedData[2 * 8] =
 {
@@ -147,7 +121,7 @@ DriveMode gDriveModeOrder[] =
 };
 
 
-snippetvehicle::VehicleDesc initVehicleDesc()
+snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 {
 	//Set up the chassis mass, dimensions, moment of inertia, and center of mass offset.
 	//The moment of inertia is just the moment of inertia of a cuboid but modified for easier steering.
@@ -188,7 +162,7 @@ snippetvehicle::VehicleDesc initVehicleDesc()
 	return vehicleDesc;
 }
 
-void startAccelerateForwardsMode()
+void VehicleComponent::startAccelerateForwardsMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -200,7 +174,7 @@ void startAccelerateForwardsMode()
 	}
 }
 
-void startAccelerateReverseMode()
+void VehicleComponent::startAccelerateReverseMode()
 {
 	gVehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eREVERSE);
 
@@ -214,7 +188,7 @@ void startAccelerateReverseMode()
 	}
 }
 
-void startBrakeMode()
+void VehicleComponent::startBrakeMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -226,7 +200,7 @@ void startBrakeMode()
 	}
 }
 
-void startTurnHardLeftMode()
+void VehicleComponent::startTurnHardLeftMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -240,7 +214,7 @@ void startTurnHardLeftMode()
 	}
 }
 
-void startTurnHardRightMode()
+void VehicleComponent::startTurnHardRightMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -254,7 +228,7 @@ void startTurnHardRightMode()
 	}
 }
 
-void startHandbrakeTurnLeftMode()
+void VehicleComponent::startHandbrakeTurnLeftMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -268,7 +242,7 @@ void startHandbrakeTurnLeftMode()
 	}
 }
 
-void startHandbrakeTurnRightMode()
+void VehicleComponent::startHandbrakeTurnRightMode()
 {
 	if (gMimicKeyInputs)
 	{
@@ -283,7 +257,7 @@ void startHandbrakeTurnRightMode()
 }
 
 
-void releaseAllControls()
+void VehicleComponent::releaseAllControls()
 {
 	if (gMimicKeyInputs)
 	{
@@ -303,7 +277,7 @@ void releaseAllControls()
 }
 
 
-void incrementDrivingMode(const physx::PxF32 timestep)
+void VehicleComponent::incrementDrivingMode(const physx::PxF32 timestep)
 {
 	gVehicleModeTimer += timestep;
 	if (gVehicleModeTimer > gVehicleModeLifetime)
@@ -364,9 +338,26 @@ void incrementDrivingMode(const physx::PxF32 timestep)
 }
 
 
-
 void VehicleComponent::CreateVehicle()
 {
+	gMaterial = NULL;
+
+	gVehicleSceneQueryData = NULL;
+	gBatchQuery = NULL;
+
+	gFrictionPairs = NULL;
+
+	gVehicle4W = NULL;
+
+	gIsVehicleInAir = true;
+
+	gVehicleModeLifetime = 4.0f;
+	gVehicleModeTimer = 0.0f;
+	gVehicleOrderProgress = 0;
+	gVehicleOrderComplete = false;
+	gMimicKeyInputs = false;
+
+
 	physx::PxPhysics* gPhysics = Physics::GetPhysics();
 	physx::PxScene* gScene = Physics::GetScene();
 	physx::PxCooking* gCooking = Physics::GetCooking();
@@ -382,13 +373,17 @@ void VehicleComponent::CreateVehicle()
 
 	////Create a plane to drive on.
 	physx::PxFilterData groundPlaneSimFilterData(snippetvehicle::COLLISION_FLAG_GROUND, snippetvehicle::COLLISION_FLAG_GROUND_AGAINST, 0, 0);
-	gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, gMaterial, gPhysics);
+	physx::PxRigidStatic* gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, gMaterial, gPhysics);
 	gScene->addActor(*gGroundPlane);
 
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
 	gVehicle4W = createVehicle4W(vehicleDesc, gPhysics, gCooking);
-	physx::PxTransform startTransform(physx::PxVec3(0, (vehicleDesc.chassisDims.y*0.5f + vehicleDesc.wheelRadius + 1.0f), 0), physx::PxQuat(physx::PxIdentity));
+
+	const glm::mat4& transform = m_Entity->GetTransform();
+	glm::vec4 position = transform[3];
+
+	physx::PxTransform startTransform(physx::PxVec3(position.x, (vehicleDesc.chassisDims.y*0.5f + vehicleDesc.wheelRadius + 1.0f), position.z), physx::PxQuat(physx::PxIdentity));
 	gVehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
 	gScene->addActor(*gVehicle4W->getRigidDynamicActor());
 
@@ -400,6 +395,7 @@ void VehicleComponent::CreateVehicle()
 
 	gVehicleModeTimer = 0.0f;
 	gVehicleOrderProgress = 0;
+//	gVehicleOrderProgress = (physx::PxU32)((rand() / float(RAND_MAX)) * (sizeof(gDriveModeOrder) / sizeof(gDriveModeOrder[0])));
 	startBrakeMode();
 }
 
@@ -419,53 +415,53 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 {
 	switch (update_pass)
 	{
-	case UpdatePass::BeforePhysics:
-	{
-		physx::PxScene* gScene = Physics::GetScene();
-
-		const physx::PxF32 timestep = elapsed_time.toSeconds();
-
-		//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
-		incrementDrivingMode(timestep);
-
-		//Update the control inputs for the vehicle.
-		if (gMimicKeyInputs)
+		case UpdatePass::BeforePhysics:
 		{
-			PxVehicleDrive4WSmoothDigitalRawInputsAndSetAnalogInputs(gKeySmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, gIsVehicleInAir, *gVehicle4W);
-		}
-		else
-		{
-			PxVehicleDrive4WSmoothAnalogRawInputsAndSetAnalogInputs(gPadSmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, gIsVehicleInAir, *gVehicle4W);
-		}
+			physx::PxScene* gScene = Physics::GetScene();
 
-		//Raycasts.
-		physx::PxVehicleWheels* vehicles[1] = { gVehicle4W };
-		physx::PxRaycastQueryResult* raycastResults = gVehicleSceneQueryData->getRaycastQueryResultBuffer(0);
-		const physx::PxU32 raycastResultsSize = gVehicleSceneQueryData->getQueryResultBufferSize();
-		PxVehicleSuspensionRaycasts(gBatchQuery, 1, vehicles, raycastResultsSize, raycastResults);
+			const physx::PxF32 timestep = elapsed_time.toSeconds();
 
-		//Vehicle update.
-		const physx::PxVec3 grav = gScene->getGravity();
-		physx::PxWheelQueryResult wheelQueryResults[PX_MAX_NB_WHEELS];
-		physx::PxVehicleWheelQueryResult vehicleQueryResults[1] = { { wheelQueryResults, gVehicle4W->mWheelsSimData.getNbWheels() } };
-		PxVehicleUpdates(timestep, grav, *gFrictionPairs, 1, vehicles, vehicleQueryResults);
+			//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
+			incrementDrivingMode(timestep);
 
-		//Work out if the vehicle is in the air.
-		gIsVehicleInAir = gVehicle4W->getRigidDynamicActor()->isSleeping() ? false : physx::PxVehicleIsInAir(vehicleQueryResults[0]);
-	}
-
-	case UpdatePass::AfterPhysics:
-	{
-		physx::PxMat44 matrix_transform(gVehicle4W->getRigidDynamicActor()->getGlobalPose());
-		glm::mat4 new_world_transform;
-		for (int i = 0; i < 4; ++i)
-		{
-			for (int j = 0; j < 4; ++j)
+			//Update the control inputs for the vehicle.
+			if (gMimicKeyInputs)
 			{
-				new_world_transform[i][j] = matrix_transform[i][j];
+				PxVehicleDrive4WSmoothDigitalRawInputsAndSetAnalogInputs(gKeySmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, gIsVehicleInAir, *gVehicle4W);
 			}
+			else
+			{
+				PxVehicleDrive4WSmoothAnalogRawInputsAndSetAnalogInputs(gPadSmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, gIsVehicleInAir, *gVehicle4W);
+			}
+
+			//Raycasts.
+			physx::PxVehicleWheels* vehicles[1] = { gVehicle4W };
+			physx::PxRaycastQueryResult* raycastResults = gVehicleSceneQueryData->getRaycastQueryResultBuffer(0);
+			const physx::PxU32 raycastResultsSize = gVehicleSceneQueryData->getQueryResultBufferSize();
+			PxVehicleSuspensionRaycasts(gBatchQuery, 1, vehicles, raycastResultsSize, raycastResults);
+
+			//Vehicle update.
+			const physx::PxVec3 grav = gScene->getGravity();
+			physx::PxWheelQueryResult wheelQueryResults[PX_MAX_NB_WHEELS];
+			physx::PxVehicleWheelQueryResult vehicleQueryResults[1] = { { wheelQueryResults, gVehicle4W->mWheelsSimData.getNbWheels() } };
+			PxVehicleUpdates(timestep, grav, *gFrictionPairs, 1, vehicles, vehicleQueryResults);
+
+			//Work out if the vehicle is in the air.
+			gIsVehicleInAir = gVehicle4W->getRigidDynamicActor()->isSleeping() ? false : physx::PxVehicleIsInAir(vehicleQueryResults[0]);
 		}
-		m_Entity->SetTransform(new_world_transform);
-	}
+
+		case UpdatePass::AfterPhysics:
+		{
+			physx::PxMat44 matrix_transform(gVehicle4W->getRigidDynamicActor()->getGlobalPose());
+			glm::mat4 new_world_transform;
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					new_world_transform[i][j] = matrix_transform[i][j];
+				}
+			}
+			m_Entity->SetTransform(new_world_transform);
+		}
 	}
 }
