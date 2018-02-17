@@ -30,7 +30,7 @@
 #ifndef SNIPPET_VEHICLE_SCENEQUERY_H
 #define SNIPPET_VEHICLE_SCENEQUERY_H
 
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
 namespace snippetvehicle
 {

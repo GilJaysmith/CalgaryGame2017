@@ -4,8 +4,8 @@
 #include "Engine/Rendering/ShaderManager.h"
 #include "Game/GIS/City.h"
 
-#include "PxPhysicsAPI.h"
-#include "foundation/PxFoundation.h"
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
+#include "sdks/PhysX/PxShared/include/foundation/PxFoundation.h"
 
 #include <ios>
 

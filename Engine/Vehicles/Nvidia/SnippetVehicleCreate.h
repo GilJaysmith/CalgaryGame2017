@@ -30,9 +30,9 @@
 #ifndef SNIPPET_VEHICLE_COMMON_H
 #define SNIPPET_VEHICLE_COMMON_H
 
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
-#include <sdks/PhysX/PhysX/Include/vehicle/PxVehicleDriveTank.h>
-#include <sdks/PhysX/PhysX/Include/vehicle/PxVehicleNoDrive.h>
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
+#include "sdks/PhysX/PhysX/Include/vehicle/PxVehicleDriveTank.h"
+#include "sdks/PhysX/PhysX/Include/vehicle/PxVehicleNoDrive.h"
 
 
 namespace snippetvehicle

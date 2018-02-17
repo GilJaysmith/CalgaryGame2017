@@ -6,8 +6,8 @@
 #include "Game/GIS/shapelib/shapefil.h"
 #include "Game/GIS/polypartition/polypartition.h"
 
-#include "PxPhysicsAPI.h"
-#include "foundation/PxFoundation.h"
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
+#include "sdks/PhysX/PxShared/include/foundation/PxFoundation.h"
 
 #include <time.h>
 

@@ -29,12 +29,12 @@
 
 #include "Engine/Pch.h"
 
-#include "SnippetVehicleCreate.h"
-#include "SnippetVehicleSceneQuery.h"
-#include "SnippetVehicleFilterShader.h"
-#include "SnippetVehicleTireFriction.h"
+#include "Engine/Vehicles/Nvidia/SnippetVehicleCreate.h"
+#include "Engine/Vehicles/Nvidia/SnippetVehicleSceneQuery.h"
+#include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
+#include "Engine/Vehicles/Nvidia/SnippetVehicleTireFriction.h"
 
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
 namespace snippetvehicle
 {

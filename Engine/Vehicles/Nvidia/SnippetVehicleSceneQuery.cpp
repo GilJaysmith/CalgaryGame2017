@@ -29,8 +29,9 @@
 
 #include "Engine/Pch.h"
 
-#include "SnippetVehicleSceneQuery.h"
-#include <sdks/PhysX/PhysX/Include/PxPhysicsAPI.h>
+#include "Engine/Vehicles/Nvidia/SnippetVehicleSceneQuery.h"
+
+#include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
 namespace snippetvehicle
 {

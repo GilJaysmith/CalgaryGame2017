@@ -28,25 +28,25 @@ protected:
 	void DestroyVehicle();
 
 private:
-	physx::PxDefaultAllocator		gAllocator;
-	physx::PxDefaultErrorCallback	gErrorCallback;
+	physx::PxDefaultAllocator m_Allocator;
+	physx::PxDefaultErrorCallback m_ErrorCallback;
 
-	physx::PxMaterial*				gMaterial;
+	physx::PxMaterial* m_Material;
 
-	snippetvehicle::VehicleSceneQueryData*	gVehicleSceneQueryData;
-	physx::PxBatchQuery*			gBatchQuery;
+	snippetvehicle::VehicleSceneQueryData* m_VehicleSceneQueryData;
+	physx::PxBatchQuery* m_BatchQuery;
 
-	physx::PxVehicleDrivableSurfaceToTireFrictionPairs* gFrictionPairs;
+	physx::PxVehicleDrivableSurfaceToTireFrictionPairs* m_FrictionPairs;
 
-	physx::PxVehicleDrive4W*		gVehicle4W;
+	physx::PxVehicleDrive4W*  m_Vehicle4W;
 
-	bool					gIsVehicleInAir;
+	bool  m_IsVehicleInAir;
 
-	physx::PxF32					gVehicleModeLifetime;
-	physx::PxF32					gVehicleModeTimer;
-	physx::PxU32					gVehicleOrderProgress;
-	bool					gVehicleOrderComplete;
-	bool					gMimicKeyInputs;
+	physx::PxF32 m_VehicleModeLifetime;
+	physx::PxF32 m_VehicleModeTimer;
+	physx::PxU32 m_VehicleOrderProgress;
+	bool m_VehicleOrderComplete;
+	bool m_MimicKeyInputs;
 
 	snippetvehicle::VehicleDesc initVehicleDesc();
 	void startAccelerateForwardsMode();
@@ -58,5 +58,4 @@ private:
 	void startHandbrakeTurnRightMode();
 	void releaseAllControls();
 	void incrementDrivingMode(const physx::PxF32 timestep);
-
 };
