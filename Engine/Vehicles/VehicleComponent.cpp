@@ -60,7 +60,7 @@ physx::PxVehicleDrive4W*		gVehicle4W = NULL;
 
 bool					gIsVehicleInAir = true;
 
-physx::PxF32					gVehicleModeLifetime = 4.0f;
+physx::PxF32					gVehicleModeLifetime = 2.0f;
 physx::PxF32					gVehicleModeTimer = 0.0f;
 physx::PxU32					gVehicleOrderProgress = 0;
 bool					gVehicleOrderComplete = false;
@@ -423,7 +423,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 	{
 		physx::PxScene* gScene = Physics::GetScene();
 
-		const physx::PxF32 timestep = 1.0f / 60.0f;
+		const physx::PxF32 timestep = elapsed_time.toSeconds();
 
 		//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
 		incrementDrivingMode(timestep);

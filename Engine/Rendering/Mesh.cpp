@@ -135,11 +135,15 @@ struct SubMesh
 			aiFace& face = mesh->mFaces[face_idx];
 			unsigned int* vert_indices = face.mIndices;
 			glm::vec3 tint(1.0f, 1.0f, 1.0f);
+			aiMatrix3x3 rotmat;
+			aiMatrix3x3::Rotation(glm::pi<float>(), aiVector3D(0.0, 1.0f, 0.0f), rotmat);
 			for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
 			{
 				unsigned int vert_idx = vert_indices[vert_idx_loop];
 				aiVector3D vert = vertices[vert_idx];
+				vert *= rotmat;
 				aiVector3D normal = normals[vert_idx];
+				normal *= rotmat;
 				normal.Normalize();
 				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z };
 				final_vertices.push_back(this_vert);
@@ -211,6 +215,13 @@ struct SubMesh
 			if (uniModel > -1)
 			{
 				glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(transform));
+			}
+
+			glm::mat4 normal_transform = glm::transpose(glm::inverse(transform));
+			GLint uniNormal = glGetUniformLocation(m_Program, "model_normal_transform");
+			if (uniNormal > -1)
+			{
+				glUniformMatrix4fv(uniNormal, 1, GL_FALSE, glm::value_ptr(normal_transform));
 			}
 
 			GLint uniTint = glGetUniformLocation(m_Program, "model_tint");
@@ -344,7 +355,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	{
 		Assimp::Importer importer;
 		std::string obj_filename = "data/meshes/" + node["obj"].as<std::string>();
-		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate | aiProcess_GenNormals);
+		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate);
 
 		// Make VAOs for all the meshes.
 		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)

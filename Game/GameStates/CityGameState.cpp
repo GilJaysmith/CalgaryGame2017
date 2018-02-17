@@ -34,8 +34,8 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-//	GIS::LoadCityFromSource("Vancouver");
-//	GIS::LoadCityFromCooked("Vancouver");
+	//GIS::LoadCityFromSource("Vancouver");
+	GIS::LoadCityFromCooked("Vancouver");
 
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);

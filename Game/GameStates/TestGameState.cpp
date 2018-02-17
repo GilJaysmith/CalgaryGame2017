@@ -34,7 +34,8 @@ void TestGameState::OnEnter()
 	//	}
 	//}
 
-	Entity::CreateEntity("Porsche_911_GT2", glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f)));
+	Entity::CreateEntity("Porsche_911_GT2", glm::mat4());
+//	Entity::CreateEntity("Porsche_911_GT2", glm::translate(glm::mat4(), glm::vec3(5.0f, 0.0f, 0.0f)));
 
 	unsigned int screen_width, screen_height;
 	Renderer::GetWindowDimensions(screen_width, screen_height);
