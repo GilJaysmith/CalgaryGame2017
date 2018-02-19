@@ -25,14 +25,16 @@ void TestGameState::OnEnter()
 {
 	Entity::CreateEntity("floor", glm::mat4());
 
-	for (unsigned int x = 0; x < 7; x++)
-	{
-		for (unsigned int z = 0; z < 7; z++)
-		{
-			glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 4, 1.0f, z * 8));
-			Entity::CreateEntity("Porsche_911_GT2", transform);
-		}
-	}
+	//for (unsigned int x = 0; x < 7; x++)
+	//{
+	//	for (unsigned int z = 0; z < 7; z++)
+	//	{
+	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 4, 1.0f, z * 8));
+	//		Entity::CreateEntity("Porsche_911_GT2", transform);
+	//	}
+	//}
+
+	Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
 
 	//Entity::CreateEntity("Porsche_911_GT2", glm::mat4());
 //	Entity::CreateEntity("Porsche_911_GT2", glm::translate(glm::mat4(), glm::vec3(5.0f, 0.0f, 0.0f)));
@@ -66,10 +68,10 @@ bool TestGameState::OnUpdate(const Time& frame_time)
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 
-	if (Input::GetKeyEvent(GLFW_KEY_M) == Input::PRESSED)
-	{
-		Audio::PlaySound("a2002011001-e02.wav");
-	}
+	//if (Input::JustPressed(GLFW_KEY_M))
+	//{
+	//	Audio::PlaySound("a2002011001-e02.wav");
+	//}
 
 	//unsigned int screen_width, screen_height;
 	//Renderer::GetWindowDimensions(screen_width, screen_height);

@@ -40,7 +40,7 @@ bool SplashScreenGameState::OnUpdate(const Time& frame_time)
 		ScreenSpaceRenderer::SetTint(m_Sprite, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * ((m_Duration - m_TimeInState).toSeconds() / FADE_OUT_TIME.toSeconds()));
 	}
 
-	if (Input::GetKeyEvent(GLFW_KEY_SPACE) == Input::PRESSED && m_TimeInState < (m_Duration - FADE_OUT_TIME))
+	if (Input::IsPressed(GLFW_KEY_SPACE))
 	{
 		if (m_TimeInState < FADE_IN_TIME)
 		{

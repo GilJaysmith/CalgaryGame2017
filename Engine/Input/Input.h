@@ -2,6 +2,7 @@
 
 #include "sdks/glfw/include/GLFW/glfw3.h"
 
+class GamepadHandler;
 class InputHandler;
 
 namespace Input
@@ -21,8 +22,13 @@ namespace Input
 
 	void Update(GLFWwindow* window);
 
-	TYPE GetKeyEvent(int key);
+	bool IsPressed(int key);
+	bool JustPressed(int key);
+	bool JustReleased(int key);
 
 	void RegisterInputHandler(InputHandler* handler);
 	void UnregisterInputHandler(InputHandler* handler);
+
+	unsigned int GetNumGamepads();
+	GamepadHandler* GetGamepadHandler(int);
 }
