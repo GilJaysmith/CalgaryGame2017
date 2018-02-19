@@ -78,8 +78,6 @@ void GamepadHandler::Update()
 		if (axis.first < axis_count)
 		{
 			float axis_val = axes[axis.first];
-			axis_val += 1.0f;
-			axis_val /= 2.0f;
 			m_Axis[axis.second] = axis_val;
 		}
 	}

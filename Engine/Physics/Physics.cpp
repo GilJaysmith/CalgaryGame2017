@@ -150,8 +150,17 @@ namespace Physics
 		if (!s_IsPaused)
 		{
 			float seconds = time.toSeconds();
-			scene->simulate(seconds);
-			scene->fetchResults(true);
+			while (true)
+			{
+				if (seconds <= 0.0f)
+				{
+					break;
+				}
+				float time_to_simulate = glm::max(0.0f, glm::min(1.0f / 30.0f, seconds));
+				scene->simulate(seconds);
+				scene->fetchResults(true);
+				seconds -= time_to_simulate;
+			}
 		}
 	}
 
