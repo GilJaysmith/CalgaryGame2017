@@ -1,7 +1,7 @@
 --- 
 behaviours: 
   render: 
-    mesh: Audi_R8_2017
+    mesh: Porsche_911_GT2
 #  physics:
 #    shape: box
 #    dimensions: [0.98, 0.63, 2.23]
