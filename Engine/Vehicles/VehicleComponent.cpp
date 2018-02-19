@@ -7,10 +7,9 @@
 #include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleTireFriction.h"
 #include "Engine/Vehicles/VehicleComponent.h"
+#include "Engine/Vehicles/VehicleMessages.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
-
-
 
 
 Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& properties)
@@ -33,7 +32,18 @@ bool VehicleComponent::OnMessage(Message* message)
 {
 	if (message->GetMessageType() == MessageType::Vehicle)
 	{
-		return true;
+		switch (message->GetMessageSubtype())
+		{
+			case VehicleMessageSubtype::SetInputs:
+			{
+				Message_VehicleSetInputs* mvsi = static_cast<Message_VehicleSetInputs*>(message);
+				mVehicleInputData.setAnalogAccel(mvsi->m_Acceleration);
+				mVehicleInputData.setAnalogBrake(mvsi->m_Brake);
+				mVehicleInputData.setAnalogHandbrake(mvsi->m_Handbrake);
+				mVehicleInputData.setAnalogSteer(mvsi->m_Steer);
+				break;
+			}
+		}
 	}
 	return false;
 }
@@ -87,8 +97,6 @@ physx::PxVehiclePadSmoothingData gPadSmoothingData =
 		5.0f	//fall rate eANALOG_INPUT_STEER_RIGHT
 	}
 };
-
-physx::PxVehicleDrive4WRawInputData gVehicleInputData;
 
 enum DriveMode
 {
@@ -165,11 +173,11 @@ void VehicleComponent::startAccelerateForwardsMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
+		mVehicleInputData.setDigitalAccel(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(1.0f);
+		mVehicleInputData.setAnalogAccel(1.0f);
 	}
 }
 
@@ -179,11 +187,11 @@ void VehicleComponent::startAccelerateReverseMode()
 
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
+		mVehicleInputData.setDigitalAccel(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(1.0f);
+		mVehicleInputData.setAnalogAccel(1.0f);
 	}
 }
 
@@ -191,11 +199,11 @@ void VehicleComponent::startBrakeMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalBrake(true);
+		mVehicleInputData.setDigitalBrake(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogBrake(1.0f);
+		mVehicleInputData.setAnalogBrake(1.0f);
 	}
 }
 
@@ -203,13 +211,13 @@ void VehicleComponent::startTurnHardLeftMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
-		gVehicleInputData.setDigitalSteerLeft(true);
+		mVehicleInputData.setDigitalAccel(true);
+		mVehicleInputData.setDigitalSteerLeft(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(true);
-		gVehicleInputData.setAnalogSteer(-1.0f);
+		mVehicleInputData.setAnalogAccel(true);
+		mVehicleInputData.setAnalogSteer(-1.0f);
 	}
 }
 
@@ -217,13 +225,13 @@ void VehicleComponent::startTurnHardRightMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(true);
-		gVehicleInputData.setDigitalSteerRight(true);
+		mVehicleInputData.setDigitalAccel(true);
+		mVehicleInputData.setDigitalSteerRight(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(1.0f);
-		gVehicleInputData.setAnalogSteer(1.0f);
+		mVehicleInputData.setAnalogAccel(1.0f);
+		mVehicleInputData.setAnalogSteer(1.0f);
 	}
 }
 
@@ -231,13 +239,13 @@ void VehicleComponent::startHandbrakeTurnLeftMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalSteerLeft(true);
-		gVehicleInputData.setDigitalHandbrake(true);
+		mVehicleInputData.setDigitalSteerLeft(true);
+		mVehicleInputData.setDigitalHandbrake(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogSteer(-1.0f);
-		gVehicleInputData.setAnalogHandbrake(1.0f);
+		mVehicleInputData.setAnalogSteer(-1.0f);
+		mVehicleInputData.setAnalogHandbrake(1.0f);
 	}
 }
 
@@ -245,13 +253,13 @@ void VehicleComponent::startHandbrakeTurnRightMode()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalSteerRight(true);
-		gVehicleInputData.setDigitalHandbrake(true);
+		mVehicleInputData.setDigitalSteerRight(true);
+		mVehicleInputData.setDigitalHandbrake(true);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogSteer(1.0f);
-		gVehicleInputData.setAnalogHandbrake(1.0f);
+		mVehicleInputData.setAnalogSteer(1.0f);
+		mVehicleInputData.setAnalogHandbrake(1.0f);
 	}
 }
 
@@ -260,18 +268,18 @@ void VehicleComponent::releaseAllControls()
 {
 	if (m_MimicKeyInputs)
 	{
-		gVehicleInputData.setDigitalAccel(false);
-		gVehicleInputData.setDigitalSteerLeft(false);
-		gVehicleInputData.setDigitalSteerRight(false);
-		gVehicleInputData.setDigitalBrake(false);
-		gVehicleInputData.setDigitalHandbrake(false);
+		mVehicleInputData.setDigitalAccel(false);
+		mVehicleInputData.setDigitalSteerLeft(false);
+		mVehicleInputData.setDigitalSteerRight(false);
+		mVehicleInputData.setDigitalBrake(false);
+		mVehicleInputData.setDigitalHandbrake(false);
 	}
 	else
 	{
-		gVehicleInputData.setAnalogAccel(0.0f);
-		gVehicleInputData.setAnalogSteer(0.0f);
-		gVehicleInputData.setAnalogBrake(0.0f);
-		gVehicleInputData.setAnalogHandbrake(0.0f);
+		mVehicleInputData.setAnalogAccel(0.0f);
+		mVehicleInputData.setAnalogSteer(0.0f);
+		mVehicleInputData.setAnalogBrake(0.0f);
+		mVehicleInputData.setAnalogHandbrake(0.0f);
 	}
 }
 
@@ -420,16 +428,16 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			const physx::PxF32 timestep = elapsed_time.toSeconds();
 
 			//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
-			incrementDrivingMode(timestep);
+//			incrementDrivingMode(timestep);
 
 			//Update the control inputs for the vehicle.
 			if (m_MimicKeyInputs)
 			{
-				PxVehicleDrive4WSmoothDigitalRawInputsAndSetAnalogInputs(gKeySmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, m_IsVehicleInAir, *m_Vehicle4W);
+				PxVehicleDrive4WSmoothDigitalRawInputsAndSetAnalogInputs(gKeySmoothingData, gSteerVsForwardSpeedTable, mVehicleInputData, timestep, m_IsVehicleInAir, *m_Vehicle4W);
 			}
 			else
 			{
-				PxVehicleDrive4WSmoothAnalogRawInputsAndSetAnalogInputs(gPadSmoothingData, gSteerVsForwardSpeedTable, gVehicleInputData, timestep, m_IsVehicleInAir, *m_Vehicle4W);
+				PxVehicleDrive4WSmoothAnalogRawInputsAndSetAnalogInputs(gPadSmoothingData, gSteerVsForwardSpeedTable, mVehicleInputData, timestep, m_IsVehicleInAir, *m_Vehicle4W);
 			}
 
 			//Raycasts.

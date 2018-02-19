@@ -163,6 +163,15 @@
     <ClCompile Include="Rendering\Viewport.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Gamepad.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleInputComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleInputHandler.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -303,6 +312,18 @@
     </ClInclude>
     <ClInclude Include="Entities\UpdatePass.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Gamepad.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleInputComponent.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleInputHandler.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleMessages.h">
+      <Filter>Vehicles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
