@@ -98,34 +98,33 @@ void DebugCamera::Update(const Time& frame_time)
 		m_CameraPos + m_CameraFront,
 		m_CameraUp);
 
-	if (Input::JustPressed(GLFW_KEY_SPACE))
-	{
-		// Fire a pandacube.
-		glm::mat4 transform;
-		transform = glm::translate(transform, m_CameraPos);
-		Entity* pandacube = Entity::CreateEntity("Cube", transform);
-		
-		const float LV_SCALE = 20.0f;
-		glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * LV_SCALE;
-		Message_PhysicsSetLinearVelocity pslv(linear_velocity);
-		pandacube->OnMessage(&pslv);
+	//if (Input::JustPressed(GLFW_KEY_SPACE))
+	//{
+	//	// Fire a pandacube.
+	//	glm::mat4 transform;
+	//	transform = glm::translate(transform, m_CameraPos);
+	//	Entity* pandacube = Entity::CreateEntity("Cube", transform);
+	//	
+	//	const float LV_SCALE = 20.0f;
+	//	glm::vec3 linear_velocity = glm::normalize(m_CameraFront) * LV_SCALE;
+	//	Message_PhysicsSetLinearVelocity pslv(linear_velocity);
+	//	pandacube->OnMessage(&pslv);
 
-		const float AV_SCALE = 10.0f;
-		glm::vec3 angular_velocity(
-			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
-			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
-			((rand() - rand()) / (float)RAND_MAX) * AV_SCALE
-			);
-		Message_PhysicsSetAngularVelocity psav(angular_velocity);
-		pandacube->OnMessage(&psav);
+	//	const float AV_SCALE = 10.0f;
+	//	glm::vec3 angular_velocity(
+	//		((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
+	//		((rand() - rand()) / (float)RAND_MAX) * AV_SCALE,
+	//		((rand() - rand()) / (float)RAND_MAX) * AV_SCALE
+	//		);
+	//	Message_PhysicsSetAngularVelocity psav(angular_velocity);
+	//	pandacube->OnMessage(&psav);
 
-		if (Input::IsPressed(GLFW_KEY_LEFT_CONTROL))
-		{
-			Message_PhysicsDisableGravity pdg(true);
-			pandacube->OnMessage(&pdg);
-		}
-
-	}
+	//	if (Input::IsPressed(GLFW_KEY_LEFT_CONTROL))
+	//	{
+	//		Message_PhysicsDisableGravity pdg(true);
+	//		pandacube->OnMessage(&pdg);
+	//	}
+	//}
 }
 
 void DebugCamera::OnSetActive(bool active)

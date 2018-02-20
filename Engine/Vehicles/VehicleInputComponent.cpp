@@ -28,7 +28,7 @@ void VehicleInputComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 		// Transfer input handler details to vehicle component.
 		if (m_InputHandler)
 		{
-			Message_VehicleSetInputs mvsi(m_InputHandler->Steer(), m_InputHandler->Acceleration(), m_InputHandler->Brake(), m_InputHandler->Handbrake());
+			Message_VehicleSetInputs mvsi(m_InputHandler->Steer(), m_InputHandler->Acceleration(), m_InputHandler->Brake(), m_InputHandler->Handbrake(), m_InputHandler->Jump());
 			m_Entity->OnMessage(&mvsi);
 		}
 	}

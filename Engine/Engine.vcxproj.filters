@@ -172,6 +172,12 @@
     <ClCompile Include="Vehicles\VehicleInputHandler.cpp">
       <Filter>Vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="Vehicles\VehicleFollowCamera.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleFollowCameraInputHandler.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -323,6 +329,12 @@
       <Filter>Vehicles</Filter>
     </ClInclude>
     <ClInclude Include="Vehicles\VehicleMessages.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleFollowCamera.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleFollowCameraInputHandler.h">
       <Filter>Vehicles</Filter>
     </ClInclude>
   </ItemGroup>

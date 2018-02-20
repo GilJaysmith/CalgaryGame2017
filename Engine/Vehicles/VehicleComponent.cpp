@@ -46,16 +46,17 @@ bool VehicleComponent::OnMessage(Message* message)
 				float accel = mvsi->m_Acceleration;
 				float brake = mvsi->m_Brake;
 
+				physx::PxU32 gear = m_Vehicle4W->mDriveDynData.getCurrentGear();
 				if (accel > brake)
 				{
-					if (m_Vehicle4W->mDriveDynData.getCurrentGear() < physx::PxVehicleGearsData::eFIRST)
+					if (gear == physx::PxVehicleGearsData::eREVERSE)
 					{
 						m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eFIRST);
 					}
 				}
 				if (brake > accel)
 				{
-					if (vehicle_vel < 1.0f && m_Vehicle4W->mDriveDynData.getCurrentGear() >= physx::PxVehicleGearsData::eNEUTRAL)
+					if (vehicle_vel < 1.0f && gear >= physx::PxVehicleGearsData::eNEUTRAL)
 					{
 						m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eREVERSE);
 					}
@@ -77,6 +78,12 @@ bool VehicleComponent::OnMessage(Message* message)
 
 				mVehicleInputData.setAnalogAccel(accel);
 				mVehicleInputData.setAnalogBrake(brake);
+
+				if (mvsi->m_Jump && !m_IsVehicleInAir)
+				{
+					// Apply an upward bump.
+					actor->addForce(physx::PxVec3(0.0f, 10.0f, 0.0f), physx::PxForceMode::eVELOCITY_CHANGE);
+				}
 				break;
 			}
 		}

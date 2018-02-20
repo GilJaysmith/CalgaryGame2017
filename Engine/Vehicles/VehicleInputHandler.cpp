@@ -27,6 +27,7 @@ void VehicleInputHandler::Update()
 	m_Brake = Input::IsPressed(GLFW_KEY_K) ? 1.0f : 0.0f;
 	m_Handbrake = Input::IsPressed(GLFW_KEY_M);
 	m_Steer = Input::IsPressed(GLFW_KEY_J) ? 1.0f : Input::IsPressed(GLFW_KEY_L) ? -1.0f : 0.0f;
+	m_Jump = Input::IsPressed(GLFW_KEY_SPACE);
 
 	// Gamepad.
 	GamepadHandler* gamepad = GamepadManager::GamepadForPlayer(m_PlayerIdx);
