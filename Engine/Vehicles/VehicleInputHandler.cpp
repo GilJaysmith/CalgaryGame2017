@@ -37,5 +37,6 @@ void VehicleInputHandler::Update()
 		m_Brake = (gamepad->Axis(GamepadAxis::LEFT_TRIGGER) + 1.0f) / 2.0f;
 		m_Handbrake = gamepad->ButtonPressed(GamepadButton::X);
 		m_Steer = -gamepad->Axis(GamepadAxis::LEFT_STICK_HORIZ);
+		m_Jump = gamepad->ButtonPressed(GamepadButton::A);
 	}
 }
