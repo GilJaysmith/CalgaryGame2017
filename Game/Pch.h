@@ -12,6 +12,7 @@
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
+#include "Engine/DebugPanels/imgui/imgui.h"
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
 

@@ -37,10 +37,46 @@ bool VehicleComponent::OnMessage(Message* message)
 			case VehicleMessageSubtype::SetInputs:
 			{
 				Message_VehicleSetInputs* mvsi = static_cast<Message_VehicleSetInputs*>(message);
-				mVehicleInputData.setAnalogAccel(mvsi->m_Acceleration);
-				mVehicleInputData.setAnalogBrake(mvsi->m_Brake);
+
+				physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
+				float vehicle_vel = actor->getLinearVelocity().magnitude();
+
 				mVehicleInputData.setAnalogHandbrake(mvsi->m_Handbrake);
 				mVehicleInputData.setAnalogSteer(mvsi->m_Steer);
+				float accel = mvsi->m_Acceleration;
+				float brake = mvsi->m_Brake;
+
+				if (accel > brake)
+				{
+					if (m_Vehicle4W->mDriveDynData.getCurrentGear() < physx::PxVehicleGearsData::eFIRST)
+					{
+						m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eFIRST);
+					}
+				}
+				if (brake > accel)
+				{
+					if (vehicle_vel < 1.0f && m_Vehicle4W->mDriveDynData.getCurrentGear() >= physx::PxVehicleGearsData::eNEUTRAL)
+					{
+						m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eREVERSE);
+					}
+					if (m_Vehicle4W->mDriveDynData.getCurrentGear() == physx::PxVehicleGearsData::eREVERSE)
+					{
+						std::swap(accel, brake);
+					}
+				}
+
+				ImGui::SetNextWindowPos(ImVec2(0, 0));
+				ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
+				ImGui::SetNextWindowBgAlpha(0.5f);
+				ImGui::Begin("Car intentions debug");
+				ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
+				ImGui::Text("Car speed: %f", vehicle_vel);
+				ImGui::Text("Intention accel: %f", accel);
+				ImGui::Text("Intention brake: %f", brake);
+				ImGui::End();
+
+				mVehicleInputData.setAnalogAccel(accel);
+				mVehicleInputData.setAnalogBrake(brake);
 				break;
 			}
 		}
@@ -98,35 +134,6 @@ physx::PxVehiclePadSmoothingData gPadSmoothingData =
 	}
 };
 
-enum DriveMode
-{
-	eDRIVE_MODE_ACCEL_FORWARDS = 0,
-	eDRIVE_MODE_ACCEL_REVERSE,
-	eDRIVE_MODE_HARD_TURN_LEFT,
-	eDRIVE_MODE_HANDBRAKE_TURN_LEFT,
-	eDRIVE_MODE_HARD_TURN_RIGHT,
-	eDRIVE_MODE_HANDBRAKE_TURN_RIGHT,
-	eDRIVE_MODE_BRAKE,
-	eDRIVE_MODE_NONE
-};
-
-DriveMode gDriveModeOrder[] =
-{
-	eDRIVE_MODE_BRAKE,
-	eDRIVE_MODE_ACCEL_FORWARDS,
-	eDRIVE_MODE_BRAKE,
-	eDRIVE_MODE_ACCEL_REVERSE,
-	eDRIVE_MODE_BRAKE,
-	eDRIVE_MODE_HARD_TURN_LEFT,
-	eDRIVE_MODE_BRAKE,
-	eDRIVE_MODE_HARD_TURN_RIGHT,
-	eDRIVE_MODE_ACCEL_FORWARDS,
-	eDRIVE_MODE_HANDBRAKE_TURN_LEFT,
-	eDRIVE_MODE_ACCEL_FORWARDS,
-	eDRIVE_MODE_HANDBRAKE_TURN_RIGHT,
-	eDRIVE_MODE_NONE
-};
-
 
 snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 {
@@ -169,182 +176,6 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	return vehicleDesc;
 }
 
-void VehicleComponent::startAccelerateForwardsMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalAccel(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogAccel(1.0f);
-	}
-}
-
-void VehicleComponent::startAccelerateReverseMode()
-{
-	m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eREVERSE);
-
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalAccel(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogAccel(1.0f);
-	}
-}
-
-void VehicleComponent::startBrakeMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalBrake(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogBrake(1.0f);
-	}
-}
-
-void VehicleComponent::startTurnHardLeftMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalAccel(true);
-		mVehicleInputData.setDigitalSteerLeft(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogAccel(true);
-		mVehicleInputData.setAnalogSteer(-1.0f);
-	}
-}
-
-void VehicleComponent::startTurnHardRightMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalAccel(true);
-		mVehicleInputData.setDigitalSteerRight(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogAccel(1.0f);
-		mVehicleInputData.setAnalogSteer(1.0f);
-	}
-}
-
-void VehicleComponent::startHandbrakeTurnLeftMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalSteerLeft(true);
-		mVehicleInputData.setDigitalHandbrake(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogSteer(-1.0f);
-		mVehicleInputData.setAnalogHandbrake(1.0f);
-	}
-}
-
-void VehicleComponent::startHandbrakeTurnRightMode()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalSteerRight(true);
-		mVehicleInputData.setDigitalHandbrake(true);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogSteer(1.0f);
-		mVehicleInputData.setAnalogHandbrake(1.0f);
-	}
-}
-
-
-void VehicleComponent::releaseAllControls()
-{
-	if (m_MimicKeyInputs)
-	{
-		mVehicleInputData.setDigitalAccel(false);
-		mVehicleInputData.setDigitalSteerLeft(false);
-		mVehicleInputData.setDigitalSteerRight(false);
-		mVehicleInputData.setDigitalBrake(false);
-		mVehicleInputData.setDigitalHandbrake(false);
-	}
-	else
-	{
-		mVehicleInputData.setAnalogAccel(0.0f);
-		mVehicleInputData.setAnalogSteer(0.0f);
-		mVehicleInputData.setAnalogBrake(0.0f);
-		mVehicleInputData.setAnalogHandbrake(0.0f);
-	}
-}
-
-
-void VehicleComponent::incrementDrivingMode(const physx::PxF32 timestep)
-{
-	m_VehicleModeTimer += timestep;
-	if (m_VehicleModeTimer > m_VehicleModeLifetime)
-	{
-		//If the mode just completed was eDRIVE_MODE_ACCEL_REVERSE then switch back to forward gears.
-		if (eDRIVE_MODE_ACCEL_REVERSE == gDriveModeOrder[m_VehicleOrderProgress])
-		{
-			m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eFIRST);
-		}
-
-		//Increment to next driving mode.
-		m_VehicleModeTimer = 0.0f;
-		m_VehicleOrderProgress++;
-		releaseAllControls();
-
-		//If we are at the end of the list of driving modes then start again.
-		if (eDRIVE_MODE_NONE == gDriveModeOrder[m_VehicleOrderProgress])
-		{
-			m_VehicleOrderProgress = 0;
-			m_VehicleOrderComplete = true;
-		}
-
-		//Start driving in the selected mode.
-		DriveMode eDriveMode = gDriveModeOrder[m_VehicleOrderProgress];
-		switch (eDriveMode)
-		{
-		case eDRIVE_MODE_ACCEL_FORWARDS:
-			startAccelerateForwardsMode();
-			break;
-		case eDRIVE_MODE_ACCEL_REVERSE:
-			startAccelerateReverseMode();
-			break;
-		case eDRIVE_MODE_HARD_TURN_LEFT:
-			startTurnHardLeftMode();
-			break;
-		case eDRIVE_MODE_HANDBRAKE_TURN_LEFT:
-			startHandbrakeTurnLeftMode();
-			break;
-		case eDRIVE_MODE_HARD_TURN_RIGHT:
-			startTurnHardRightMode();
-			break;
-		case eDRIVE_MODE_HANDBRAKE_TURN_RIGHT:
-			startHandbrakeTurnRightMode();
-			break;
-		case eDRIVE_MODE_BRAKE:
-			startBrakeMode();
-			break;
-		case eDRIVE_MODE_NONE:
-			break;
-		};
-
-		//If the mode about to start is eDRIVE_MODE_ACCEL_REVERSE then switch to reverse gears.
-		if (eDRIVE_MODE_ACCEL_REVERSE == gDriveModeOrder[m_VehicleOrderProgress])
-		{
-			m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eREVERSE);
-		}
-	}
-}
-
-
 void VehicleComponent::CreateVehicle()
 {
 	m_Material = NULL;
@@ -358,12 +189,7 @@ void VehicleComponent::CreateVehicle()
 
 	m_IsVehicleInAir = true;
 
-	m_VehicleModeLifetime = 4.0f;
-	m_VehicleModeTimer = 0.0f;
-	m_VehicleOrderProgress = 0;
-	m_VehicleOrderComplete = false;
 	m_MimicKeyInputs = false;
-
 
 	physx::PxPhysics* gPhysics = Physics::GetPhysics();
 	physx::PxScene* gScene = Physics::GetScene();
@@ -399,11 +225,6 @@ void VehicleComponent::CreateVehicle()
 	m_Vehicle4W->setToRestState();
 	m_Vehicle4W->mDriveDynData.forceGearChange(physx::PxVehicleGearsData::eFIRST);
 	m_Vehicle4W->mDriveDynData.setUseAutoGears(true);
-
-	m_VehicleModeTimer = 0.0f;
-	m_VehicleOrderProgress = 0;
-//	gVehicleOrderProgress = (physx::PxU32)((rand() / float(RAND_MAX)) * (sizeof(gDriveModeOrder) / sizeof(gDriveModeOrder[0])));
-	startBrakeMode();
 }
 
 void VehicleComponent::DestroyVehicle()
@@ -454,6 +275,8 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 
 			//Work out if the vehicle is in the air.
 			m_IsVehicleInAir = m_Vehicle4W->getRigidDynamicActor()->isSleeping() ? false : physx::PxVehicleIsInAir(vehicleQueryResults[0]);
+
+			break;
 		}
 
 		case UpdatePass::AfterPhysics:
@@ -468,6 +291,17 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 				}
 			}
 			m_Entity->SetTransform(new_world_transform);
+
+			ImGui::SetNextWindowPos(ImVec2(0, 0));
+			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
+			ImGui::SetNextWindowBgAlpha(0.5f);
+			ImGui::Begin("Car debug");
+			ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
+			physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
+			ImGui::Text("Car speed: %f", actor->getLinearVelocity().magnitude());
+			ImGui::End();
+
+			break;
 		}
 	}
 }

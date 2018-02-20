@@ -34,23 +34,11 @@ private:
 	snippetvehicle::VehicleSceneQueryData* m_VehicleSceneQueryData;
 	physx::PxBatchQuery* m_BatchQuery;
 	physx::PxVehicleDrivableSurfaceToTireFrictionPairs* m_FrictionPairs;
-	physx::PxVehicleDrive4W*  m_Vehicle4W;
+	physx::PxVehicleDrive4W* m_Vehicle4W;
 	bool m_IsVehicleInAir;
 	physx::PxF32 m_VehicleModeLifetime;
-	physx::PxF32 m_VehicleModeTimer;
-	physx::PxU32 m_VehicleOrderProgress;
-	bool m_VehicleOrderComplete;
 	bool m_MimicKeyInputs;
 	physx::PxVehicleDrive4WRawInputData mVehicleInputData;
 
 	snippetvehicle::VehicleDesc initVehicleDesc();
-	void startAccelerateForwardsMode();
-	void startAccelerateReverseMode();
-	void startBrakeMode();
-	void startTurnHardLeftMode();
-	void startTurnHardRightMode();
-	void startHandbrakeTurnLeftMode();
-	void startHandbrakeTurnRightMode();
-	void releaseAllControls();
-	void incrementDrivingMode(const physx::PxF32 timestep);
 };
