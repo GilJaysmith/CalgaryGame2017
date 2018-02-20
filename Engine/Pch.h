@@ -26,6 +26,7 @@
 
 void CheckGLError();
 
+#include "Engine/DebugPanels/imgui/imgui.h"
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
 

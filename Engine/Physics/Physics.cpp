@@ -156,7 +156,7 @@ namespace Physics
 				{
 					break;
 				}
-				float time_to_simulate = glm::max(0.0f, glm::min(1.0f / 30.0f, seconds));
+				float time_to_simulate = glm::max(0.0f, glm::min(1.0f / 60.0f, seconds));
 				scene->simulate(seconds);
 				scene->fetchResults(true);
 				seconds -= time_to_simulate;
