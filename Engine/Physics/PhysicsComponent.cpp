@@ -93,7 +93,7 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 	, m_StaticActor(nullptr)
 {
 	const glm::mat4& transform = owner->GetTransform();
-	glm::vec4 position = transform[3];
+	glm::vec3 position = transform[3];
 	m_Actor = Physics::GetPhysics()->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
 
 	std::string material_name = properties["material"].as<std::string>();

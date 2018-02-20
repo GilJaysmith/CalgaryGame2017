@@ -13,9 +13,10 @@ public:
 
 public:
 	float Acceleration() const { return m_Acceleration; }
-	float Brake() const { return m_Brake;  }
-	bool Handbrake() const { return m_Handbrake;  }
-	float Steer() const { return m_Steer;  }
+	float Brake() const { return m_Brake; }
+	bool Handbrake() const { return m_Handbrake; }
+	float Steer() const { return m_Steer; }
+	bool Jump() const { return m_Jump; }
 
 protected:
 	int m_PlayerIdx;
@@ -23,4 +24,5 @@ protected:
 	float m_Brake;
 	bool m_Handbrake;
 	float m_Steer;
+	bool m_Jump;
 };

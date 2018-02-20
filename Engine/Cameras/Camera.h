@@ -18,7 +18,7 @@ public:
 
 protected:
 
-	virtual void OnSetActive(bool active) = 0;
+	virtual void OnSetActive(bool active) {}
 
 	glm::mat4 m_ViewMatrix;
 	glm::mat4 m_ProjMatrix;

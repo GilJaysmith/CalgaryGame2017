@@ -17,6 +17,6 @@ public:
 	virtual void OnExit() override;
 
 protected:
-	DebugCamera* m_Camera;
+	Camera* m_Camera;
 	float m_Time;
 };
