@@ -10,6 +10,6 @@ uniform mat4 camera_projection;
 
 void main()
 {
-	Colour = colour;
-    gl_Position = camera_projection * camera_view * vec4(position, 1.0);
+  Colour = colour;
+  gl_Position = camera_projection * camera_view * vec4(position, 1.0);
 }

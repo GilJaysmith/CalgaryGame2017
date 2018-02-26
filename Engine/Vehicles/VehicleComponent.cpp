@@ -66,7 +66,7 @@ bool VehicleComponent::OnMessage(Message* message)
 					}
 				}
 
-				ImGui::SetNextWindowPos(ImVec2(0, 0));
+//				ImGui::SetNextWindowPos(ImVec2(0, 0));
 				ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 				ImGui::SetNextWindowBgAlpha(0.5f);
 				ImGui::Begin("Car intentions debug");
@@ -82,7 +82,16 @@ bool VehicleComponent::OnMessage(Message* message)
 				if (mvsi->m_Jump && !m_IsVehicleInAir)
 				{
 					// Apply an upward bump.
-					actor->addForce(physx::PxVec3(0.0f, 10.0f, 0.0f), physx::PxForceMode::eVELOCITY_CHANGE);
+					actor->addForce(physx::PxVec3(0.0f, 20.0f, 0.0f), physx::PxForceMode::eVELOCITY_CHANGE);
+				}
+
+				if (mvsi->m_ResetOrientation && !m_IsVehicleInAir)
+				{
+					glm::mat4 transform = m_Entity->GetTransform();
+					glm::vec3 position = transform[3];
+					physx::PxTransform startTransform(physx::PxVec3(position.x, position.y + 3.0f, position.z), physx::PxQuat(physx::PxIdentity));
+					actor->setGlobalPose(startTransform);
+					actor->setAngularVelocity(physx::PxVec3(0.0f, 0.0f, 0.0f));
 				}
 				break;
 			}
@@ -202,7 +211,7 @@ void VehicleComponent::CreateVehicle()
 	physx::PxScene* gScene = Physics::GetScene();
 	physx::PxCooking* gCooking = Physics::GetCooking();
 
-	m_Material = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+	m_Material = gPhysics->createMaterial(0.1f, 0.1f, 0.1f);
 
 	//Create the batched scene queries for the suspension raycasts.
 	m_VehicleSceneQueryData = snippetvehicle::VehicleSceneQueryData::allocate(1, PX_MAX_NB_WHEELS, 1, 1, snippetvehicle::WheelSceneQueryPreFilterBlocking, NULL, m_Allocator);
@@ -211,11 +220,6 @@ void VehicleComponent::CreateVehicle()
 	//Create the friction table for each combination of tire and surface type.
 	m_FrictionPairs = snippetvehicle::createFrictionPairs(m_Material);
 
-	////Create a plane to drive on.
-	physx::PxFilterData groundPlaneSimFilterData(snippetvehicle::COLLISION_FLAG_GROUND, snippetvehicle::COLLISION_FLAG_GROUND_AGAINST, 0, 0);
-	physx::PxRigidStatic* gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, m_Material, gPhysics);
-	gScene->addActor(*gGroundPlane);
-
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
 	m_Vehicle4W = createVehicle4W(vehicleDesc, gPhysics, gCooking);
@@ -223,7 +227,7 @@ void VehicleComponent::CreateVehicle()
 	const glm::mat4& transform = m_Entity->GetTransform();
 	glm::vec4 position = transform[3];
 
-	physx::PxTransform startTransform(physx::PxVec3(position.x, (vehicleDesc.chassisDims.y*0.5f + vehicleDesc.wheelRadius + 1.0f), position.z), physx::PxQuat(physx::PxIdentity));
+	physx::PxTransform startTransform(physx::PxVec3(position.x, position.y + (vehicleDesc.chassisDims.y*0.5f + vehicleDesc.wheelRadius + 1.0f), position.z), physx::PxQuat(physx::PxIdentity));
 	m_Vehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
 	gScene->addActor(*m_Vehicle4W->getRigidDynamicActor());
 
@@ -299,7 +303,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			}
 			m_Entity->SetTransform(new_world_transform);
 
-			ImGui::SetNextWindowPos(ImVec2(0, 0));
+//			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 			ImGui::SetNextWindowBgAlpha(0.5f);
 			ImGui::Begin("Car debug");

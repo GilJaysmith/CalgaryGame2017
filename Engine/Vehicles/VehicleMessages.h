@@ -16,13 +16,14 @@ namespace VehicleMessageSubtype
 
 struct Message_VehicleSetInputs : public Message
 {
-	Message_VehicleSetInputs(float steer, float acceleration, float brake, bool handbrake, bool jump)
+	Message_VehicleSetInputs(float steer, float acceleration, float brake, bool handbrake, bool jump, bool reset_orientation)
 		: Message(MessageType::Vehicle, VehicleMessageSubtype::SetInputs)
 		, m_Steer(steer)
 		, m_Acceleration(acceleration)
 		, m_Brake(brake)
 		, m_Handbrake(handbrake)
 		, m_Jump(jump)
+		, m_ResetOrientation(reset_orientation)
 	{}
 
 	float m_Steer;
@@ -30,4 +31,5 @@ struct Message_VehicleSetInputs : public Message
 	float m_Brake;
 	bool m_Handbrake;
 	bool m_Jump;
+	bool m_ResetOrientation;
 };

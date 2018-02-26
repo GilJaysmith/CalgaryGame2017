@@ -96,19 +96,12 @@ namespace Physics
 		scene_desc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		scene_desc.cpuDispatcher = dispatcher;
-//		scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
 		scene_desc.filterShader = FilterShader;
 		scene = physics->createScene(scene_desc);
 
 		physx::PxInitVehicleSDK(*physics);
 		physx::PxVehicleSetBasisVectors(physx::PxVec3(0, 1, 0), physx::PxVec3(0, 0, 1));
 		physx::PxVehicleSetUpdateMode(physx::PxVehicleUpdateMode::eVELOCITY_CHANGE);
-
-		////Create a plane to drive on.
-		physx::PxMaterial* gMaterial = physics->createMaterial(0.5f, 0.5f, 0.6f);
-		physx::PxFilterData groundPlaneSimFilterData(snippetvehicle::COLLISION_FLAG_GROUND, snippetvehicle::COLLISION_FLAG_GROUND_AGAINST, 0, 0);
-		physx::PxRigidStatic* gGroundPlane = snippetvehicle::createDrivablePlane(groundPlaneSimFilterData, gMaterial, physics);
-		scene->addActor(*gGroundPlane);
 
 		YAML::Node yaml = YAML::LoadFile("Data/Physics/materials.yaml");
 		for (auto material_desc : yaml["materials"])

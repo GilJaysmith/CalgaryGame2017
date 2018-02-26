@@ -16,7 +16,7 @@ VehicleFollowCamera::VehicleFollowCamera(Entity* followed, int player_idx)
 	m_CameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	m_CameraYaw = glm::pi<float>() / 2.0f;
-	m_CameraPitch = -glm::pi<float>() / 5.0f;
+	m_CameraPitch = -glm::pi<float>() / 9.0f;
 }
 
 VehicleFollowCamera::~VehicleFollowCamera()
@@ -24,33 +24,38 @@ VehicleFollowCamera::~VehicleFollowCamera()
 	MemDelete(m_InputHandler);
 }
 
+#include "sdks/glm/gtx/euler_angles.hpp"
+
 void VehicleFollowCamera::Update(const Time& frame_time)
 {
 	glm::mat4 entity_transform = m_FollowedEntity->GetTransform();
 
-	glm::mat3 entity_rotation(entity_transform);
 	glm::vec3 entity_position(entity_transform[3]);
+	glm::mat3 entity_rotation(entity_transform);
 
-	glm::vec3 camera_offset(0.0f, 5.0f, -10.0f);
-	camera_offset = entity_rotation * camera_offset;
-	camera_offset += entity_position;
+	glm::vec3 vec(0.0f, 0.0f, -1.0f);
+	vec = entity_rotation * vec;
+	float rot_y = atan2(vec.z, vec.x);
 
-	m_CameraPos = camera_offset;
+	ImGui::Begin("Car camera debug");
+	ImGui::Text("Rot y %f", rot_y * 180.0f / glm::pi<float>());
+	ImGui::End();
+
+	// Make a matrix for the rotation.
+	glm::mat3 rot_around_y = glm::rotate(glm::mat4(), -rot_y, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	float camera_yaw_speed = 0.2f;
 	float camera_pitch_speed = 0.2f;
-
 	m_CameraYaw += camera_yaw_speed * m_InputHandler->Yaw() * frame_time.toSeconds();
 	m_CameraPitch += camera_pitch_speed * m_InputHandler->Pitch() * frame_time.toSeconds();
-
 	m_CameraPitch = glm::clamp(m_CameraPitch, -glm::pi<float>() / 2.1f, glm::pi<float>() / 2.1f);
 
-	glm::vec3 front;
-	front.x = cos(m_CameraPitch) * cos(m_CameraYaw);
-	front.y = sin(m_CameraPitch);
-	front.z = cos(m_CameraPitch) * sin(m_CameraYaw);
-	m_CameraFront = glm::normalize(front);
-	m_CameraFront = entity_rotation * m_CameraFront;
+	glm::mat4 yaw_rot = glm::rotate(glm::mat4(), m_CameraYaw, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 pitch_rot = glm::rotate(glm::mat4(), m_CameraPitch, glm::vec3(1.0f, 0.0f, 0.0f));
+
+	m_CameraFront = /*yaw_rot * pitch_rot * */ rot_around_y * glm::vec3(0.0f, 0.0f, 1.0f);
+
+	m_CameraPos = entity_position - m_CameraFront * 6.0f;
 
 	m_ViewMatrix = glm::lookAt(
 		m_CameraPos,

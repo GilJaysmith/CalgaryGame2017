@@ -17,7 +17,8 @@ void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects
 {
 	double HEIGHT_SCALE = 1.0;
 
-	std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
+	std::vector<std::pair<glm::vec3, glm::vec3>> wall_vertices;
+	std::vector<std::pair<glm::vec3, glm::vec3>> roof_vertices;
 
 	for (auto object : objects)
 	{
@@ -83,21 +84,21 @@ void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects
 			// Make vert stream for all the faces in the object.
 			for (int i = 0; i < m_FloorVerts.size() - 1; ++i)
 			{
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], wall_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], wall_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_FloorVerts[i + 1], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i + 1], wall_tint));
+				wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(m_RoofVerts[i], wall_tint));
 			}
 
 			// Add verts for roof triangles, with new colour.
 			for (auto triangle : roof_triangles)
 			{
 				assert(triangle.GetNumPoints() == 3);
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, roof_height, triangle[0].y), roof_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, roof_height, triangle[1].y), roof_tint));
-				vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, roof_height, triangle[2].y), roof_tint));
+				roof_vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[0].x, roof_height, triangle[0].y), roof_tint));
+				roof_vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[1].x, roof_height, triangle[1].y), roof_tint));
+				roof_vertices.push_back(std::pair<glm::vec3, glm::vec3>(glm::vec3(triangle[2].x, roof_height, triangle[2].y), roof_tint));
 			}
 		}
 		else
@@ -106,10 +107,11 @@ void CityLoaderFromSource::GenerateMesh(const std::vector<VectorObject>& objects
 		}
 	}
 
-	if (vertices.size() > 0)
+	if (wall_vertices.size() > 0 && roof_vertices.size() > 0)
 	{
 		CityObjectData object_data;
-		object_data.vertices = vertices;
+		object_data.wall_vertices = wall_vertices;
+		object_data.roof_vertices = roof_vertices;
 		m_City.AddObject(object_data);
 	}
 }
@@ -129,7 +131,7 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 	time_t start_time;
 	time(&start_time);
 
-	double OVERALL_SCALE = 0.1;
+	double OVERALL_SCALE = 1.0;
 	float max_contour_height = 0.0f;
 
 	if (true)

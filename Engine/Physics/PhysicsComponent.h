@@ -8,8 +8,7 @@ class Time;
 
 namespace physx
 {
-	class PxRigidDynamic;
-	class PxRigidStatic;
+	class PxRigidActor;
 }
 
 class PhysicsComponent : public Component
@@ -28,6 +27,5 @@ protected:
 
 	virtual void OnSetActive(bool active) override;
 
-	physx::PxRigidDynamic* m_Actor;
-	physx::PxRigidStatic* m_StaticActor;
+	physx::PxRigidActor* m_Actor;
 };

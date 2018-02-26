@@ -2,7 +2,7 @@
 
 #include "Engine/GameStates/GameState.h"
 
-class DebugCamera;
+class Camera;
 class Entity;
 class Time;
 
@@ -17,5 +17,5 @@ public:
 	virtual void OnExit() override;
 
 protected:
-	DebugCamera* m_Camera;
+	Camera* m_Camera;
 };

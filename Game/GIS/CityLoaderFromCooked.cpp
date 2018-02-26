@@ -26,15 +26,27 @@ CityLoaderFromCooked::CityLoaderFromCooked(City& city, const std::string& city_n
 	for (int i = 0; i < num_objects; ++i)
 	{
 		size_t num_verts;
+		// Walls.
 		cooked_stream.read((char*)&num_verts, sizeof(num_objects));
-		object_data.vertices.clear();
-		object_data.vertices.reserve(num_verts);
+		object_data.wall_vertices.clear();
+		object_data.wall_vertices.reserve(num_verts);
 		for (int v = 0; v < num_verts; ++v)
 		{
 			glm::vec3 pos, tint;
 			cooked_stream.read((char*)&pos, sizeof(pos));
 			cooked_stream.read((char*)&tint, sizeof(tint));
-			object_data.vertices.push_back(std::pair<glm::vec3, glm::vec3>(pos, tint));
+			object_data.wall_vertices.push_back(std::pair<glm::vec3, glm::vec3>(pos, tint));
+		}
+		// Roofs.
+		cooked_stream.read((char*)&num_verts, sizeof(num_objects));
+		object_data.roof_vertices.clear();
+		object_data.roof_vertices.reserve(num_verts);
+		for (int v = 0; v < num_verts; ++v)
+		{
+			glm::vec3 pos, tint;
+			cooked_stream.read((char*)&pos, sizeof(pos));
+			cooked_stream.read((char*)&tint, sizeof(tint));
+			object_data.roof_vertices.push_back(std::pair<glm::vec3, glm::vec3>(pos, tint));
 		}
 		city.AddObject(object_data);
 	}

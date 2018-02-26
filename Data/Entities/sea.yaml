@@ -6,3 +6,5 @@ behaviours:
     shape: plane
     vector: [0.0, 1.0, 0.0, 0.0]
     material: floor
+    simfilter: [1, 28, 0, 0]
+    queryfilter: [0, 0, 0, 0xFFFF0000]

@@ -11,7 +11,8 @@ namespace physx
 
 struct CityObjectData
 {
-	std::vector<std::pair<glm::vec3, glm::vec3>> vertices;
+	std::vector<std::pair<glm::vec3, glm::vec3>> wall_vertices;
+	std::vector<std::pair<glm::vec3, glm::vec3>> roof_vertices;
 };
 
 struct CityCooker
