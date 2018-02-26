@@ -39,7 +39,7 @@ public:
 	void Finalize();
 	bool IsFinalized() const { return m_Finalized; }
 
-	static const int CITY_COOKED_VERSION = 1;
+	static const int CITY_COOKED_VERSION = 2;
 
 protected:
 

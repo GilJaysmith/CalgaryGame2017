@@ -166,6 +166,8 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 			if (object && object->nParts == 1)
 			{
 				assert(object->nParts == 1);
+				double last_x = FLT_MAX, last_y = FLT_MAX;
+
 				for (int i = object->panPartStart[0]; i < object->nVertices; ++i)
 				{
 					double x = object->padfX[i] - x_centre;
@@ -174,8 +176,26 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 					x *= 111320 * OVERALL_SCALE;
 					y *= 110574 * OVERALL_SCALE;
 
-					contour.points.push_back(glm::dvec3(x, elevation, -y));
+					double TOO_CLOSE_RANGE = 3.0;
+					bool too_close = false;
+					if (abs(x - last_x) <= TOO_CLOSE_RANGE && abs(y - last_y) <= TOO_CLOSE_RANGE)
+					{
+						too_close = true;
+					}
+
+					if (!too_close)
+					{
+						contour.points.push_back(glm::dvec3(x, elevation, -y));
+					}
+
+					last_x = x;
+					last_y = y;
 				}
+
+				std::stringstream str;
+				str << "Contour: " << object->nVertices << " source verts, " << contour.points.size() << " final points";
+				Logging::Log("CityLoaderFromSource", str.str());
+
 				if (contour.points.size() >= 2 && elevation >= 0.5f)
 				{
 					contours.push_back(contour);
