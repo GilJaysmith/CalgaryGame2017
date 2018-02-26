@@ -135,16 +135,11 @@ struct SubMesh
 			aiFace& face = mesh->mFaces[face_idx];
 			unsigned int* vert_indices = face.mIndices;
 			glm::vec3 tint(1.0f, 1.0f, 1.0f);
-			aiMatrix3x3 rotmat;
-			aiMatrix3x3::Rotation(glm::pi<float>(), aiVector3D(0.0, 1.0f, 0.0f), rotmat);
 			for (unsigned int vert_idx_loop = 0; vert_idx_loop < face.mNumIndices; ++vert_idx_loop)
 			{
 				unsigned int vert_idx = vert_indices[vert_idx_loop];
 				aiVector3D vert = vertices[vert_idx];
-				vert *= rotmat;
 				aiVector3D normal = normals[vert_idx];
-				normal *= rotmat;
-				normal.Normalize();
 				std::vector<float> this_vert = { vert.x, vert.y, vert.z, normal.x, normal.y, normal.z, tint.x, tint.y, tint.z };
 				final_vertices.push_back(this_vert);
 				m_AABB.Expand(glm::vec3(vert.x, vert.y, vert.z));

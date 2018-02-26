@@ -35,9 +35,12 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-	if (!GIS::LoadCityFromCooked("Vancouver"))
+	if (false)
 	{
-		GIS::LoadCityFromSource("Vancouver");
+		if (!GIS::LoadCityFromCooked("Vancouver"))
+		{
+			GIS::LoadCityFromSource("Vancouver");
+		}
 	}
 
 	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 120.0f, 0.0f)));
