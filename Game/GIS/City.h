@@ -39,6 +39,8 @@ public:
 	void Finalize();
 	bool IsFinalized() const { return m_Finalized; }
 
+	static const int CITY_COOKED_VERSION = 1;
+
 protected:
 
 	GLuint m_ShaderProgram;

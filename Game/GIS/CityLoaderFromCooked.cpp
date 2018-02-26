@@ -9,17 +9,31 @@
 #include <time.h>
 
 CityLoaderFromCooked::CityLoaderFromCooked(City& city, const std::string& city_name)
+	: m_City(city)
+	, m_CityName(city_name)
+{
+}
+
+bool CityLoaderFromCooked::Load()
 {
 	time_t start_time;
 	time(&start_time);
 
 	std::ifstream cooked_stream;
-	cooked_stream.open("Data/Shapefiles/" + city_name + "/cooked.bin", std::ios::in | std::ios::binary);
+	cooked_stream.open("Data/Shapefiles/" + m_CityName + "/cooked.bin", std::ios::in | std::ios::binary);
 
 	char buffer[262144];
 	cooked_stream.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
 
 	Logging::Log("CityLoaderFromCooked", "Creating objects...");
+
+	int version;
+	cooked_stream.read((char*)&version, sizeof(version));
+	if (version != City::CITY_COOKED_VERSION)
+	{
+		return false;
+	}
+
 	size_t num_objects;
 	cooked_stream.read((char*)&num_objects, sizeof(num_objects));
 	CityObjectData object_data;
@@ -48,12 +62,14 @@ CityLoaderFromCooked::CityLoaderFromCooked(City& city, const std::string& city_n
 			cooked_stream.read((char*)&tint, sizeof(tint));
 			object_data.roof_vertices.push_back(std::pair<glm::vec3, glm::vec3>(pos, tint));
 		}
-		city.AddObject(object_data);
+		m_City.AddObject(object_data);
 	}
 
-	city.Finalize();
+	m_City.Finalize();
 
 	time_t end_time;
 	time(&end_time);
 	double diff_time = difftime(end_time, start_time);
+
+	return true;
 }

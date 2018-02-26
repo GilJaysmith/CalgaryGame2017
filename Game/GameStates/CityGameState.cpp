@@ -35,10 +35,12 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-	//GIS::LoadCityFromSource("Vancouver");
-	//GIS::LoadCityFromCooked("Vancouver");
+	if (!GIS::LoadCityFromCooked("Vancouver"))
+	{
+		GIS::LoadCityFromSource("Vancouver");
+	}
 
-	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 100.0f, 0.0f)));
+	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 120.0f, 0.0f)));
 	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
 
 	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);

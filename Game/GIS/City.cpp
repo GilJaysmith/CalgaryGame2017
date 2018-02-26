@@ -215,6 +215,9 @@ void CityCooker::AddObject(const CityObjectData& object_data)
 
 void CityCooker::Finalize()
 {
+	int city_version = City::CITY_COOKED_VERSION;
+	m_CookingStream.write((char*)&city_version, sizeof(city_version));
+
 	// Write out:
 	// - number of objects (uint)
 	// for each object:

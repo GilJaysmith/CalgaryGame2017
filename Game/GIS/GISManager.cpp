@@ -36,11 +36,12 @@ namespace GIS
 		CityLoaderFromSource loader(s_City, city_name);
 	}
 
-	void LoadCityFromCooked(const std::string& city_name)
+	bool LoadCityFromCooked(const std::string& city_name)
 	{
 		UnloadCity();
 		s_City.Initialize();
 		CityLoaderFromCooked loader(s_City, city_name);
+		return loader.Load();
 	}
 
 	void UnloadCity()

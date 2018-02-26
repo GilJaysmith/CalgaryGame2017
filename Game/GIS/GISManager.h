@@ -9,7 +9,7 @@ namespace GIS
 
 	void Render();
 
-	void LoadCityFromCooked(const std::string& city);
+	bool LoadCityFromCooked(const std::string& city);
 	void LoadCityFromSource(const std::string& city);
 
 	void UnloadCity();
