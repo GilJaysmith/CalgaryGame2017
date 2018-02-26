@@ -36,7 +36,6 @@ void TestGameState::OnEnter()
 	//}
 
 	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
-
 	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
 
 	//Entity::CreateEntity("Porsche_911_GT2", glm::mat4());
@@ -47,7 +46,7 @@ void TestGameState::OnEnter()
 	unsigned int viewport_width = screen_width / 2;
 	unsigned int viewport_height = screen_height / 2;
 
-//	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
 	//Viewport& default_viewport = Renderer::GetViewport("default");

@@ -8,6 +8,7 @@
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
+#include "Engine/Vehicles/VehicleFollowCamera.h"
 
 #include "Game/GameStates/CityGameState.h"
 #include "Game/GIS/GISManager.h"
@@ -23,7 +24,7 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
@@ -35,9 +36,12 @@ void CityGameState::OnEnter()
 	//}
 
 	//GIS::LoadCityFromSource("Vancouver");
-	GIS::LoadCityFromCooked("Vancouver");
+	//GIS::LoadCityFromCooked("Vancouver");
 
-	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 100.0f, 0.0f)));
+	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
+
+	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 }
 
@@ -45,7 +49,7 @@ char buffer[60];
 
 bool CityGameState::OnUpdate(const Time& frame_time)
 {
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
+//	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 	ImGui::SetNextWindowBgAlpha(0.5f);
 	ImGui::Begin("Fun debug");

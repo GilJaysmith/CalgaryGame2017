@@ -16,7 +16,7 @@ uniform mat4 camera_projection;
 void main()
 {
 	Colour = colour;
-    FragPos = vec3(model_transform * vec4(position, 1.0));
-    FragNormal = mat3(model_normal_transform) * normal;
-    gl_Position = camera_projection * camera_view * vec4(FragPos, 1.0);
+  FragPos = vec3(model_transform * vec4(position, 1.0));
+  FragNormal = mat3(model_normal_transform) * normal;
+  gl_Position = camera_projection * camera_view * vec4(FragPos, 1.0);
 }
