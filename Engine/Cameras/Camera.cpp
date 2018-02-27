@@ -10,7 +10,7 @@ Camera::Camera()
 {
 	unsigned int width, height;
 	Renderer::GetWindowDimensions(width, height);
-	m_ProjMatrix = glm::perspective(glm::radians(45.0f), width / (float)height, 1.0f, 1000.0f);
+	m_ProjMatrix = glm::perspective(glm::radians(45.0f), width / (float)height, 1.0f, 10000.0f);
 }
 
 Camera::~Camera()

@@ -24,7 +24,7 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Entity* m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
@@ -35,7 +35,7 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-	if (false)
+//	if (false)
 	{
 		if (!GIS::LoadCityFromCooked("Vancouver"))
 		{
@@ -44,9 +44,8 @@ void CityGameState::OnEnter()
 	}
 
 	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 120.0f, 0.0f)));
-	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
-
-	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
+	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 }
 

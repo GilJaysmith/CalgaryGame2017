@@ -6,33 +6,33 @@
 #include "Engine/Rendering/Renderable.h"
 
 
-Renderable::Renderable(Mesh* mesh)
+RenderableMesh::RenderableMesh(Mesh* mesh)
 	: m_Mesh(mesh)
 	, m_Active(true)
 {
 	m_Tint = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-Renderable::~Renderable()
+RenderableMesh::~RenderableMesh()
 {
 }
 
-void Renderable::SetTransform(const glm::mat4& world_transform)
+void RenderableMesh::SetTransform(const glm::mat4& world_transform)
 {
 	m_WorldTransform = world_transform;
 }
 
-void Renderable::Render()
+void RenderableMesh::Render() const
 {
 	m_Mesh->Render(m_WorldTransform, m_Tint);
 }
 
-unsigned int Renderable::GetNumMeshes() const
+unsigned int RenderableMesh::GetNumMeshes() const
 {
 	return 1;
 }
 
-unsigned int Renderable::GetNumVerts() const
+unsigned int RenderableMesh::GetNumVerts() const
 {
 	return m_Mesh->GetNumVerts();
 }

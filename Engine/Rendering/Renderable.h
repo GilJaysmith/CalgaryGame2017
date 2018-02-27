@@ -5,18 +5,27 @@ class Mesh;
 class Renderable
 {
 public:
-	Renderable(Mesh* mesh);
-	~Renderable();
+	virtual void Render() const = 0;
+	virtual bool IsActive() const = 0;
+	virtual unsigned int GetNumMeshes() const = 0;
+	virtual unsigned int GetNumVerts() const = 0;
+};
+
+class RenderableMesh : public Renderable
+{
+public:
+	RenderableMesh(Mesh* mesh);
+	~RenderableMesh();
 
 	void SetTransform(const glm::mat4& world_transform);
 
-	void Render();
+	virtual void Render() const override;
 
 	void SetActive(bool active) { m_Active = active;  }
-	bool IsActive() const { return m_Active;  }
+	virtual bool IsActive() const override { return m_Active;  }
 
-	unsigned int GetNumMeshes() const;
-	unsigned int GetNumVerts() const;
+	virtual unsigned int GetNumMeshes() const override;
+	virtual unsigned int GetNumVerts() const override;
 
 protected:
 	Mesh* m_Mesh;

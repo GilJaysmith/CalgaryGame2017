@@ -176,7 +176,7 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 					x *= 111320 * OVERALL_SCALE;
 					y *= 110574 * OVERALL_SCALE;
 
-					double TOO_CLOSE_RANGE = 3.0;
+					double TOO_CLOSE_RANGE = 1.0;
 					bool too_close = false;
 					if (abs(x - last_x) <= TOO_CLOSE_RANGE && abs(y - last_y) <= TOO_CLOSE_RANGE)
 					{
@@ -388,7 +388,7 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 //				str << "Building: min height " << min_ground_height << " from " << vector_object.points.size() << " points";
 //				Logging::Log("CityLoaderFromSource", str.str());
 
-				float height = 8.0f + (10.0f * rand() / (float)RAND_MAX);
+				float height = 6.0f + (30.0f * (rand() / (float)RAND_MAX));
 				height *= (float)OVERALL_SCALE;
 				vector_object.ground_height = min_ground_height;
 				vector_object.roof_height = min_ground_height + height;

@@ -1,6 +1,7 @@
 #include "Game/Pch.h"
 
 #include "Engine/Physics/Physics.h"
+#include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleSceneQuery.h"
@@ -29,26 +30,36 @@ void City::Initialize(CityCooker* cooker)
 
 void City::Unload()
 {
-	for (auto object : m_Objects)
+	for (auto& object : m_Objects)
 	{
+		Renderer::UnregisterRenderable(&object);
 		glDeleteVertexArrays(1, &object.vao);
 	}
 	m_Objects.clear();
 	m_Finalized = false;
 }
 
-void City::Render() const
+void City::CityObject::Render() const
 {
-	assert(m_Finalized);
-
-	ShaderManager::SetActiveShader(m_ShaderProgram);
-	for (auto object : m_Objects)
-	{
-		glBindVertexArray(object.vao);
-		glDrawArrays(GL_TRIANGLES, 0, object.num_triangles);
-	}
+	ShaderManager::SetActiveShader(shader_program);
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, num_triangles);
 }
 
+bool City::CityObject::IsActive() const
+{
+	return true;
+}
+
+unsigned int City::CityObject::GetNumMeshes() const
+{
+	return 1;
+}
+
+unsigned int City::CityObject::GetNumVerts() const
+{
+	return num_triangles * 3;
+}
 
 
 
@@ -104,6 +115,7 @@ void City::AddObject(const CityObjectData& object_data)
 	}
 
 	CityObject city_object;
+	city_object.shader_program = m_ShaderProgram;
 
 	glGenVertexArrays(1, &city_object.vao);
 	glBindVertexArray(city_object.vao);
@@ -189,7 +201,6 @@ void City::AddObject(const CityObjectData& object_data)
 		Physics::GetScene()->addActor(*static_actor);
 		m_PhysicsObjects.push_back(static_actor);
 	}
-
 }
 
 void City::Finalize()
@@ -200,6 +211,10 @@ void City::Finalize()
 		m_Cooker = nullptr;
 	}
 	m_Finalized = true;
+	for (auto& city_object : m_Objects)
+	{
+		Renderer::RegisterRenderable(&city_object);
+	}
 }
 
 
