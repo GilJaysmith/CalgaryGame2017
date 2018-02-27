@@ -5,7 +5,7 @@
 
 class Entity;
 class Mesh;
-class Renderable;
+class RenderableMesh;
 
 class RenderComponent : public Component
 {
@@ -22,5 +22,5 @@ protected:
 
 	virtual void OnSetActive(bool active) override;
 
-	Renderable* m_Renderable;
+	RenderableMesh* m_Renderable;
 };

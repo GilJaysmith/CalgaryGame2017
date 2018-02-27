@@ -44,7 +44,7 @@ RenderComponent::RenderComponent(Entity* owner, const YAML::Node& properties)
 		{
 			std::string mesh_name = property.second.as<std::string>();
 			Mesh* mesh = MeshManager::LoadMeshFromFile(mesh_name);
-			m_Renderable = MemNew(MemoryPool::Rendering, Renderable)(mesh);
+			m_Renderable = MemNew(MemoryPool::Rendering, RenderableMesh)(mesh);
 			Renderer::RegisterRenderable(m_Renderable);
 		}
 	}

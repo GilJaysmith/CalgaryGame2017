@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 
+#include "Engine/Rendering/Renderable.h"
 
 namespace physx
 {
@@ -34,7 +35,6 @@ public:
 
 	void Initialize(CityCooker* cooker = nullptr);
 	void Unload();
-	void Render() const;
 	void AddObject(const CityObjectData& object_data);
 	void Finalize();
 	bool IsFinalized() const { return m_Finalized; }
@@ -45,10 +45,17 @@ protected:
 
 	GLuint m_ShaderProgram;
 
-	struct CityObject
+	class CityObject : public Renderable
 	{
+	public:
 		GLuint vao;
 		unsigned int num_triangles;
+		GLuint shader_program;
+	public:
+		virtual void Render() const override;
+		virtual bool IsActive() const override;
+		virtual unsigned int GetNumMeshes() const override;
+		virtual unsigned int GetNumVerts() const override;
 	};
 
 	std::vector<CityObject> m_Objects;

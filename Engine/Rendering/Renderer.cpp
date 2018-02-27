@@ -240,8 +240,14 @@ namespace Renderer
 				ShaderManager::SetUniformMatrix4fv("camera_view", skybox_view);
 				glBindVertexArray(s_skyboxVAO);
 				glBindTexture(GL_TEXTURE_CUBE_MAP, s_CubemapTexture);
+				glActiveTexture(GL_TEXTURE0);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 				glDepthFunc(GL_LESS);
+				ShaderManager::SetUniformMatrix4fv("camera_view", s_ActiveCamera->GetViewMatrix());
+
+				// 2D stuff, draw this last.
+				ScreenSpaceRenderer::Render();
+				DebugPanels::Render();
 			}
 
 			if (num_verts > s_PeakVertsInScene)

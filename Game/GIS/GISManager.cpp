@@ -20,14 +20,6 @@ namespace GIS
 		UnloadCity();
 	}
 
-	void Render()
-	{
-		if (s_City.IsFinalized())
-		{
-			s_City.Render();
-		}
-	}
-
 	void LoadCityFromSource(const std::string& city_name)
 	{
 		UnloadCity();

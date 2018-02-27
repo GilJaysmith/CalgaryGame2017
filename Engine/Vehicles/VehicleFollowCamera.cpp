@@ -55,7 +55,7 @@ void VehicleFollowCamera::Update(const Time& frame_time)
 
 	m_CameraFront = rot_around_y * yaw_rot * pitch_rot * glm::vec3(0.0f, 0.0f, 1.0f);
 
-	m_CameraPos = entity_position - m_CameraFront * 6.0f;
+	m_CameraPos = entity_position - m_CameraFront * 10.0f;
 
 	m_ViewMatrix = glm::lookAt(
 		m_CameraPos,
