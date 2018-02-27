@@ -35,7 +35,7 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-//	if (false)
+	if (false)
 	{
 		if (!GIS::LoadCityFromCooked("Vancouver"))
 		{
