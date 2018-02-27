@@ -6,6 +6,7 @@
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
 #include "Engine/Rendering/ShaderManager.h"
+#include "Engine/Rendering/TextureManager.h"
 #include "Engine/Rendering/Viewport.h"
 
 #include <set>
@@ -24,6 +25,10 @@ namespace Renderer
 	unsigned int s_Width;
 	unsigned int s_Height;
 	bool s_FullScreen;
+
+	GLuint s_SkyboxShader;
+	GLuint s_CubemapTexture;
+	unsigned int s_skyboxVAO, s_skyboxVBO;
 
 	std::map<std::string, Viewport> s_Viewports;
 
@@ -79,6 +84,65 @@ namespace Renderer
 		int y = 600;
 		bool full_screen = false;
 		CreateWindow(x, y, full_screen);
+
+		s_SkyboxShader = ShaderManager::LoadProgram("skybox");
+		CheckGLError();
+		s_CubemapTexture = TextureManager::LoadCubemap("cubemap.png");
+		CheckGLError();
+
+		float skyboxVertices[] = {
+			// positions          
+			-1.0f,  1.0f, -1.0f,
+			-1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+
+			-1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f,
+
+			1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f,  1.0f,
+			1.0f,  1.0f,  1.0f,
+			1.0f,  1.0f,  1.0f,
+			1.0f,  1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+
+			-1.0f, -1.0f,  1.0f,
+			-1.0f,  1.0f,  1.0f,
+			1.0f,  1.0f,  1.0f,
+			1.0f,  1.0f,  1.0f,
+			1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f,
+
+			-1.0f,  1.0f, -1.0f,
+			1.0f,  1.0f, -1.0f,
+			1.0f,  1.0f,  1.0f,
+			1.0f,  1.0f,  1.0f,
+			-1.0f,  1.0f,  1.0f,
+			-1.0f,  1.0f, -1.0f,
+
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f,  1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f,  1.0f,
+			1.0f, -1.0f,  1.0f
+		};
+
+		glGenVertexArrays(1, &s_skyboxVAO);
+		glGenBuffers(1, &s_skyboxVBO);
+		glBindVertexArray(s_skyboxVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, s_skyboxVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		CheckGLError();
 	}
 
 	void Terminate()
@@ -168,6 +232,16 @@ namespace Renderer
 						num_verts += it->GetNumVerts();
 					}
 				}
+
+				// Skybox.
+				glm::mat4 skybox_view = glm::mat4(glm::mat3(s_ActiveCamera->GetViewMatrix()));
+				glDepthFunc(GL_LEQUAL);
+				ShaderManager::SetActiveShader(s_SkyboxShader);
+				ShaderManager::SetUniformMatrix4fv("camera_view", skybox_view);
+				glBindVertexArray(s_skyboxVAO);
+				glBindTexture(GL_TEXTURE_CUBE_MAP, s_CubemapTexture);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+				glDepthFunc(GL_LESS);
 			}
 
 			if (num_verts > s_PeakVertsInScene)

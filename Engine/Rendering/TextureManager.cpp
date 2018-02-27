@@ -48,6 +48,29 @@ namespace TextureManager
 		return texture_id;
 	}
 
+	GLuint LoadCubemap(const std::string& filename)
+	{
+		auto it = s_LoadedTextures.find(filename);
+		if (it != s_LoadedTextures.end())
+		{
+			return it->second;
+		}
+
+		//int width, height;
+		//unsigned char* raw_image = SOIL_load_image(("data/textures/" + filename).c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+		GLuint texture_id = SOIL_load_OGL_single_cubemap(("data/textures/" + filename).c_str(), SOIL_DDS_CUBEMAP_FACE_ORDER, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		s_LoadedTextures[filename] = texture_id;
+
+		return texture_id;
+	}
+
 	void UnloadTexture(GLuint texture)
 	{
 		glDeleteTextures(1, &texture);
