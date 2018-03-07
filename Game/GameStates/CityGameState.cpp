@@ -35,15 +35,15 @@ void CityGameState::OnEnter()
 	//	}
 	//}
 
-//	if (false)
+	if (false)
 	{
-		if (!GIS::LoadCityFromCooked("Vancouver"))
+//		if (!GIS::LoadCityFromCooked("Vancouver"))
 		{
 			GIS::LoadCityFromSource("Vancouver");
 		}
 	}
 
-	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 120.0f, 0.0f)));
+	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
 	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
@@ -53,11 +53,9 @@ char buffer[60];
 
 bool CityGameState::OnUpdate(const Time& frame_time)
 {
-//	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 	ImGui::SetNextWindowBgAlpha(0.5f);
 	ImGui::Begin("Fun debug");
-//	ImGui::Text("Car altitude is: %fm and here's a random number: %d", car->GetTransform()[3][1], rand());
 	if (ImGui::Button("Click me to toggle physics"))
 	{
 		Physics::Pause(!Physics::IsPaused());
@@ -73,8 +71,6 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
-
-//	GIS::Render();
 	
 	return true;
 }

@@ -15,6 +15,7 @@ public:
 public:
 	virtual ~RenderComponent();
 
+	bool OnMessage(Message*) override;
 	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
 
 protected:

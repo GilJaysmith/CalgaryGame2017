@@ -179,9 +179,9 @@ void City::AddObject(const CityObjectData& object_data)
 		physx::PxTriangleMesh* triangle_mesh = MakeTriangleMeshFromVerts(object_data.wall_vertices);
 		std::string material_name = "floor";
 		physx::PxShape* shape = Physics::GetPhysics()->createShape(physx::PxTriangleMeshGeometry(triangle_mesh), *Physics::GetMaterial(material_name));
-		physx::PxFilterData sim_filter_data(snippetvehicle::COLLISION_FLAG_OBSTACLE, snippetvehicle::COLLISION_FLAG_OBSTACLE_AGAINST, 0, 0);
+		physx::PxFilterData sim_filter_data(snippetvehicle::COLLISION_FLAG_GROUND, snippetvehicle::COLLISION_FLAG_GROUND_AGAINST, 0, 0);
 		shape->setSimulationFilterData(sim_filter_data);
-		physx::PxFilterData query_filter_data(0, 0, 0, snippetvehicle::UNDRIVABLE_SURFACE);
+		physx::PxFilterData query_filter_data(0, 0, 0, snippetvehicle::DRIVABLE_SURFACE);
 		shape->setQueryFilterData(query_filter_data);
 		physx::PxRigidStatic* static_actor = physx::PxCreateStatic(*Physics::GetPhysics(), physx::PxTransform(physx::PxVec3(0.0f, 0.0f, 0.0f)), *shape);
 		Physics::GetScene()->addActor(*static_actor);

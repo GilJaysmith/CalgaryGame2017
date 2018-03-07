@@ -28,6 +28,8 @@ protected:
 	void DestroyVehicle();
 
 private:
+	std::vector<std::string> m_WheelNames;
+
 	physx::PxDefaultAllocator m_Allocator;
 	physx::PxDefaultErrorCallback m_ErrorCallback;
 	physx::PxMaterial* m_Material;
@@ -36,7 +38,6 @@ private:
 	physx::PxVehicleDrivableSurfaceToTireFrictionPairs* m_FrictionPairs;
 	physx::PxVehicleDrive4W* m_Vehicle4W;
 	bool m_IsVehicleInAir;
-	physx::PxF32 m_VehicleModeLifetime;
 	bool m_MimicKeyInputs;
 	physx::PxVehicleDrive4WRawInputData mVehicleInputData;
 

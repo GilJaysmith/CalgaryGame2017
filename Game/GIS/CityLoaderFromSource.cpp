@@ -134,7 +134,7 @@ CityLoaderFromSource::CityLoaderFromSource(City& city, const std::string& city_n
 	double OVERALL_SCALE = 1.0;
 	float max_contour_height = 0.0f;
 
-	if (true)
+	if (false)
 	{
 		// Contours.
 		std::string contours_path = "Data/Shapefiles/" + city_name + "/2-metre_contour_lines-gcs2.shp";

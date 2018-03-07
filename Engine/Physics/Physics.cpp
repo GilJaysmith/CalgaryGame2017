@@ -8,6 +8,8 @@
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 #include "sdks/PhysX/PhysX/Include/common/PxTolerancesScale.h"
 #include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
+#include "sdks/PhysX/PxShared/include/pvd/PxPvd.h"
+#include "sdks/PhysX/PxShared/include/pvd/PxPvdTransport.h"
 #include "sdks/PhysX/PhysX/Include/PxScene.h"
 #include "sdks/PhysX/PhysX/Include/PxSceneDesc.h"
 
@@ -44,6 +46,9 @@ namespace Physics
 	physx::PxFoundation* foundation = nullptr;
 	physx::PxPhysics* physics = nullptr;
 	physx::PxCooking* cooking = nullptr;
+
+	physx::PxPvd* pvd = nullptr;
+	const char* pvd_host = "localhost";
 
 	physx::PxScene* scene = nullptr;
 	physx::PxDefaultCpuDispatcher* dispatcher = nullptr;
@@ -89,7 +94,12 @@ namespace Physics
 		pec = MemNew(MemoryPool::Physics, PhysicsErrorCallback);
 
 		foundation = PxCreateFoundation(PX_FOUNDATION_VERSION, *pa, *pec);
-		physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, physx::PxTolerancesScale(), false);
+
+		pvd = physx::PxCreatePvd(*foundation);
+		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate(pvd_host, 5425, 10);
+		pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+
+		physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, physx::PxTolerancesScale(), false, pvd);
 		cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, physx::PxCookingParams(physx::PxTolerancesScale()));
 
 		physx::PxSceneDesc scene_desc(physics->getTolerancesScale());
@@ -98,6 +108,14 @@ namespace Physics
 		scene_desc.cpuDispatcher = dispatcher;
 		scene_desc.filterShader = FilterShader;
 		scene = physics->createScene(scene_desc);
+
+		physx::PxPvdSceneClient* pvdClient = scene->getScenePvdClient();
+		if (pvdClient)
+		{
+			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
+			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
+			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+		}
 
 		physx::PxInitVehicleSDK(*physics);
 		physx::PxVehicleSetBasisVectors(physx::PxVec3(0, 1, 0), physx::PxVec3(0, 0, 1));
@@ -131,6 +149,9 @@ namespace Physics
 
 		cooking->release();
 		physics->release();
+		physx::PxPvdTransport* transport = pvd->getTransport();
+		pvd->release();
+		transport->release();
 		foundation->release();
 
 		MemDelete(pec);
@@ -140,6 +161,10 @@ namespace Physics
 
 	void Simulate(const Time& time)
 	{
+		if (time.toMilliseconds() == 0.0f)
+		{
+			return;
+		}
 		if (!s_IsPaused)
 		{
 			float seconds = time.toSeconds();

@@ -6,15 +6,16 @@
 #include "Engine/Rendering/ShaderManager.h"
 #include "Engine/Rendering/TextureManager.h"
 
-#include "sdks/assimp/include/Exporter.hpp"
-#include "sdks/assimp/include/Importer.hpp"
-#include "sdks/assimp/include/scene.h"
-#include "sdks/assimp/include/postprocess.h"
+#include "sdks/assimp/include/assimp/Exporter.hpp"
+#include "sdks/assimp/include/assimp/Importer.hpp"
+#include "sdks/assimp/include/assimp/scene.h"
+#include "sdks/assimp/include/assimp/postprocess.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
 #include <vector>
 
+#pragma optimize ("", off)
 
 struct AttributeBinding
 {
@@ -24,14 +25,10 @@ struct AttributeBinding
 
 void CopyMat(const aiMatrix4x4& from, glm::mat4& to)
 {
-	to[0][0] = from.a1; to[1][0] = from.a2;
-	to[2][0] = from.a3; to[3][0] = from.a4;
-	to[0][1] = from.b1; to[1][1] = from.b2;
-	to[2][1] = from.b3; to[3][1] = from.b4;
-	to[0][2] = from.c1; to[1][2] = from.c2;
-	to[2][2] = from.c3; to[3][2] = from.c4;
-	to[0][3] = from.d1; to[1][3] = from.d2;
-	to[2][3] = from.d3; to[3][3] = from.d4;
+	to[0][0] = from.a1; to[1][0] = from.a2; to[2][0] = from.a3; to[3][0] = from.a4;
+	to[0][1] = from.b1; to[1][1] = from.b2; to[2][1] = from.b3; to[3][1] = from.b4;
+	to[0][2] = from.c1; to[1][2] = from.c2; to[2][2] = from.c3; to[3][2] = from.c4;
+	to[0][3] = from.d1; to[1][3] = from.d2;	to[2][3] = from.d3; to[3][3] = from.d4;
 }
 
 
@@ -146,6 +143,12 @@ struct SubMesh
 			}
 		}
 
+		std::stringstream str;
+		str << "Mesh " << mesh->mName.C_Str() << " AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z
+			<< ") -> (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z
+			<< ")";
+		Logging::Log("Mesh", str.str());
+
 		m_NumVerts = (unsigned int)final_vertices.size();
 
 		if (m_NumVerts == 0)
@@ -238,6 +241,7 @@ struct MeshNodeVisitor
 
 struct MeshNode
 {
+	std::string m_Name;
 	std::vector<SubMesh*> m_SubMeshes;
 	glm::mat4 m_Transform;
 	std::vector<MeshNode*> m_Children;
@@ -254,7 +258,15 @@ struct MeshNode
 	MeshNode(aiNode* node, const std::vector<SubMesh*>& meshes)
 	{
 		Logging::Log("Mesh", std::string("Node ") + node->mName.C_Str());
+		m_Name = node->mName.C_Str();
 		CopyMat(node->mTransformation, m_Transform);
+		std::stringstream str;
+		str << "Meshnode" << node->mName.C_Str() << "transform:\n";
+		str << "[" << m_Transform[0][0] << ", " << m_Transform[1][0] << ", " << m_Transform[2][0] << ", " << m_Transform[3][0] << "\n";
+		str << "[" << m_Transform[0][1] << ", " << m_Transform[1][1] << ", " << m_Transform[2][1] << ", " << m_Transform[3][1] << "\n";
+		str << "[" << m_Transform[0][2] << ", " << m_Transform[1][2] << ", " << m_Transform[2][2] << ", " << m_Transform[3][2] << "\n";
+		str << "[" << m_Transform[0][3] << ", " << m_Transform[1][3] << ", " << m_Transform[2][3] << ", " << m_Transform[3][3] << "\n";
+		Logging::Log("MeshNode", str.str());
 		m_NumVerts = 0;
 		for (unsigned int mesh_idx = 0; mesh_idx < node->mNumMeshes; ++mesh_idx)
 		{
@@ -268,6 +280,7 @@ struct MeshNode
 			MeshNode* child_node = MemNew(MemoryPool::Rendering, MeshNode)(*(node->mChildren + child_idx), meshes);
 			m_Children.push_back(child_node);
 			m_NumVerts += child_node->m_NumVerts;
+			m_AABB.Expand(child_node->m_AABB);
 		}
 	}
 
@@ -282,7 +295,7 @@ struct MeshNode
 	void Render(glm::mat4 transform, const glm::vec4& tint)
 	{
 		transform = transform * m_Transform;
-
+		
 		for (auto sub_mesh : m_SubMeshes)
 		{
 			sub_mesh->Render(transform, tint);
@@ -291,6 +304,15 @@ struct MeshNode
 		for (auto child_node : m_Children)
 		{
 			child_node->Render(transform, tint);
+		}
+	}
+
+	void Visit(MeshNodeVisitor& visitor)
+	{
+		visitor(this);
+		for (auto child_node : m_Children)
+		{
+			child_node->Visit(visitor);
 		}
 	}
 };
@@ -350,7 +372,7 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	{
 		Assimp::Importer importer;
 		std::string obj_filename = "data/meshes/" + node["obj"].as<std::string>();
-		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate);
+		const aiScene* scene = importer.ReadFile(obj_filename, aiProcess_Triangulate + aiProcess_GenNormals);
 
 		// Make VAOs for all the meshes.
 		for (unsigned int mesh_idx = 0; mesh_idx < scene->mNumMeshes; ++mesh_idx)
@@ -365,45 +387,49 @@ void Mesh::LoadFromYaml(const std::string& filename)
 		m_RootNode = MemNew(MemoryPool::Rendering, MeshNode)(scene->mRootNode, m_SubMeshes);
 	}
 
-	struct AABBVisitor : MeshNodeVisitor
+	struct NodeGatherVisitor : public MeshNodeVisitor
 	{
-		math::AABB aabb;
-		void Expand(MeshNode* node, glm::mat4 transform)
+		std::map<std::string, MeshNode*> m_NodesByName;
+		virtual void operator()(MeshNode* mesh_node) override
 		{
-			math::AABB node_aabb = node->m_AABB;
-			glm::mat4 node_transform = transform * node->m_Transform;
-			node_aabb.Transform(node->m_Transform);
-			aabb.Expand(node_aabb);
-			for (auto child_node : node->m_Children)
-			{
-				Expand(child_node, node_transform);
-			}
+			m_NodesByName[mesh_node->m_Name] = mesh_node;
 		}
 	};
 
-	AABBVisitor aabb_visitor;
-	aabb_visitor.Expand(m_RootNode, glm::mat4());
-	m_AABB = aabb_visitor.aabb;
+	NodeGatherVisitor ngv;
+	m_RootNode->Visit(ngv);
+	m_NodesByName = ngv.m_NodesByName;
 
 	std::stringstream str;
 	str << "Mesh " << filename << " loaded, " << num_verts << " verts in " << num_meshes << " meshes";
 	Logging::Log("Mesh", str.str());
-	str.str("");
-	str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
-	Logging::Log("Mesh", str.str());
-	str.str("");
-	glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
-	str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
-	Logging::Log("Mesh", str.str());
-	str.str("");
-	glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
-	str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
-	Logging::Log("Mesh", str.str());
+	//str.str("");
+	//str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
+	//Logging::Log("Mesh", str.str());
+	//str.str("");
+	//glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
+	//str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
+	//Logging::Log("Mesh", str.str());
+	//str.str("");
+	//glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
+	//str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
+	//Logging::Log("Mesh", str.str());
 }
 
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
 {
 	m_RootNode->Render(world_transform, tint);
+}
+
+void Mesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses)
+{
+	for (auto local_pose : local_poses)
+	{
+		MeshNode* node = m_NodesByName[local_pose.first];
+		glm::mat4 node_transform = node->m_Transform;
+		glm::mat4 new_node_transform = local_pose.second;
+		node->m_Transform = new_node_transform;
+	}
 }
 
 unsigned int Mesh::GetNumVerts() const

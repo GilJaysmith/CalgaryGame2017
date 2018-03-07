@@ -337,5 +337,11 @@
     <ClInclude Include="Vehicles\VehicleFollowCameraInputHandler.h">
       <Filter>Vehicles</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PhysicsUtils.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderMessages.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

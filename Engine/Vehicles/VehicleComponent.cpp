@@ -4,6 +4,8 @@
 #include "Engine/Entities/Message.h"
 #include "Engine/Entities/MessageTypes.h"
 #include "Engine/Physics/Physics.h"
+#include "Engine/Physics/PhysicsUtils.h"
+#include "Engine/Rendering/RenderMessages.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleTireFriction.h"
 #include "Engine/Vehicles/VehicleComponent.h"
@@ -20,6 +22,7 @@ Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& pr
 VehicleComponent::VehicleComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
 {
+	m_WheelNames = properties["wheels"].as<std::vector<std::string>>();
 	CreateVehicle();
 }
 
@@ -66,7 +69,6 @@ bool VehicleComponent::OnMessage(Message* message)
 					}
 				}
 
-//				ImGui::SetNextWindowPos(ImVec2(0, 0));
 				ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 				ImGui::SetNextWindowBgAlpha(0.5f);
 				ImGui::Begin("Car intentions debug");
@@ -85,7 +87,7 @@ bool VehicleComponent::OnMessage(Message* message)
 					actor->addForce(physx::PxVec3(0.0f, 20.0f, 0.0f), physx::PxForceMode::eVELOCITY_CHANGE);
 				}
 
-				if (mvsi->m_ResetOrientation && !m_IsVehicleInAir)
+				if (mvsi->m_ResetOrientation)
 				{
 					glm::mat4 transform = m_Entity->GetTransform();
 					glm::vec3 position = transform[3];
@@ -157,7 +159,7 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	//The moment of inertia is just the moment of inertia of a cuboid but modified for easier steering.
 	//Center of mass offset is 0.65m above the base of the chassis and 0.25m towards the front.
 	const physx::PxF32 chassisMass = 1500.0f;
-	const physx::PxVec3 chassisDims(2.5f, 2.0f, 5.0f);
+	const physx::PxVec3 chassisDims(2.0f, 1.3f, 4.5f);
 	const physx::PxVec3 chassisMOI
 	((chassisDims.y*chassisDims.y + chassisDims.z*chassisDims.z)*chassisMass / 12.0f,
 		(chassisDims.x*chassisDims.x + chassisDims.z*chassisDims.z)*0.8f*chassisMass / 12.0f,
@@ -170,7 +172,7 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	const physx::PxF32 wheelRadius = 0.5f;
 	const physx::PxF32 wheelWidth = 0.4f;
 	const physx::PxF32 wheelMOI = 0.5f*wheelMass*wheelRadius*wheelRadius;
-	const physx::PxU32 nbWheels = 6;
+	const physx::PxU32 nbWheels = 4;
 
 	snippetvehicle::VehicleDesc vehicleDesc;
 
@@ -227,7 +229,7 @@ void VehicleComponent::CreateVehicle()
 	const glm::mat4& transform = m_Entity->GetTransform();
 	glm::vec4 position = transform[3];
 
-	physx::PxTransform startTransform(physx::PxVec3(position.x, position.y + (vehicleDesc.chassisDims.y*0.5f + vehicleDesc.wheelRadius + 1.0f), position.z), physx::PxQuat(physx::PxIdentity));
+	physx::PxTransform startTransform(physx::PxVec3(position.x, position.y + vehicleDesc.wheelRadius + 1.0f, position.z), physx::PxQuat(physx::PxIdentity));
 	m_Vehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
 	gScene->addActor(*m_Vehicle4W->getRigidDynamicActor());
 
@@ -293,17 +295,22 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 		case UpdatePass::AfterPhysics:
 		{
 			physx::PxMat44 matrix_transform(m_Vehicle4W->getRigidDynamicActor()->getGlobalPose());
-			glm::mat4 new_world_transform;
-			for (int i = 0; i < 4; ++i)
-			{
-				for (int j = 0; j < 4; ++j)
-				{
-					new_world_transform[i][j] = matrix_transform[i][j];
-				}
-			}
+			glm::mat4 new_world_transform = physx_to_glm(matrix_transform);
 			m_Entity->SetTransform(new_world_transform);
 
-//			ImGui::SetNextWindowPos(ImVec2(0, 0));
+			// We're also going to get the wheel local poses.
+			// Get the first four shapes of the actor.
+			physx::PxShape* shapes[4];
+			m_Vehicle4W->getRigidDynamicActor()->getShapes(shapes, 4);
+			std::map<std::string, glm::mat4> wheel_local_poses;
+			for (auto shape_idx = 0; shape_idx < 4; ++shape_idx)
+			{
+				physx::PxShape* shape = shapes[shape_idx];
+				wheel_local_poses[m_WheelNames[shape_idx]] = physx_to_glm(physx::PxMat44(shape->getLocalPose()));
+			}
+			Message_RenderSetLocalPoses mrslp(wheel_local_poses);
+			m_Entity->OnMessage(&mrslp);
+
 			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 			ImGui::SetNextWindowBgAlpha(0.5f);
 			ImGui::Begin("Car debug");

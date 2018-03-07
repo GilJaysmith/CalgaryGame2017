@@ -27,6 +27,10 @@ namespace EntityManager
 
 	void Update(const Time& time, UpdatePass::TYPE update_pass)
 	{
+		if (time.toMilliseconds() == 0.0f)
+		{
+			return;
+		}
 		for (auto entity : s_AllEntities)
 		{
 			entity->OnUpdate(time, update_pass);

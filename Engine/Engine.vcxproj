@@ -104,11 +104,13 @@
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsComponent.h" />
     <ClInclude Include="Physics\PhysicsMessages.h" />
+    <ClInclude Include="Physics\PhysicsUtils.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\MeshManager.h" />
     <ClInclude Include="Rendering\Renderable.h" />
     <ClInclude Include="Rendering\RenderComponent.h" />
     <ClInclude Include="Rendering\Renderer.h" />
+    <ClInclude Include="Rendering\RenderMessages.h" />
     <ClInclude Include="Rendering\ScreenSpaceRenderer.h" />
     <ClInclude Include="Rendering\ShaderManager.h" />
     <ClInclude Include="Rendering\TextureManager.h" />
@@ -217,7 +219,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>Engine/Pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PhysX\PhysX\Include;..\sdks\PhysX\PxShared\include;..\sdks\libyaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PhysX\PhysX\Include;..\sdks\PhysX\PxShared\include;..\sdks\libyaml\include;..\sdks\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -258,7 +260,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>Engine/Pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PhysX\PhysX\Include;..\sdks\PhysX\PxShared\include;..\sdks\libyaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PhysX\PhysX\Include;..\sdks\PhysX\PxShared\include;..\sdks\libyaml\include;..\sdks\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <TreatWarningAsError>true</TreatWarningAsError>

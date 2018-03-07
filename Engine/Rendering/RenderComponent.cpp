@@ -5,6 +5,7 @@
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/RenderComponent.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/RenderMessages.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
@@ -20,6 +21,22 @@ RenderComponent::~RenderComponent()
 	{
 		MemDelete(m_Renderable);
 	}
+}
+
+bool RenderComponent::OnMessage(Message* message)
+{
+	if (message->GetMessageType() == MessageType::Render)
+	{
+		switch (message->GetMessageSubtype())
+		{
+			case RenderMessageSubtype::SetLocalPoses:
+				// Tell our renderable to update its local poses.
+				Message_RenderSetLocalPoses* rslp = dynamic_cast<Message_RenderSetLocalPoses*>(message);
+				m_Renderable->SetLocalPoses(rslp->m_LocalPoses);
+				break;
+		}
+	}
+	return false;
 }
 
 void RenderComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass)
