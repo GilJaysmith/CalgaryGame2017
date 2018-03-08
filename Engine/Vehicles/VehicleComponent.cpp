@@ -22,7 +22,7 @@ Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& pr
 VehicleComponent::VehicleComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
 {
-	m_WheelNames = properties["wheels"].as<std::vector<std::string>>();
+	m_WheelNames = properties["wheels"].as<std::vector<std::vector<std::string>>>();
 	CreateVehicle();
 }
 
@@ -282,8 +282,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 
 			//Vehicle update.
 			const physx::PxVec3 grav = gScene->getGravity();
-			physx::PxWheelQueryResult wheelQueryResults[PX_MAX_NB_WHEELS];
-			physx::PxVehicleWheelQueryResult vehicleQueryResults[1] = { { wheelQueryResults, m_Vehicle4W->mWheelsSimData.getNbWheels() } };
+			physx::PxVehicleWheelQueryResult vehicleQueryResults[1] = { { m_WheelQueryResults, m_Vehicle4W->mWheelsSimData.getNbWheels() } };
 			PxVehicleUpdates(timestep, grav, *m_FrictionPairs, 1, vehicles, vehicleQueryResults);
 
 			//Work out if the vehicle is in the air.
@@ -299,14 +298,16 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			m_Entity->SetTransform(new_world_transform);
 
 			// We're also going to get the wheel local poses.
-			// Get the first four shapes of the actor.
-			physx::PxShape* shapes[4];
-			m_Vehicle4W->getRigidDynamicActor()->getShapes(shapes, 4);
 			std::map<std::string, glm::mat4> wheel_local_poses;
 			for (auto shape_idx = 0; shape_idx < 4; ++shape_idx)
 			{
-				physx::PxShape* shape = shapes[shape_idx];
-				wheel_local_poses[m_WheelNames[shape_idx]] = physx_to_glm(physx::PxMat44(shape->getLocalPose()));
+				glm::mat4 local_pose = physx_to_glm(physx::PxMat44(m_WheelQueryResults[shape_idx].localPose));
+				local_pose[3][0] = -local_pose[3][0];
+				for (auto mesh_name : m_WheelNames[shape_idx])
+				{
+					wheel_local_poses[mesh_name] = local_pose;
+				}
+
 			}
 			Message_RenderSetLocalPoses mrslp(wheel_local_poses);
 			m_Entity->OnMessage(&mrslp);

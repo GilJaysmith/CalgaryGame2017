@@ -19,6 +19,7 @@ public:
 
 	void SetTransform(const glm::mat4& world_transform);
 	void SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses);
+	void GetLocalPoses(std::map<std::string, glm::mat4>& local_poses);
 
 	virtual void Render() const override;
 

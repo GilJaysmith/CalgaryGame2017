@@ -30,10 +30,20 @@ bool RenderComponent::OnMessage(Message* message)
 		switch (message->GetMessageSubtype())
 		{
 			case RenderMessageSubtype::SetLocalPoses:
+			{
 				// Tell our renderable to update its local poses.
 				Message_RenderSetLocalPoses* rslp = dynamic_cast<Message_RenderSetLocalPoses*>(message);
 				m_Renderable->SetLocalPoses(rslp->m_LocalPoses);
 				break;
+			}
+
+			case RenderMessageSubtype::GetLocalPoses:
+			{
+				// Tell our renderable to update its local poses.
+				Message_RenderGetLocalPoses* rglp = dynamic_cast<Message_RenderGetLocalPoses*>(message);
+				m_Renderable->GetLocalPoses(rglp->m_LocalPoses);
+				break;
+			}
 		}
 	}
 	return false;

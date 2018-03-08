@@ -27,6 +27,11 @@ void RenderableMesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local
 	m_Mesh->SetLocalPoses(local_poses);
 }
 
+void RenderableMesh::GetLocalPoses(std::map<std::string, glm::mat4>& local_poses)
+{
+	m_Mesh->GetLocalPoses(local_poses);
+}
+
 void RenderableMesh::Render() const
 {
 	m_Mesh->Render(m_WorldTransform, m_Tint);

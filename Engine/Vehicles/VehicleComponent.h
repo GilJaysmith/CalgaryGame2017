@@ -28,7 +28,7 @@ protected:
 	void DestroyVehicle();
 
 private:
-	std::vector<std::string> m_WheelNames;
+	std::vector<std::vector<std::string>> m_WheelNames;
 
 	physx::PxDefaultAllocator m_Allocator;
 	physx::PxDefaultErrorCallback m_ErrorCallback;
@@ -40,6 +40,7 @@ private:
 	bool m_IsVehicleInAir;
 	bool m_MimicKeyInputs;
 	physx::PxVehicleDrive4WRawInputData mVehicleInputData;
+	physx::PxWheelQueryResult m_WheelQueryResults[PX_MAX_NB_WHEELS];
 
 	snippetvehicle::VehicleDesc initVehicleDesc();
 };

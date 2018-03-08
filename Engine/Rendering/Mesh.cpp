@@ -261,7 +261,7 @@ struct MeshNode
 		m_Name = node->mName.C_Str();
 		CopyMat(node->mTransformation, m_Transform);
 		std::stringstream str;
-		str << "Meshnode" << node->mName.C_Str() << "transform:\n";
+		str << "Meshnode " << node->mName.C_Str() << " transform:\n";
 		str << "[" << m_Transform[0][0] << ", " << m_Transform[1][0] << ", " << m_Transform[2][0] << ", " << m_Transform[3][0] << "\n";
 		str << "[" << m_Transform[0][1] << ", " << m_Transform[1][1] << ", " << m_Transform[2][1] << ", " << m_Transform[3][1] << "\n";
 		str << "[" << m_Transform[0][2] << ", " << m_Transform[1][2] << ", " << m_Transform[2][2] << ", " << m_Transform[3][2] << "\n";
@@ -282,6 +282,21 @@ struct MeshNode
 			m_NumVerts += child_node->m_NumVerts;
 			m_AABB.Expand(child_node->m_AABB);
 		}
+
+		str.str("");
+		str << "Node " << m_Name << " loaded, " << m_NumVerts << " verts in " << m_SubMeshes.size() << " meshes";
+		Logging::Log("Mesh", str.str());
+		str.str("");
+		str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
+		Logging::Log("Mesh", str.str());
+		str.str("");
+		glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
+		str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
+		Logging::Log("Mesh", str.str());
+		str.str("");
+		glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
+		str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
+		Logging::Log("Mesh", str.str());
 	}
 
 	~MeshNode()
@@ -399,21 +414,6 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	NodeGatherVisitor ngv;
 	m_RootNode->Visit(ngv);
 	m_NodesByName = ngv.m_NodesByName;
-
-	std::stringstream str;
-	str << "Mesh " << filename << " loaded, " << num_verts << " verts in " << num_meshes << " meshes";
-	Logging::Log("Mesh", str.str());
-	//str.str("");
-	//str << "AABB (" << m_AABB.lbb.x << ", " << m_AABB.lbb.y << ", " << m_AABB.lbb.z << ") -> (" << m_AABB.rtf.x << ", " << m_AABB.rtf.y << ", " << m_AABB.rtf.z << ")";
-	//Logging::Log("Mesh", str.str());
-	//str.str("");
-	//glm::vec3 centre = glm::vec3(m_AABB.lbb + m_AABB.rtf) / 2.0f;
-	//str << "Centre: " << centre.x << ", " << centre.y << ", " << centre.z;
-	//Logging::Log("Mesh", str.str());
-	//str.str("");
-	//glm::vec3 half_dims(m_AABB.rtf.x - centre.x, m_AABB.rtf.y - centre.y, m_AABB.rtf.z - centre.z);
-	//str << "Half dims: " << half_dims.x << ", " << half_dims.y << ", " << half_dims.z;
-	//Logging::Log("Mesh", str.str());
 }
 
 void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
@@ -429,6 +429,16 @@ void Mesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses)
 		glm::mat4 node_transform = node->m_Transform;
 		glm::mat4 new_node_transform = local_pose.second;
 		node->m_Transform = new_node_transform;
+	}
+}
+
+void Mesh::GetLocalPoses(std::map<std::string, glm::mat4>& local_poses)
+{
+	for (auto& local_pose : local_poses)
+	{
+		MeshNode* node = m_NodesByName[local_pose.first];
+		glm::mat4 node_transform = node->m_Transform;
+		local_pose.second = node_transform;
 	}
 }
 
