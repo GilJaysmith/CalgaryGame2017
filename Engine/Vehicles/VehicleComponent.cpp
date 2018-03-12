@@ -13,6 +13,7 @@
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
+#pragma optimize ("", off)
 
 Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& properties)
 {
@@ -22,7 +23,7 @@ Component* VehicleComponent::CreateComponent(Entity* owner, const YAML::Node& pr
 VehicleComponent::VehicleComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
 {
-	m_WheelNames = properties["wheels"].as<std::vector<std::vector<std::string>>>();
+	m_WheelNames = properties["wheels"].as<std::vector<std::string>>();
 	CreateVehicle();
 }
 
@@ -159,7 +160,7 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	//The moment of inertia is just the moment of inertia of a cuboid but modified for easier steering.
 	//Center of mass offset is 0.65m above the base of the chassis and 0.25m towards the front.
 	const physx::PxF32 chassisMass = 1500.0f;
-	const physx::PxVec3 chassisDims(2.0f, 1.3f, 4.5f);
+	const physx::PxVec3 chassisDims(2.0f, 1.2f, 4.5f);
 	const physx::PxVec3 chassisMOI
 	((chassisDims.y*chassisDims.y + chassisDims.z*chassisDims.z)*chassisMass / 12.0f,
 		(chassisDims.x*chassisDims.x + chassisDims.z*chassisDims.z)*0.8f*chassisMass / 12.0f,
@@ -224,6 +225,19 @@ void VehicleComponent::CreateVehicle()
 
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
+
+	Message_RenderGetLocalPoses rglp(m_WheelNames);
+	m_Entity->OnMessage(&rglp);
+	for (auto wheel_name : m_WheelNames)
+	{
+		vehicleDesc.wheelOffsets.push_back(glm_to_physx(rglp.m_LocalPoses[wheel_name]));
+	}
+
+	Message_RenderGetLocalAABBs rgla(m_WheelNames);
+	m_Entity->OnMessage(&rgla);
+	vehicleDesc.wheelRadius = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.z - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.z) / 2.0f;
+	vehicleDesc.wheelWidth = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.x - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.x);
+
 	m_Vehicle4W = createVehicle4W(vehicleDesc, gPhysics, gCooking);
 
 	const glm::mat4& transform = m_Entity->GetTransform();
@@ -303,11 +317,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			{
 				glm::mat4 local_pose = physx_to_glm(physx::PxMat44(m_WheelQueryResults[shape_idx].localPose));
 				local_pose[3][0] = -local_pose[3][0];
-				for (auto mesh_name : m_WheelNames[shape_idx])
-				{
-					wheel_local_poses[mesh_name] = local_pose;
-				}
-
+				wheel_local_poses[m_WheelNames[shape_idx]] = local_pose;
 			}
 			Message_RenderSetLocalPoses mrslp(wheel_local_poses);
 			m_Entity->OnMessage(&mrslp);

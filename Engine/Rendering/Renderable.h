@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Engine/Math/AABB.h"
+
 class Mesh;
 
 class Renderable
@@ -19,7 +21,8 @@ public:
 
 	void SetTransform(const glm::mat4& world_transform);
 	void SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses);
-	void GetLocalPoses(std::map<std::string, glm::mat4>& local_poses);
+	std::map<std::string, glm::mat4> GetLocalPoses(const std::vector<std::string>& node_names);
+	std::map<std::string, math::AABB> GetLocalAABBs(const std::vector<std::string>& node_names);
 
 	virtual void Render() const override;
 

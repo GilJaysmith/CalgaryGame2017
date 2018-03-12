@@ -8,9 +8,9 @@ behaviours:
 #    material: cube
   vehicle:
     wheels:
-      - [Cylinder] # Mesh.025, Mesh.023, Mesh.024]
-      - [Cylinder.002] # Mesh.162, Mesh.118, Mesh.116]
-      - [Cylinder.004] # Mesh.012, Mesh.128, Mesh.126]
-      - [Cylinder.003] # Mesh.013, Mesh.123, Mesh.121]
+      - Cylinder
+      - Cylinder.002
+      - Cylinder.004
+      - Cylinder.003
   vehicleinput:
     player: 0

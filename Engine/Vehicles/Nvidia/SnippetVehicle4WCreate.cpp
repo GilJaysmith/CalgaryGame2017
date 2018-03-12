@@ -34,6 +34,8 @@
 #include "SnippetVehicleSceneQuery.h"
 
 
+#pragma optimize ("", off)
+
 namespace snippetvehicle
 {
 
@@ -254,9 +256,13 @@ namespace snippetvehicle
 		{
 			//Compute the wheel center offsets from the origin.
 			PxVec3 wheelCenterActorOffsets[PX_MAX_NB_WHEELS];
-			const PxF32 frontZ = chassisDims.z*0.3f;
-			const PxF32 rearZ = -chassisDims.z*0.3f;
-			fourwheel::computeWheelCenterActorOffsets4W(frontZ, rearZ, chassisDims, wheelWidth, wheelRadius, numWheels, wheelCenterActorOffsets);
+			//const PxF32 frontZ = chassisDims.z*0.3f;
+			//const PxF32 rearZ = -chassisDims.z*0.3f;
+			//fourwheel::computeWheelCenterActorOffsets4W(frontZ, rearZ, chassisDims, wheelWidth, wheelRadius, numWheels, wheelCenterActorOffsets);
+			for (int wheel = 0; wheel < 4; ++wheel)
+			{
+				wheelCenterActorOffsets[wheel] = PxVec3(-vehicle4WDesc.wheelOffsets[wheel][3][0], vehicle4WDesc.wheelOffsets[wheel][3][1], vehicle4WDesc.wheelOffsets[wheel][3][2]);
+			}
 
 			//Set up the simulation data for all wheels.
 			fourwheel::setupWheelsSimulationData

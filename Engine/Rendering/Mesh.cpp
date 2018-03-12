@@ -432,14 +432,28 @@ void Mesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses)
 	}
 }
 
-void Mesh::GetLocalPoses(std::map<std::string, glm::mat4>& local_poses)
+std::map<std::string, glm::mat4> Mesh::GetLocalPoses(const std::vector<std::string>& node_names)
 {
-	for (auto& local_pose : local_poses)
+	std::map<std::string, glm::mat4> local_poses;
+	for (auto node_name : node_names)
 	{
-		MeshNode* node = m_NodesByName[local_pose.first];
+		MeshNode* node = m_NodesByName[node_name];
 		glm::mat4 node_transform = node->m_Transform;
-		local_pose.second = node_transform;
+		local_poses[node_name] = node_transform;
 	}
+	return local_poses;
+}
+
+std::map<std::string, math::AABB> Mesh::GetLocalAABBs(const std::vector<std::string>& node_names)
+{
+	std::map<std::string, math::AABB> local_aabbs;
+	for (auto node_name : node_names)
+	{
+		MeshNode* node = m_NodesByName[node_name];
+		math::AABB node_aabb = node->m_AABB;
+		local_aabbs[node_name] = node_aabb;
+	}
+	return local_aabbs;
 }
 
 unsigned int Mesh::GetNumVerts() const

@@ -16,7 +16,8 @@ public:
 	void LoadFromYaml(const std::string& filename);
 	void Render(const glm::mat4& world_transform, const glm::vec4& tint);
 	void SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses);
-	void GetLocalPoses(std::map<std::string, glm::mat4>& local_poses);
+	std::map<std::string, glm::mat4> GetLocalPoses(const std::vector<std::string>& node_names);
+	std::map<std::string, math::AABB> GetLocalAABBs(const std::vector<std::string>& node_names);
 
 	unsigned int GetNumVerts() const;
 

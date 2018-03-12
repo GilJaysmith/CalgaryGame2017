@@ -27,9 +27,14 @@ void RenderableMesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local
 	m_Mesh->SetLocalPoses(local_poses);
 }
 
-void RenderableMesh::GetLocalPoses(std::map<std::string, glm::mat4>& local_poses)
+std::map<std::string, glm::mat4> RenderableMesh::GetLocalPoses(const std::vector<std::string>& node_names)
 {
-	m_Mesh->GetLocalPoses(local_poses);
+	return m_Mesh->GetLocalPoses(node_names);
+}
+
+std::map<std::string, math::AABB> RenderableMesh::GetLocalAABBs(const std::vector<std::string>& node_names)
+{
+	return m_Mesh->GetLocalAABBs(node_names);
 }
 
 void RenderableMesh::Render() const

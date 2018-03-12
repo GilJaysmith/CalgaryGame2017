@@ -2,6 +2,7 @@
 
 #include "Engine/Entities/Message.h"
 #include "Engine/Entities/MessageTypes.h"
+#include "Engine/Math/AABB.h"
 
 namespace RenderMessageSubtype
 {
@@ -9,6 +10,7 @@ namespace RenderMessageSubtype
 	{
 		SetLocalPoses,
 		GetLocalPoses,
+		GetLocalAABBs,
 		COUNT
 	};
 };
@@ -26,11 +28,18 @@ struct Message_RenderGetLocalPoses : Message
 {
 	Message_RenderGetLocalPoses(const std::vector<std::string>& node_names)
 		: Message(MessageType::Render, RenderMessageSubtype::GetLocalPoses)
-	{
-		for (auto node_name : node_names)
-		{
-			m_LocalPoses[node_name] = glm::mat4();
-		}
-	}
+		, m_NodeNames(node_names)
+	{}
+	std::vector<std::string> m_NodeNames;
 	std::map<std::string, glm::mat4> m_LocalPoses;
+};
+
+struct Message_RenderGetLocalAABBs : Message
+{
+	Message_RenderGetLocalAABBs(const std::vector<std::string>& node_names)
+		: Message(MessageType::Render, RenderMessageSubtype::GetLocalAABBs)
+		, m_NodeNames(node_names)
+	{}
+	std::vector<std::string> m_NodeNames;
+	std::map<std::string, math::AABB> m_LocalAABBs;
 };

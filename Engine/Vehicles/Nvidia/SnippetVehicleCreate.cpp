@@ -36,6 +36,8 @@
 
 #include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
+#pragma optimize ("", off)
+
 namespace snippetvehicle
 {
 
@@ -88,14 +90,14 @@ PxConvexMesh* createChassisMesh(const PxVec3 dims, PxPhysics& physics, PxCooking
 	const PxF32 z = dims.z*0.5f;
 	PxVec3 verts[8] =
 	{
-		PxVec3(x,y,-z), 
-		PxVec3(x,y,z),
-		PxVec3(x,-y,z),
-		PxVec3(x,-y,-z),
-		PxVec3(-x,y,-z), 
-		PxVec3(-x,y,z),
-		PxVec3(-x,-y,z),
-		PxVec3(-x,-y,-z)
+		PxVec3(x,y + 0.8f,-z), 
+		PxVec3(x,y + 0.8f,z),
+		PxVec3(x,-y + 0.8f,z),
+		PxVec3(x,-y + 0.8f,-z),
+		PxVec3(-x,y + 0.8f,-z),
+		PxVec3(-x,y + 0.8f,z),
+		PxVec3(-x,-y + 0.8f,z),
+		PxVec3(-x,-y + 0.8f,-z)
 	};
 
 	return createConvexMesh(verts,8,physics,cooking);

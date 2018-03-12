@@ -39,9 +39,15 @@ bool RenderComponent::OnMessage(Message* message)
 
 			case RenderMessageSubtype::GetLocalPoses:
 			{
-				// Tell our renderable to update its local poses.
 				Message_RenderGetLocalPoses* rglp = dynamic_cast<Message_RenderGetLocalPoses*>(message);
-				m_Renderable->GetLocalPoses(rglp->m_LocalPoses);
+				rglp->m_LocalPoses = m_Renderable->GetLocalPoses(rglp->m_NodeNames);
+				break;
+			}
+
+			case RenderMessageSubtype::GetLocalAABBs:
+			{
+				Message_RenderGetLocalAABBs* rgla = dynamic_cast<Message_RenderGetLocalAABBs*>(message);
+				rgla->m_LocalAABBs = m_Renderable->GetLocalAABBs(rgla->m_NodeNames);
 				break;
 			}
 		}

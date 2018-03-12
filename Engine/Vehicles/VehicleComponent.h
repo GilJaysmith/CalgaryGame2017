@@ -28,7 +28,7 @@ protected:
 	void DestroyVehicle();
 
 private:
-	std::vector<std::vector<std::string>> m_WheelNames;
+	std::vector<std::string> m_WheelNames;
 
 	physx::PxDefaultAllocator m_Allocator;
 	physx::PxDefaultErrorCallback m_ErrorCallback;

@@ -106,6 +106,8 @@ struct VehicleDesc
 
 	ActorUserData* actorUserData;
 	ShapeUserData* shapeUserDatas;
+
+	std::vector<physx::PxMat44> wheelOffsets;
 };
 
 PxVehicleDrive4W* createVehicle4W(const VehicleDesc& vehDesc, PxPhysics* physics, PxCooking* cooking);
