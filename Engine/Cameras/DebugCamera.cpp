@@ -125,6 +125,12 @@ void DebugCamera::Update(const Time& frame_time)
 			pandacube->OnMessage(&pdg);
 		}
 	}
+
+	// Debug info.
+	ImGui::Begin("Debug camera");
+	ImGui::Text("X: %f Y: %f Z: %f", m_CameraPos.x, m_CameraPos.y, m_CameraPos.z);
+	ImGui::Text("Look at: X: %f Y: %f Z: %f", m_CameraPos.x + m_CameraFront.x, m_CameraPos.y + m_CameraFront.y, m_CameraFront.z + m_CameraFront.z);
+	ImGui::End();
 }
 
 void DebugCamera::OnSetActive(bool active)

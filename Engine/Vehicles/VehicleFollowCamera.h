@@ -14,6 +14,7 @@ public:
 	virtual void Update(const Time& frame_time) override;
 
 	virtual glm::vec3 GetPosition() const override { return m_CameraPos; }
+	virtual glm::vec3 GetForwardVector() const override { return m_CameraFront; }
 
 protected:
 	Entity* m_FollowedEntity;

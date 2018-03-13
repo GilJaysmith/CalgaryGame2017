@@ -1,8 +1,10 @@
 #include "Game/Pch.h"
 
+#include "Engine/Audio/Audio.h"
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/DebugPanels/imgui/imgui.h"
+#include "Engine/Input/Input.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
@@ -53,25 +55,14 @@ char buffer[60];
 
 bool CityGameState::OnUpdate(const Time& frame_time)
 {
-	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
-	ImGui::SetNextWindowBgAlpha(0.5f);
-	ImGui::Begin("Fun debug");
-	if (ImGui::Button("Click me to toggle physics"))
-	{
-		Physics::Pause(!Physics::IsPaused());
-	}
-	ImGui::InputText("<- Type here", buffer, sizeof(buffer));
-	ImGui::LabelText("<- What you typed", buffer);
-	ImGui::End();
-
-	ImGui::Begin("Another window");
-	ImGui::Text("More text!");
-	ImGui::Text("Every piece of text you'd want!");
-	ImGui::End();
-
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 	
+	if (Input::JustPressed(GLFW_KEY_B))
+	{
+		Audio::PlaySound("a2002011001-e02.wav", glm::vec3(0.0f, 0.0f, 0.0f));
+	}
+
 	return true;
 }
 

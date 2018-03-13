@@ -71,7 +71,6 @@ bool VehicleComponent::OnMessage(Message* message)
 				}
 
 				ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
-				ImGui::SetNextWindowBgAlpha(0.5f);
 				ImGui::Begin("Car intentions debug");
 				ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
 				ImGui::Text("Car speed: %f", vehicle_vel);
@@ -160,7 +159,7 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	//The moment of inertia is just the moment of inertia of a cuboid but modified for easier steering.
 	//Center of mass offset is 0.65m above the base of the chassis and 0.25m towards the front.
 	const physx::PxF32 chassisMass = 1500.0f;
-	const physx::PxVec3 chassisDims(2.0f, 1.2f, 4.5f);
+	const physx::PxVec3 chassisDims(2.0f, 1.2f, 3.0f);	// HACK! These numbers roughly correspond to the Mini Cooper's chassis.
 	const physx::PxVec3 chassisMOI
 	((chassisDims.y*chassisDims.y + chassisDims.z*chassisDims.z)*chassisMass / 12.0f,
 		(chassisDims.x*chassisDims.x + chassisDims.z*chassisDims.z)*0.8f*chassisMass / 12.0f,
@@ -185,12 +184,22 @@ snippetvehicle::VehicleDesc VehicleComponent::initVehicleDesc()
 	vehicleDesc.chassisSimFilterData = physx::PxFilterData(snippetvehicle::COLLISION_FLAG_CHASSIS, snippetvehicle::COLLISION_FLAG_CHASSIS_AGAINST, 0, 0);
 
 	vehicleDesc.wheelMass = wheelMass;
-	vehicleDesc.wheelRadius = wheelRadius;
-	vehicleDesc.wheelWidth = wheelWidth;
 	vehicleDesc.wheelMOI = wheelMOI;
 	vehicleDesc.numWheels = nbWheels;
 	vehicleDesc.wheelMaterial = m_Material;
 	vehicleDesc.wheelSimFilterData = physx::PxFilterData(snippetvehicle::COLLISION_FLAG_WHEEL, snippetvehicle::COLLISION_FLAG_WHEEL_AGAINST, 0, 0);
+
+	Message_RenderGetLocalPoses rglp(m_WheelNames);
+	m_Entity->OnMessage(&rglp);
+	for (auto wheel_name : m_WheelNames)
+	{
+		vehicleDesc.wheelOffsets.push_back(glm_to_physx(rglp.m_LocalPoses[wheel_name]));
+	}
+
+	Message_RenderGetLocalAABBs rgla(m_WheelNames);
+	m_Entity->OnMessage(&rgla);
+	vehicleDesc.wheelRadius = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.z - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.z) / 2.0f;
+	vehicleDesc.wheelWidth = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.x - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.x);
 
 	return vehicleDesc;
 }
@@ -225,18 +234,6 @@ void VehicleComponent::CreateVehicle()
 
 	//Create a vehicle that will drive on the plane.
 	snippetvehicle::VehicleDesc vehicleDesc = initVehicleDesc();
-
-	Message_RenderGetLocalPoses rglp(m_WheelNames);
-	m_Entity->OnMessage(&rglp);
-	for (auto wheel_name : m_WheelNames)
-	{
-		vehicleDesc.wheelOffsets.push_back(glm_to_physx(rglp.m_LocalPoses[wheel_name]));
-	}
-
-	Message_RenderGetLocalAABBs rgla(m_WheelNames);
-	m_Entity->OnMessage(&rgla);
-	vehicleDesc.wheelRadius = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.z - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.z) / 2.0f;
-	vehicleDesc.wheelWidth = (rgla.m_LocalAABBs[m_WheelNames[0]].rtf.x - rgla.m_LocalAABBs[m_WheelNames[0]].lbb.x);
 
 	m_Vehicle4W = createVehicle4W(vehicleDesc, gPhysics, gCooking);
 
@@ -274,9 +271,6 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			physx::PxScene* gScene = Physics::GetScene();
 
 			const physx::PxF32 timestep = elapsed_time.toSeconds();
-
-			//Cycle through the driving modes to demonstrate how to accelerate/reverse/brake/turn etc.
-//			incrementDrivingMode(timestep);
 
 			//Update the control inputs for the vehicle.
 			if (m_MimicKeyInputs)
@@ -323,7 +317,6 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			m_Entity->OnMessage(&mrslp);
 
 			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
-			ImGui::SetNextWindowBgAlpha(0.5f);
 			ImGui::Begin("Car debug");
 			ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
 			physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();

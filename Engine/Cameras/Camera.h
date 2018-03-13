@@ -13,6 +13,7 @@ public:
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjMatrix() const;
 	virtual glm::vec3 GetPosition() const = 0;
+	virtual glm::vec3 GetForwardVector() const = 0;
 	
 	void SetActive(bool active);
 

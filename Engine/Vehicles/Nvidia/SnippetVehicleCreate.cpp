@@ -90,9 +90,9 @@ PxConvexMesh* createChassisMesh(const PxVec3 dims, PxPhysics& physics, PxCooking
 	const PxF32 z = dims.z*0.5f;
 	PxVec3 verts[8] =
 	{
-		PxVec3(x,y + 0.8f,-z), 
-		PxVec3(x,y + 0.8f,z),
-		PxVec3(x,-y + 0.8f,z),
+		PxVec3(x,y + 0.8f,-z),	// HACK - this 0.8f is to put the chassis above the wheels for the Mini Cooper.
+		PxVec3(x,y + 0.8f,z),	// I need to fix this by creating collision meshes corresponding to the car's actual chassis.
+		PxVec3(x,-y + 0.8f,z),	// Which can come later!
 		PxVec3(x,-y + 0.8f,-z),
 		PxVec3(-x,y + 0.8f,-z),
 		PxVec3(-x,y + 0.8f,z),
