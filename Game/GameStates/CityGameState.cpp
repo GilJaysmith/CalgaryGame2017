@@ -45,7 +45,7 @@ void CityGameState::OnEnter()
 		}
 	}
 
-	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
+//	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
 	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
 	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);

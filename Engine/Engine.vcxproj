@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio\Audio.cpp" />
+    <ClCompile Include="Audio\Music.cpp" />
     <ClCompile Include="Cameras\Camera.cpp" />
     <ClCompile Include="Cameras\DebugCamera.cpp" />
     <ClCompile Include="Cameras\DebugCameraInputHandler.cpp" />
@@ -72,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
+    <ClInclude Include="Audio\Music.h" />
     <ClInclude Include="Cameras\Camera.h" />
     <ClInclude Include="Cameras\DebugCamera.h" />
     <ClInclude Include="Cameras\DebugCameraInputHandler.h" />

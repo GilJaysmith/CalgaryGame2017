@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Audio/Audio.h"
+#include "Engine/GameStates/Time.h"
 
 #include "sdks/fmod/include/fmod.hpp"
 
@@ -33,9 +34,9 @@ namespace Audio
 		FMOD::Memory_Initialize(
 			nullptr,
 			0,
-			alloc,
-			realloc,
-			free,
+			nullptr,
+			nullptr,
+			nullptr,
 			0
 		);
 
@@ -99,11 +100,11 @@ namespace Audio
 		}
 	}
 
-	void PlaySound(const std::string& sound_name)
+	AudioHandle PlaySound(const std::string& sound_name)
 	{
 		std::string sound_path = "Data\\Audio\\" + sound_name;
 		FMOD::Sound* sound = nullptr;
-		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_CREATESAMPLE, nullptr, &sound);
+		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_CREATESAMPLE | FMOD_ACCURATETIME, nullptr, &sound);
 		if (result == FMOD_OK)
 		{
 			FMOD::Channel* channel = nullptr;
@@ -116,16 +117,19 @@ namespace Audio
 					it->second->release();
 				}
 				sounds_playing[channel] = sound;
+				return channel;
 			}
 			else
 			{
 				Logging::Log("Audio", "Sound sample" + sound_path + " didn't start playing");
 				sound->release();
+				return nullptr;
 			}
 		}
+		return nullptr;
 	}
 
-	void PlaySound(const std::string& sound_name, const glm::vec3& position)
+	AudioHandle PlaySound(const std::string& sound_name, const glm::vec3& position)
 	{
 		std::string sound_path = "Data\\Audio\\" + sound_name;
 		FMOD::Sound* sound = nullptr;
@@ -148,12 +152,86 @@ namespace Audio
 				pos.z = position.z;
 				channel->set3DAttributes(&pos, nullptr);
 				channel->setPaused(false);
+				return channel;
 			}
 			else
 			{
 				Logging::Log("Audio", "Sound sample" + sound_path + " didn't start playing");
 				sound->release();
+				return nullptr;
 			}
+		}
+		return nullptr;
+	}
+
+	void Pause(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			channel->setPaused(true);
+		}
+	}
+
+	void Resume(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			channel->setPaused(false);
+		}
+	}
+
+	void Stop(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			channel->stop();
+		}
+	}
+
+	Time GetTimeElapsed(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			unsigned int position;
+			channel->getPosition(&position, FMOD_TIMEUNIT_MS);
+
+			return Time::fromMilliseconds(float(position));
+		}
+		return Time::fromSeconds(-1.0f);
+	}
+
+	Time GetTimeRemaining(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			unsigned int length;
+			it->second->getLength(&length, FMOD_TIMEUNIT_MS);
+
+			unsigned int position;
+			channel->getPosition(&position, FMOD_TIMEUNIT_MS);
+
+			return Time::fromMilliseconds(float(length - position));
+		}
+		return Time::fromSeconds(-1.0f);
+	}
+
+	void SetVolume(AudioHandle handle, float volume)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			channel->setVolume(volume);
 		}
 	}
 }

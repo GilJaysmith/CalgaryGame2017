@@ -1,4 +1,7 @@
 #include <Windows.h>
+#undef CreateWindow
+#undef DestroyWindow
+#undef PlaySound
 
 #define GLEW_STATIC
 #include "sdks/glew/include/GL/glew.h"
