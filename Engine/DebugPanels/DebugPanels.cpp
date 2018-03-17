@@ -161,7 +161,7 @@ namespace DebugPanels
 
 	void Initialize()
 	{
-		s_ImGuiShader = ShaderManager::LoadProgram("ImGuiShader");
+		s_ImGuiShader = ShaderManager::LoadProgram("ImGui");
 
 		s_AttribLocationTex = glGetUniformLocation(s_ImGuiShader, "Texture");
 		s_AttribLocationProjMtx = glGetUniformLocation(s_ImGuiShader, "ProjMtx");

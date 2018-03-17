@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: TestVertexShader }
-    - { type: fragment, shader: TestFragmentShader }
- 
-outputs: [ outColour ]

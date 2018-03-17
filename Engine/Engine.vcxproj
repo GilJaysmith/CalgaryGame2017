@@ -24,6 +24,7 @@
     <ClCompile Include="Cameras\Camera.cpp" />
     <ClCompile Include="Cameras\DebugCamera.cpp" />
     <ClCompile Include="Cameras\DebugCameraInputHandler.cpp" />
+    <ClCompile Include="DebugDraw\DebugDraw.cpp" />
     <ClCompile Include="DebugPanels\DebugPanels.cpp" />
     <ClCompile Include="DebugPanels\imgui\imgui.cpp" />
     <ClCompile Include="DebugPanels\imgui\imgui_demo.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="Cameras\Camera.h" />
     <ClInclude Include="Cameras\DebugCamera.h" />
     <ClInclude Include="Cameras\DebugCameraInputHandler.h" />
+    <ClInclude Include="DebugDraw\DebugDraw.h" />
     <ClInclude Include="DebugPanels\DebugPanels.h" />
     <ClInclude Include="DebugPanels\imgui\imconfig.h" />
     <ClInclude Include="DebugPanels\imgui\imgui.h" />

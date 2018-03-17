@@ -5,4 +5,4 @@ attributes:
     - { name: normal, floats: 3 }
     - { name: colour, floats: 3 }
 	
-shader: LightingShader
+shader: Lighting

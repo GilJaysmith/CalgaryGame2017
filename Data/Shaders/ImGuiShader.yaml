@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: ImGuiVertexShader }
-    - { type: fragment, shader: ImGuiFragmentShader }
- 
-outputs: [ outColour ]

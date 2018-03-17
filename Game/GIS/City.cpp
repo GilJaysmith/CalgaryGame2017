@@ -25,7 +25,7 @@ City::~City()
 void City::Initialize(CityCooker* cooker)
 {
 	m_Cooker = cooker;
-	m_ShaderProgram = ShaderManager::LoadProgram("SolidColourShader");
+	m_ShaderProgram = ShaderManager::LoadProgram("SolidColour");
 }
 
 void City::Unload()

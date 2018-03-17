@@ -46,6 +46,9 @@
     <Filter Include="Vehicles\Nvidia">
       <UniqueIdentifier>{9d8d8431-897b-45fa-8e19-d916ef732cfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DebugDraw">
+      <UniqueIdentifier>{d80fb98a-4f4c-4173-81e6-ab7a268cc146}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="Audio\Music.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw\DebugDraw.cpp">
+      <Filter>DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +354,9 @@
     </ClInclude>
     <ClInclude Include="Audio\Music.h">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDraw\DebugDraw.h">
+      <Filter>DebugDraw</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

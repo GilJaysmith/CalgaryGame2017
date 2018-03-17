@@ -35,7 +35,7 @@ namespace ShaderManager
 			return it->second;
 		}
 
-		std::string filename = "data/shaders/" + shader_name + ".glsl";
+		std::string filename = "data/shaders/" + shader_name;
 
 		std::ifstream in(filename);
 		std::stringstream buffer;

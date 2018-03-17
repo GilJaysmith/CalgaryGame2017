@@ -12,7 +12,7 @@ namespace ScreenSpaceRenderer
 
 	void Initialize()
 	{
-		s_ScreenSpaceShader = ShaderManager::LoadProgram("ScreenSpaceShader");
+		s_ScreenSpaceShader = ShaderManager::LoadProgram("ScreenSpace");
 	}
 
 	void Terminate()

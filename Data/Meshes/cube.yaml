@@ -46,7 +46,7 @@ attributes:
     - { name: colour, floats: 3 }
     - { name: texcoord, floats: 2 }
 	
-shader: TestShader
+shader: Test
     
 textures:
     - Panda_Hugs.png

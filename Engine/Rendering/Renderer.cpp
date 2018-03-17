@@ -1,6 +1,7 @@
 #include "Engine/Pch.h"
 
 #include "Engine/Cameras/Camera.h"
+#include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/DebugPanels/DebugPanels.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
@@ -85,7 +86,7 @@ namespace Renderer
 		bool full_screen = false;
 		CreateWindow(x, y, full_screen);
 
-		s_SkyboxShader = ShaderManager::LoadProgram("skybox");
+		s_SkyboxShader = ShaderManager::LoadProgram("Skybox");
 		CheckGLError();
 		s_CubemapTexture = TextureManager::LoadCubemap("cubemap.png");
 		CheckGLError();
@@ -244,6 +245,8 @@ namespace Renderer
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 				glDepthFunc(GL_LESS);
 				ShaderManager::SetUniformMatrix4fv("camera_view", s_ActiveCamera->GetViewMatrix());
+
+				DebugDraw::Render();
 
 				// 2D stuff, draw this last.
 				ScreenSpaceRenderer::Render();
