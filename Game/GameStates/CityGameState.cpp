@@ -1,6 +1,7 @@
 #include "Game/Pch.h"
 
 #include "Engine/Audio/Audio.h"
+#include "Engine/Audio/Music.h"
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/Entities/Entity.h"
@@ -27,7 +28,7 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-//	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
@@ -46,39 +47,42 @@ void CityGameState::OnEnter()
 		}
 	}
 
-//	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
-	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
-	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
+	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
+	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
-	DebugDraw::DebugLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	DebugDraw::DebugLine(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	//Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
+	//Music::StartPlaying();
 
-	std::vector<glm::vec3> points = { 
-		glm::vec3(10.0f, 10.0f, 10.0f), 
-		glm::vec3(-10.0f, 10.0f, 10.0f), 
-		glm::vec3(-10.0f, 10.0f, -10.0f),
-		glm::vec3(10.0f, 10.0f, -10.0f), 
-		glm::vec3(10.0f, 10.0f, 10.0f) };
-	DebugDraw::DebugLines(points, glm::vec3(0.0f, 1.0f, 0.0f));
+	//DebugDraw::DebugLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	//DebugDraw::DebugLine(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-	glm::mat4 grid_transform;
-	grid_transform = glm::translate(grid_transform, glm::vec3(5.0f, 5.0f, 5.0f));
-	DebugDraw::DebugGrid(grid_transform, 1.0f, 10, 10, glm::vec3(1.0f, 1.0f, 1.0f));
+	//std::vector<glm::vec3> points = { 
+	//	glm::vec3(10.0f, 10.0f, 10.0f), 
+	//	glm::vec3(-10.0f, 10.0f, 10.0f), 
+	//	glm::vec3(-10.0f, 10.0f, -10.0f),
+	//	glm::vec3(10.0f, 10.0f, -10.0f), 
+	//	glm::vec3(10.0f, 10.0f, 10.0f) };
+	//DebugDraw::DebugLines(points, glm::vec3(0.0f, 1.0f, 0.0f));
 
-	DebugDraw::DebugSphere(glm::vec3(-5.0f, 3.0f, -5.0f), 1.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+	//glm::mat4 grid_transform;
+	//grid_transform = glm::translate(grid_transform, glm::vec3(5.0f, 5.0f, 5.0f));
+	//DebugDraw::DebugGrid(grid_transform, 1.0f, 10, 10, glm::vec3(1.0f, 1.0f, 1.0f));
 
-	glm::mat4 box_transform;
-	box_transform = glm::translate(box_transform, glm::vec3(5.0f, 5.0f, 5.0f));
-	box_transform = glm::rotate(box_transform, glm::pi<float>() / 4.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	DebugDraw::DebugBox(box_transform, glm::vec3(2.0f, 3.0f, 4.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+	//DebugDraw::DebugSphere(glm::vec3(-5.0f, 3.0f, -5.0f), 1.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 
-	DebugDraw::DebugCrosshair(glm::vec3(-1.0f, 5.0f, 0.0f), 1.0f, glm::vec3(0.0f, 1.0f, 1.0f));
+	//glm::mat4 box_transform;
+	//box_transform = glm::translate(box_transform, glm::vec3(5.0f, 5.0f, 5.0f));
+	//box_transform = glm::rotate(box_transform, glm::pi<float>() / 4.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	//DebugDraw::DebugBox(box_transform, glm::vec3(2.0f, 3.0f, 4.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 
-	glm::mat4 arrow_transform;
-	arrow_transform = glm::translate(arrow_transform, glm::vec3(-2.0f, 10.0f, -2.0f));
-	arrow_transform = glm::rotate(arrow_transform, glm::pi<float>() / 4.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	DebugDraw::DebugArrow(arrow_transform, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	//DebugDraw::DebugCrosshair(glm::vec3(-1.0f, 5.0f, 0.0f), 1.0f, glm::vec3(0.0f, 1.0f, 1.0f));
+
+	//glm::mat4 arrow_transform;
+	//arrow_transform = glm::translate(arrow_transform, glm::vec3(-2.0f, 10.0f, -2.0f));
+	//arrow_transform = glm::rotate(arrow_transform, glm::pi<float>() / 4.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	//DebugDraw::DebugArrow(arrow_transform, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 char buffer[60];
@@ -88,11 +92,6 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 	
-	if (Input::JustPressed(GLFW_KEY_B))
-	{
-		Audio::PlaySound("a2002011001-e02.wav", glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-
 	return true;
 }
 
@@ -101,4 +100,6 @@ void CityGameState::OnExit()
 	MemDelete(m_Camera);
 
 	GIS::UnloadCity();
+
+	Music::StopPlaying();
 }

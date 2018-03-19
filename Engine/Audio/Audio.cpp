@@ -100,11 +100,11 @@ namespace Audio
 		}
 	}
 
-	AudioHandle PlaySound(const std::string& sound_name)
+	AudioHandle PlaySound(const std::string& sound_name, bool looping)
 	{
 		std::string sound_path = "Data\\Audio\\" + sound_name;
 		FMOD::Sound* sound = nullptr;
-		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_CREATESAMPLE | FMOD_ACCURATETIME, nullptr, &sound);
+		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_CREATESAMPLE | FMOD_ACCURATETIME | (looping ? FMOD_LOOP_NORMAL : 0), nullptr, &sound);
 		if (result == FMOD_OK)
 		{
 			FMOD::Channel* channel = nullptr;
@@ -232,6 +232,29 @@ namespace Audio
 		if (it != sounds_playing.end())
 		{
 			channel->setVolume(volume);
+		}
+	}
+
+	void SetPitch(AudioHandle handle, float pitch)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			channel->setPitch(pitch);
+		}
+	}
+
+	void SetLooping(AudioHandle handle)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			unsigned int length;
+			it->second->getLength(&length, FMOD_TIMEUNIT_PCM);
+			channel->setLoopCount(-1);
+			channel->setLoopPoints(0, FMOD_TIMEUNIT_PCM, length - 1, FMOD_TIMEUNIT_PCM);
 		}
 	}
 }

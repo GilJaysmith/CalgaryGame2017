@@ -1,5 +1,6 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Audio/Audio.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/Message.h"
 #include "Engine/Entities/MessageTypes.h"
@@ -319,9 +320,95 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 			ImGui::Begin("Car debug");
 			ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
+			ImGui::Text("Revs: %f", m_Vehicle4W->mDriveDynData.getEngineRotationSpeed());
 			physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
 			ImGui::Text("Car speed: %f", actor->getLinearVelocity().magnitude());
 			ImGui::End();
+
+			// Audio.
+			// Max engine rotation speed is 600.
+			// Let's assign the wavs as follows:
+			// low: full volume 0-100, fall off by 200
+			// med: ramp up 100-200, full volume to 400, fall off by 500
+			// high: ramp up 400-500, full volume to 600
+			// At the bottom of the range, pitch = 0.5
+			// At the top of the range, pitch = 2.0
+
+			struct GearSound
+			{
+				std::string sound;
+				float low_zero_volume;
+				float low_full_volume;
+				float high_full_volume;
+				float high_zero_volume;
+			};
+
+			std::vector<GearSound> gear_sounds = {
+				{
+					"low_on.wav",
+					-100,
+					0,
+					200,
+					300
+				},
+				{
+					"med_on.wav",
+					100,
+					200,
+					400,
+					500
+				},
+				{
+					"high_on.wav",
+					300,
+					500,
+					600,
+					700
+				}
+			};
+			
+			// Initialize audio if not already playing. HACK!
+			static std::vector<AudioHandle> gear_audios;
+
+			if (gear_audios.size() == 0)
+			{
+				// Initialize sounds.
+				for (auto gear_sound : gear_sounds)
+				{
+					AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, true);
+					Audio::SetVolume(gs, 0.0f);
+					Audio::SetLooping(gs);
+					gear_audios.push_back(gs);
+				}
+			}
+
+			// Look at revs
+			float revs = m_Vehicle4W->mDriveDynData.getEngineRotationSpeed();
+			for (int gear_idx = 0; gear_idx < gear_sounds.size(); ++gear_idx)
+			{
+				GearSound& gear_sound = gear_sounds[gear_idx];
+				AudioHandle gear_audio = gear_audios[gear_idx];
+				float desired_volume = 1.0f;
+				float desired_pitch = 1.0f;
+				if (revs < 0.1f || revs <= gear_sound.low_zero_volume || revs >= gear_sound.high_zero_volume)
+				{
+					desired_volume = 0.0f;
+				}
+				if (revs > gear_sound.low_zero_volume && revs < gear_sound.low_full_volume)
+				{
+					desired_volume = (revs - gear_sound.low_zero_volume) / (gear_sound.low_full_volume - gear_sound.low_zero_volume);
+				}
+				if (revs > gear_sound.high_full_volume && revs < gear_sound.high_zero_volume)
+				{
+					desired_volume = 1.0f - ((revs - gear_sound.high_full_volume) / (gear_sound.high_zero_volume - gear_sound.high_full_volume));
+				}
+				if (revs >= gear_sound.low_zero_volume && revs <= gear_sound.high_zero_volume)
+				{
+					desired_pitch = 0.5f + 1.5f * (revs - gear_sound.low_zero_volume) / (gear_sound.high_zero_volume - gear_sound.low_zero_volume);
+				}
+				Audio::SetVolume(gear_audio, desired_volume);
+				Audio::SetPitch(gear_audio, desired_pitch);
+			}
 
 			break;
 		}
