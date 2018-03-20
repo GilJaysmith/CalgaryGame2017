@@ -187,6 +187,9 @@
     <ClCompile Include="DebugDraw\DebugDraw.cpp">
       <Filter>DebugDraw</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\CollisionResponseComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -357,6 +360,12 @@
     </ClInclude>
     <ClInclude Include="DebugDraw\DebugDraw.h">
       <Filter>DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionResponseComponent.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionMessages.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

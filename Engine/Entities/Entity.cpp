@@ -7,6 +7,8 @@
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
+unsigned int Entity::s_NextEntityId = 1;
+
 Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& transform)
 {
 	std::string yaml_filename = "data/entities/" + entity_type + ".yaml";
@@ -23,6 +25,7 @@ Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& tr
 }
 
 Entity::Entity()
+	: m_EntityId(s_NextEntityId++)
 {
 }
 

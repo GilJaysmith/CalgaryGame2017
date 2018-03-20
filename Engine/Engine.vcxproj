@@ -51,6 +51,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Physics\CollisionResponseComponent.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsComponent.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
@@ -105,6 +106,8 @@
     <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="Physics\CollisionMessages.h" />
+    <ClInclude Include="Physics\CollisionResponseComponent.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\PhysicsComponent.h" />
     <ClInclude Include="Physics\PhysicsMessages.h" />

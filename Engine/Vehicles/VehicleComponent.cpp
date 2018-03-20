@@ -243,6 +243,7 @@ void VehicleComponent::CreateVehicle()
 
 	physx::PxTransform startTransform(physx::PxVec3(position.x, position.y + vehicleDesc.wheelRadius + 1.0f, position.z), physx::PxQuat(physx::PxIdentity));
 	m_Vehicle4W->getRigidDynamicActor()->setGlobalPose(startTransform);
+	m_Vehicle4W->getRigidDynamicActor()->userData = static_cast<void*>(m_Entity);
 	gScene->addActor(*m_Vehicle4W->getRigidDynamicActor());
 
 	//Set the vehicle to rest in first gear.

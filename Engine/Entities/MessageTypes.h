@@ -8,6 +8,7 @@ namespace MessageType
 		Physics,
 		Vehicle,
 		Render,
+		Collision,
 		COUNT
 	};
 };

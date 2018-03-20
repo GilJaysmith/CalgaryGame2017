@@ -184,6 +184,7 @@ void City::AddObject(const CityObjectData& object_data)
 		physx::PxFilterData query_filter_data(0, 0, 0, snippetvehicle::DRIVABLE_SURFACE);
 		shape->setQueryFilterData(query_filter_data);
 		physx::PxRigidStatic* static_actor = physx::PxCreateStatic(*Physics::GetPhysics(), physx::PxTransform(physx::PxVec3(0.0f, 0.0f, 0.0f)), *shape);
+		static_actor->userData = nullptr;
 		Physics::GetScene()->addActor(*static_actor);
 		m_PhysicsObjects.push_back(static_actor);
 	}
@@ -198,6 +199,7 @@ void City::AddObject(const CityObjectData& object_data)
 		physx::PxFilterData query_filter_data(0, 0, 0, snippetvehicle::DRIVABLE_SURFACE);
 		shape->setQueryFilterData(query_filter_data);
 		physx::PxRigidStatic* static_actor = physx::PxCreateStatic(*Physics::GetPhysics(), physx::PxTransform(physx::PxVec3(0.0f, 0.0f, 0.0f)), *shape);
+		static_actor->userData = nullptr;
 		Physics::GetScene()->addActor(*static_actor);
 		m_PhysicsObjects.push_back(static_actor);
 	}

@@ -135,6 +135,7 @@ PxRigidDynamic* createVehicleActor
 	setupNonDrivableSurface(wheelQryFilterData);
 	PxFilterData chassisQryFilterData;
 	setupNonDrivableSurface(chassisQryFilterData);
+	chassisQryFilterData.word2 = (physx::PxU32)physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
 
 	//Add all the wheel shapes to the actor.
 	for(PxU32 i = 0; i < numWheels; i++)

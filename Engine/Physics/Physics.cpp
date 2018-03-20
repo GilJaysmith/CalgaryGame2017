@@ -1,6 +1,9 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Entities/Entity.h"
+#include "Engine/Entities/EntityManager.h"
 #include "Engine/GameStates/Time.h"
+#include "Engine/Physics/CollisionMessages.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleCreate.h"
 #include "Engine/Vehicles/Nvidia/SnippetVehicleFilterShader.h"
@@ -86,6 +89,46 @@ namespace Physics
 		return physx::PxFilterFlags();
 	}
 
+	class SimulationCallback : public physx::PxSimulationEventCallback
+	{
+	public:
+		virtual void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override {}
+		virtual void onWake(physx::PxActor** actors, physx::PxU32 count) override {}
+		virtual void onSleep(physx::PxActor** actors, physx::PxU32 count) override {}
+		virtual void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs) override
+		{
+			// Thurr's been a contact.
+			physx::PxRigidActor* actor0 = pairHeader.actors[0];
+			physx::PxRigidActor* actor1 = pairHeader.actors[1];
+
+			Entity* entity0 = static_cast<Entity*>(actor0->userData);
+			Entity* entity1 = static_cast<Entity*>(actor1->userData);
+			if (entity0)
+			{
+				Message_CollisionTouch mct(actor0, actor1);
+				entity0->OnMessage(&mct);
+			}
+			if (entity1)
+			{
+				Message_CollisionTouch mct(actor1, actor0);
+				entity1->OnMessage(&mct);
+			}
+		}
+		virtual void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override {}
+		virtual void onAdvance(const physx::PxRigidBody*const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override {}
+	};
+
+	SimulationCallback sSimulationCallback;
+
+	class BroadPhaseCallback : public physx::PxBroadPhaseCallback
+	{
+	public:
+		virtual	void onObjectOutOfBounds(physx::PxShape& shape, physx::PxActor& actor) override {}
+		virtual	void onObjectOutOfBounds(physx::PxAggregate& aggregate) override {}
+	};
+
+	BroadPhaseCallback sBroadPhaseCallback;
+
 	void Initialize()
 	{
 		Logging::Log("Physics", "Physics initializing...");
@@ -104,10 +147,12 @@ namespace Physics
 
 		physx::PxSceneDesc scene_desc(physics->getTolerancesScale());
 		scene_desc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+		scene_desc.broadPhaseCallback = &sBroadPhaseCallback;
 		dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		scene_desc.cpuDispatcher = dispatcher;
 		scene_desc.filterShader = FilterShader;
 		scene = physics->createScene(scene_desc);
+		scene->setSimulationEventCallback(&sSimulationCallback);
 
 		physx::PxPvdSceneClient* pvdClient = scene->getScenePvdClient();
 		if (pvdClient)

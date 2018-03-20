@@ -141,6 +141,7 @@ PhysicsComponent::PhysicsComponent(Entity* owner, const YAML::Node& properties)
 
 		MemDelete(shapes);
 
+		m_Actor->userData = static_cast<void*>(m_Entity);
 		Physics::GetScene()->addActor(*m_Actor);
 	}
 }

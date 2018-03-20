@@ -7,6 +7,7 @@
 namespace EntityManager
 {
 	std::set<Entity*> s_AllEntities;
+	unsigned int s_NextEntityIndex = 1;
 	std::map<std::string, std::set<Entity*>> s_EntityTags;
 	std::vector<Entity*> s_EntitiesToDelete;
 
