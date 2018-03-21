@@ -49,6 +49,9 @@
     <Filter Include="DebugDraw">
       <UniqueIdentifier>{d80fb98a-4f4c-4173-81e6-ab7a268cc146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Health">
+      <UniqueIdentifier>{3a6f9dd5-f213-4899-ba11-4c25d5b48279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -189,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="Physics\CollisionResponseComponent.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Health\HealthComponent.cpp">
+      <Filter>Health</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +372,12 @@
     </ClInclude>
     <ClInclude Include="Physics\CollisionMessages.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Health\HealthComponent.h">
+      <Filter>Health</Filter>
+    </ClInclude>
+    <ClInclude Include="Health\DamageMessages.h">
+      <Filter>Health</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

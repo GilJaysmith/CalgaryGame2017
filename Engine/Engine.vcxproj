@@ -38,6 +38,7 @@
     <ClCompile Include="GameStates\GameStateManager.cpp" />
     <ClCompile Include="GameStates\SplashScreenGameState.cpp" />
     <ClCompile Include="GameStates\Time.cpp" />
+    <ClCompile Include="Health\HealthComponent.cpp" />
     <ClCompile Include="Input\Gamepad.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
@@ -98,6 +99,8 @@
     <ClInclude Include="GameStates\GameStateManager.h" />
     <ClInclude Include="GameStates\SplashScreenGameState.h" />
     <ClInclude Include="GameStates\Time.h" />
+    <ClInclude Include="Health\DamageMessages.h" />
+    <ClInclude Include="Health\HealthComponent.h" />
     <ClInclude Include="Input\Gamepad.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\InputHandler.h" />

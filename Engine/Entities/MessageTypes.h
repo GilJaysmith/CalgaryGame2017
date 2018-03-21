@@ -9,6 +9,7 @@ namespace MessageType
 		Vehicle,
 		Render,
 		Collision,
+		Damage,
 		COUNT
 	};
 };
