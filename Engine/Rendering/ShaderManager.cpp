@@ -51,7 +51,7 @@ namespace ShaderManager
 		int success;
 		char infoLog[512];
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success)
+		if(!success)
 		{
 			glGetShaderInfoLog(shader, 512, NULL, infoLog);
 			Logging::Log("ShaderManager", std::string("shader compilation error: ") + shader_name + ": " + infoLog);
@@ -79,7 +79,7 @@ namespace ShaderManager
 
 		int success;
 		char infoLog[512];
-		glGetShaderiv(shader_program, GL_LINK_STATUS, &success);
+		glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
 		if (!success)
 		{
 			glGetShaderInfoLog(shader_program, 512, NULL, infoLog);
@@ -153,15 +153,20 @@ namespace ShaderManager
 		for (auto shader : s_Programs)
 		{
 			unsigned int shader_program = shader.second;
-			GLint uniformLocation = GetUniformLocation(shader_program, uniform_name.c_str());
-			if (uniformLocation > -1)
-			{
-				SetActiveShader(shader_program);
-				glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(v));
-			}
+			SetUniformMatrix4fv(uniform_name, v, shader_program);
 		}
 	}
 	
+	void SetUniformMatrix4fv(const std::string& uniform_name, const glm::mat4& v, unsigned int shader_program)
+	{
+		GLint uniformLocation = GetUniformLocation(shader_program, uniform_name.c_str());
+		if (uniformLocation > -1)
+		{
+			SetActiveShader(shader_program);
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(v));
+		}
+	}
+
 	void SetUniform3fv(const std::string& uniform_name, const glm::vec3& v)
 	{
 		for (auto shader : s_Programs)

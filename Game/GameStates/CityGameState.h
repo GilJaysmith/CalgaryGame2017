@@ -18,4 +18,5 @@ public:
 
 protected:
 	Camera* m_Camera;
+	Entity* m_Car;
 };

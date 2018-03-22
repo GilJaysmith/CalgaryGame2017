@@ -18,4 +18,6 @@ public:
 
 protected:
 	HealthComponent(Entity* owner, const YAML::Node& properties);
+
+	unsigned int m_Health;
 };

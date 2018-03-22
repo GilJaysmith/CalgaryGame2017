@@ -4,8 +4,9 @@
 #include "Engine/Audio/Music.h"
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/DebugDraw/DebugDraw.h"
-#include "Engine/Entities/Entity.h"
 #include "Engine/DebugPanels/imgui/imgui.h"
+#include "Engine/Entities/Entity.h"
+#include "Engine/Health/DamageMessages.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Renderable.h"
@@ -28,7 +29,7 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
@@ -47,9 +48,9 @@ void CityGameState::OnEnter()
 		}
 	}
 
-	Entity* car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
-	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(car, 0);
-	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	m_Car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
+	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car, 0);
+	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
 	//Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
@@ -92,6 +93,20 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 	
+	unsigned int car_health;
+	Message_DamageGetHealth dgh;
+	m_Car->OnMessage(&dgh);
+	car_health = dgh.m_Health;
+
+	ImGui::Begin("Health test");
+	ImGui::Text("Car health: %d", car_health);
+	if (ImGui::Button("Damage car"))
+	{
+		Message_DamageTakeDamage dtd(10);
+		m_Car->OnMessage(&dtd);
+	}
+	ImGui::End();
+
 	return true;
 }
 

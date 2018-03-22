@@ -14,3 +14,5 @@ behaviours:
       - Cylinder.003
   vehicleinput:
     player: 0
+  health:
+    health: 100
