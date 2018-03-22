@@ -6,7 +6,7 @@
 
 namespace EntityManager
 {
-	std::set<Entity*> s_AllEntities;
+	std::map<Entity*, unsigned int> s_EntityHandleMap;
 	unsigned int s_NextEntityIndex = 1;
 	std::map<std::string, std::set<Entity*>> s_EntityTags;
 	std::vector<Entity*> s_EntitiesToDelete;
@@ -19,11 +19,10 @@ namespace EntityManager
 
 	void Terminate()
 	{
-		for (auto entity : s_AllEntities)
+		while (s_EntityHandleMap.size())
 		{
-			MemDelete(entity);
+			ActuallyDestroyEntity(s_EntityHandleMap.begin()->first);
 		}
-		s_AllEntities.clear();
 	}
 
 	void Update(const Time& time, UpdatePass::TYPE update_pass)
@@ -32,16 +31,16 @@ namespace EntityManager
 		{
 			return;
 		}
-		for (auto entity : s_AllEntities)
+		for (auto entity : s_EntityHandleMap)
 		{
-			entity->OnUpdate(time, update_pass);
+			entity.first->OnUpdate(time, update_pass);
 		}
 	}
 
 	Entity * CreateEntity()
 	{
 		Entity* new_entity = MemNew(MemoryPool::Entities, Entity);
-		s_AllEntities.insert(new_entity);
+		s_EntityHandleMap[new_entity] = new_entity->GetEntityId();
 		return new_entity;
 	}
 
@@ -70,9 +69,9 @@ namespace EntityManager
 
 	void BroadcastMessage(Message* message)
 	{
-		for (auto it : s_AllEntities)
+		for (auto it : s_EntityHandleMap)
 		{
-			it->OnMessage(message);
+			it.first->OnMessage(message);
 		}
 	}
 
@@ -99,12 +98,18 @@ namespace EntityManager
 
 	void ActuallyDestroyEntity(Entity* entity)
 	{
-		s_AllEntities.erase(entity);
+		s_EntityHandleMap.erase(entity);
 		for (auto it : s_EntityTags)
 		{
 			it.second.erase(entity);
 		}
 		MemDelete(entity);
+	}
+
+	unsigned int GetEntityId(Entity* entity)
+	{
+		auto it = s_EntityHandleMap.find(entity);
+		return (it != s_EntityHandleMap.end()) ? it->second : 0;
 	}
 }
 

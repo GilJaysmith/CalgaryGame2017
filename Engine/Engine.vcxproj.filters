@@ -196,6 +196,9 @@
     <ClCompile Include="Health\HealthComponent.cpp">
       <Filter>Health</Filter>
     </ClCompile>
+    <ClCompile Include="Entities\EntityHandle.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -378,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="Health\DamageMessages.h">
       <Filter>Health</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\EntityHandle.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

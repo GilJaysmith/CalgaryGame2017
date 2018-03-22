@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Engine/Cameras/Camera.h"
+#include "Engine/Entities/EntityHandle.h"
 
-class Entity;
 class VehicleFollowCameraInputHandler;
 
 class VehicleFollowCamera : public Camera
@@ -17,7 +17,7 @@ public:
 	virtual glm::vec3 GetForwardVector() const override { return m_CameraFront; }
 
 protected:
-	Entity* m_FollowedEntity;
+	EntityHandle m_FollowedEntity;
 	VehicleFollowCameraInputHandler* m_InputHandler;
 
 	glm::vec3 m_CameraPos;

@@ -31,6 +31,10 @@ VehicleComponent::VehicleComponent(Entity* owner, const YAML::Node& properties)
 VehicleComponent::~VehicleComponent()
 {
 	DestroyVehicle();
+	for (auto gear_audio : m_GearAudios)
+	{
+		Audio::Stop(gear_audio);
+	}
 }
 
 bool VehicleComponent::OnMessage(Message* message)
@@ -368,10 +372,8 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 				}
 			};
 			
-			// Initialize audio if not already playing. HACK!
-			static std::vector<AudioHandle> gear_audios;
-
-			if (gear_audios.size() == 0)
+			// Initialize audio if not already playing.
+			if (m_GearAudios.size() == 0)
 			{
 				// Initialize sounds.
 				for (auto gear_sound : gear_sounds)
@@ -379,7 +381,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 					AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, true);
 					Audio::SetVolume(gs, 0.0f);
 					Audio::SetLooping(gs);
-					gear_audios.push_back(gs);
+					m_GearAudios.push_back(gs);
 				}
 			}
 
@@ -388,7 +390,7 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			for (int gear_idx = 0; gear_idx < gear_sounds.size(); ++gear_idx)
 			{
 				GearSound& gear_sound = gear_sounds[gear_idx];
-				AudioHandle gear_audio = gear_audios[gear_idx];
+				AudioHandle gear_audio = m_GearAudios[gear_idx];
 				float desired_volume = 1.0f;
 				float desired_pitch = 1.0f;
 				if (revs < 0.1f || revs <= gear_sound.low_zero_volume || revs >= gear_sound.high_zero_volume)

@@ -26,5 +26,6 @@ namespace EntityManager
 	void BroadcastMessageToTag(Message* message, const std::string& tag);
 
 	void DestroyPendingEntities();
-}
 
+	unsigned int GetEntityId(Entity* entity);
+}

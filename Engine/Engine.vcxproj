@@ -32,6 +32,7 @@
     <ClCompile Include="Entities\Component.cpp" />
     <ClCompile Include="Entities\ComponentRegistry.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
+    <ClCompile Include="Entities\EntityHandle.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
     <ClCompile Include="Entities\Message.cpp" />
     <ClCompile Include="GameStates\GameState.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="Entities\Component.h" />
     <ClInclude Include="Entities\ComponentRegistry.h" />
     <ClInclude Include="Entities\Entity.h" />
+    <ClInclude Include="Entities\EntityHandle.h" />
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Entities\Message.h" />
     <ClInclude Include="Entities\MessageTypes.h" />

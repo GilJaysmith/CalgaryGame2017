@@ -19,6 +19,7 @@ RenderComponent::~RenderComponent()
 {
 	if (m_Renderable)
 	{
+		Renderer::UnregisterRenderable(m_Renderable);
 		MemDelete(m_Renderable);
 	}
 }

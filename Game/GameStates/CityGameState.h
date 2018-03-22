@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Engine/Entities/EntityHandle.h"
 #include "Engine/GameStates/GameState.h"
 
 class Camera;
-class Entity;
 class Time;
 
 class CityGameState : public GameState
@@ -18,5 +18,5 @@ public:
 
 protected:
 	Camera* m_Camera;
-	Entity* m_Car;
+	EntityHandle m_Car;
 };

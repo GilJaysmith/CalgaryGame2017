@@ -49,8 +49,8 @@ void CityGameState::OnEnter()
 	}
 
 	m_Car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
-	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car, 0);
-	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car.GetEntity(), 0);
+	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
 	//Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
@@ -93,19 +93,23 @@ bool CityGameState::OnUpdate(const Time& frame_time)
 	GameState::OnUpdate(frame_time);
 	m_Camera->Update(frame_time);
 	
-	unsigned int car_health;
-	Message_DamageGetHealth dgh;
-	m_Car->OnMessage(&dgh);
-	car_health = dgh.m_Health;
 
-	ImGui::Begin("Health test");
-	ImGui::Text("Car health: %d", car_health);
-	if (ImGui::Button("Damage car"))
+	if (m_Car.IsValid())
 	{
-		Message_DamageTakeDamage dtd(10);
-		m_Car->OnMessage(&dtd);
+		unsigned int car_health = 0;
+		Message_DamageGetHealth dgh;
+		m_Car->OnMessage(&dgh);
+		car_health = dgh.m_Health;
+
+		ImGui::Begin("Health test");
+		ImGui::Text("Car health: %d", car_health);
+		if (ImGui::Button("Damage car"))
+		{
+			Message_DamageTakeDamage dtd(10);
+			m_Car->OnMessage(&dtd);
+		}
+		ImGui::End();
 	}
-	ImGui::End();
 
 	return true;
 }
