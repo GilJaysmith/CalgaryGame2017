@@ -1,8 +1,0 @@
-obj: mitsubishi_lancer_evo-16.fbx
-
-attributes:
-    - { name: position, floats: 3 }
-    - { name: normal, floats: 3 }
-    - { name: colour, floats: 3 }
-	
-shader: Lighting

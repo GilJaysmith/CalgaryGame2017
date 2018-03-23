@@ -1,18 +1,19 @@
 --- 
 behaviours: 
   render: 
-    mesh: Mini cooper
+    mesh: Porsche 911 GT2
 #  physics:
 #    shape: box
 #    dimensions: [0.98, 0.63, 2.23]
 #    material: cube
   vehicle:
     wheels:
-      - Cylinder
-      - Cylinder.002
-      - Cylinder.004
-      - Cylinder.003
+      - part 026
+      - part 027
+      - part 025
+      - part 028
   vehicleinput:
     player: 0
+  collisionresponse: ~
   health:
-    health: 100
+    health: 1000

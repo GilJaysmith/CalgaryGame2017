@@ -38,5 +38,6 @@ protected:
 	std::vector<Component*> m_Components;
 	glm::mat4 m_Transform;
 	unsigned int m_EntityId;
+	std::string m_Type;
 	static unsigned int s_NextEntityId;
 };

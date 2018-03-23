@@ -9,7 +9,7 @@ namespace EntityManager
 	std::map<Entity*, unsigned int> s_EntityHandleMap;
 	unsigned int s_NextEntityIndex = 1;
 	std::map<std::string, std::set<Entity*>> s_EntityTags;
-	std::vector<Entity*> s_EntitiesToDelete;
+	std::set<Entity*> s_EntitiesToDelete;
 
 	void ActuallyDestroyEntity(Entity* entity);
 
@@ -46,7 +46,7 @@ namespace EntityManager
 
 	void DestroyEntity(Entity* entity)
 	{
-		s_EntitiesToDelete.push_back(entity);
+		s_EntitiesToDelete.insert(entity);
 	}
 
 	void AddTag(Entity* entity, const std::string& tag)

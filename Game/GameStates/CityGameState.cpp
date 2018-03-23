@@ -29,14 +29,14 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Entity* m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
 	//	for (unsigned int z = 0; z < 10; z++)
 	//	{
-	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 40.0f, z * 6));
-	//		Entity::CreateEntity("Porsche_911_GT2", transform);
+	//		glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x * 3, 2.0f, z * 6));
+	//		Entity::CreateEntity("Porsche 911 GT2", transform);
 	//	}
 	//}
 
@@ -48,13 +48,19 @@ void CityGameState::OnEnter()
 		}
 	}
 
-	m_Car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 10.0f, 0.0f)));
-	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car.GetEntity(), 0);
-	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	m_Car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 0.0f)));
+	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car.GetEntity(), 0);
+	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
-	//Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
-	//Music::StartPlaying();
+	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(10.0f, 1.0f, 0.0f)));
+	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(20.0f, 1.0f, 0.0f)));
+	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(30.0f, 1.0f, 0.0f)));
+	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(40.0f, 1.0f, 0.0f)));
+	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(50.0f, 1.0f, 0.0f)));
+
+	Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
+	Music::StartPlaying();
 
 	//DebugDraw::DebugLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	//DebugDraw::DebugLine(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));

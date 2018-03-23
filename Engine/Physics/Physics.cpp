@@ -17,6 +17,8 @@
 #include "sdks/PhysX/PhysX/Include/PxSceneDesc.h"
 
 
+//#pragma optimize ("", off)
+
 namespace Physics
 {
 
@@ -80,11 +82,19 @@ namespace Physics
 		PX_UNUSED(constantBlock);
 		PX_UNUSED(constantBlockSize);
 
+		//std::stringstream str;
+		//str << "Collision? (" << filterData0.word0 << ", " << filterData0.word1 << ", " << filterData0.word2 << ") and (" << filterData1.word0 << ", " << filterData1.word1 << ", " << filterData1.word2 << ")";
+		//Logging::Log("Physics", str.str());
+
 		if ((0 == (filterData0.word0 & filterData1.word1)) && (0 == (filterData1.word0 & filterData0.word1)))
 			return physx::PxFilterFlag::eSUPPRESS;
 
 		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 		pairFlags |= physx::PxPairFlags(physx::PxU16(filterData0.word2 | filterData1.word2));
+
+		//str.str("");
+		//str << "- collision!" << filterData0.word2 << " and " << filterData1.word2;
+		//Logging::Log("Physics", str.str());
 
 		return physx::PxFilterFlags();
 	}
@@ -98,20 +108,41 @@ namespace Physics
 		virtual void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs) override
 		{
 			// Thurr's been a contact.
+			bool notify0 = false, notify1 = false;
+			for (unsigned int pair_idx = 0; pair_idx < nbPairs; ++pair_idx)
+			{
+				const physx::PxContactPair& pair = pairs[pair_idx];
+				physx::PxFilterData filterdata0 = pair.shapes[0]->getSimulationFilterData();
+				if (filterdata0.word2 & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+				{
+					notify0 = true;
+				}
+				physx::PxFilterData filterdata1 = pair.shapes[1]->getSimulationFilterData();
+				if (filterdata1.word2 & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+				{
+					notify1 = true;
+				}
+			}
+
 			physx::PxRigidActor* actor0 = pairHeader.actors[0];
 			physx::PxRigidActor* actor1 = pairHeader.actors[1];
-
 			Entity* entity0 = static_cast<Entity*>(actor0->userData);
 			Entity* entity1 = static_cast<Entity*>(actor1->userData);
-			if (entity0)
+			if (notify0)
 			{
-				Message_CollisionTouch mct(actor0, actor1);
-				entity0->OnMessage(&mct);
+				if (entity0)
+				{
+					Message_CollisionTouch mct(actor0, actor1);
+					entity0->OnMessage(&mct);
+				}
 			}
-			if (entity1)
+			if (notify1)
 			{
-				Message_CollisionTouch mct(actor1, actor0);
-				entity1->OnMessage(&mct);
+				if (entity1)
+				{
+					Message_CollisionTouch mct(actor1, actor0);
+					entity1->OnMessage(&mct);
+				}
 			}
 		}
 		virtual void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override {}
@@ -220,7 +251,8 @@ namespace Physics
 					break;
 				}
 				float time_to_simulate = glm::max(0.0f, glm::min(1.0f / 60.0f, seconds));
-				scene->simulate(seconds);
+				assert(time_to_simulate <= 1.0f / 60.0f);
+				scene->simulate(time_to_simulate);
 				scene->fetchResults(true);
 				seconds -= time_to_simulate;
 			}

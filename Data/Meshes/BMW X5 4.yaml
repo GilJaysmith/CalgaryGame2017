@@ -1,4 +1,4 @@
-obj: BMW X5 4.dae
+obj: BMW X5 4.fbx
 
 attributes:
     - { name: position, floats: 3 }

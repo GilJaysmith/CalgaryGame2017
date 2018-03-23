@@ -34,7 +34,7 @@
 #include "SnippetVehicleSceneQuery.h"
 
 
-#pragma optimize ("", off)
+//#pragma optimize ("", off)
 
 namespace snippetvehicle
 {
@@ -235,6 +235,7 @@ namespace snippetvehicle
 			PxVec3 wheelCenterActorOffsets[PX_MAX_NB_WHEELS];
 			for (int wheel = 0; wheel < 4; ++wheel)
 			{
+				//wheelCenterActorOffsets[wheel] = PxVec3(vehicle4WDesc.wheelOffsets[wheel][3][0], vehicle4WDesc.wheelOffsets[wheel][3][1], vehicle4WDesc.wheelOffsets[wheel][3][2]);
 				wheelCenterActorOffsets[wheel] = PxVec3(-vehicle4WDesc.wheelOffsets[wheel][3][0], vehicle4WDesc.wheelOffsets[wheel][3][1], vehicle4WDesc.wheelOffsets[wheel][3][2]);
 			}
 

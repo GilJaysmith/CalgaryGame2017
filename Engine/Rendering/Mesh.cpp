@@ -15,7 +15,7 @@
 
 #include <vector>
 
-#pragma optimize ("", off)
+//#pragma optimize ("", off)
 
 struct AttributeBinding
 {

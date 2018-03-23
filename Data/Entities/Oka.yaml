@@ -1,0 +1,12 @@
+behaviours: 
+  render: 
+    mesh: Oka
+#  vehicle:
+#    wheels:
+#      - Cylinder
+#      - Cylinder.002
+#      - Cylinder.004
+#      - Cylinder.003
+  collisionresponse: ~
+  health:
+    health: 30

@@ -15,6 +15,7 @@ Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& tr
 	YAML::Node yaml = YAML::LoadFile(yaml_filename);
 
 	Entity* entity = EntityManager::CreateEntity();
+	entity->m_Type = entity_type;
 	entity->SetTransform(transform);
 	for (auto behaviour : yaml["behaviours"])
 	{

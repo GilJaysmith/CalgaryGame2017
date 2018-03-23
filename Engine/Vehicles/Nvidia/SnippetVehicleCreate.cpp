@@ -36,7 +36,7 @@
 
 #include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
 
-#pragma optimize ("", off)
+//#pragma optimize ("", off)
 
 namespace snippetvehicle
 {
@@ -88,16 +88,17 @@ PxConvexMesh* createChassisMesh(const PxVec3 dims, PxPhysics& physics, PxCooking
 	const PxF32 x = dims.x*0.5f;
 	const PxF32 y = dims.y*0.5f;
 	const PxF32 z = dims.z*0.5f;
+	const float CHASSIS_OFFSET = 1.0f;
 	PxVec3 verts[8] =
 	{
-		PxVec3(x,y + 0.8f,-z),	// HACK - this 0.8f is to put the chassis above the wheels for the Mini Cooper.
-		PxVec3(x,y + 0.8f,z),	// I need to fix this by creating collision meshes corresponding to the car's actual chassis.
-		PxVec3(x,-y + 0.8f,z),	// Which can come later!
-		PxVec3(x,-y + 0.8f,-z),
-		PxVec3(-x,y + 0.8f,-z),
-		PxVec3(-x,y + 0.8f,z),
-		PxVec3(-x,-y + 0.8f,z),
-		PxVec3(-x,-y + 0.8f,-z)
+		PxVec3(x,y + CHASSIS_OFFSET,-z),	// HACK - this is to put the chassis above the wheels for the Mini Cooper.
+		PxVec3(x,y + CHASSIS_OFFSET,z),	// I need to fix this by creating collision meshes corresponding to the car's actual chassis.
+		PxVec3(x,-y + CHASSIS_OFFSET,z),	// Which can come later!
+		PxVec3(x,-y + CHASSIS_OFFSET,-z),
+		PxVec3(-x,y + CHASSIS_OFFSET,-z),
+		PxVec3(-x,y + CHASSIS_OFFSET,z),
+		PxVec3(-x,-y + CHASSIS_OFFSET,z),
+		PxVec3(-x,-y + CHASSIS_OFFSET,-z)
 	};
 
 	return createConvexMesh(verts,8,physics,cooking);
@@ -135,7 +136,6 @@ PxRigidDynamic* createVehicleActor
 	setupNonDrivableSurface(wheelQryFilterData);
 	PxFilterData chassisQryFilterData;
 	setupNonDrivableSurface(chassisQryFilterData);
-	chassisQryFilterData.word2 = (physx::PxU32)physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
 
 	//Add all the wheel shapes to the actor.
 	for(PxU32 i = 0; i < numWheels; i++)
