@@ -36,5 +36,6 @@ protected:
 	Mesh* m_Mesh;
 	glm::vec4 m_Tint;
 	glm::mat4 m_WorldTransform;
+	std::map<std::string, glm::mat4> m_Poses;
 	bool m_Active;
 };

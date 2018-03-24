@@ -6,12 +6,12 @@ behaviours:
 #    shape: box
 #    dimensions: [0.98, 0.63, 2.23]
 #    material: cube
-#  vehicle:
-#    wheels:
-#      - part 026
-#      - part 027
-#      - part 025
-#      - part 028
+  vehicle:
+    wheels:
+      - part 026
+      - part 027
+      - part 025
+      - part 028
   collisionresponse: ~
   health:
     health: 20

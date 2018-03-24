@@ -307,9 +307,10 @@ struct MeshNode
 		}
 	}
 
-	void Render(glm::mat4 transform, const glm::vec4& tint)
+	void Render(glm::mat4 transform, const glm::vec4& tint, const std::map<std::string, glm::mat4>& poses)
 	{
-		transform = transform * m_Transform;
+		auto it = poses.find(m_Name);
+		transform = transform * (it != poses.end() ? it->second : m_Transform);
 		
 		for (auto sub_mesh : m_SubMeshes)
 		{
@@ -318,7 +319,7 @@ struct MeshNode
 
 		for (auto child_node : m_Children)
 		{
-			child_node->Render(transform, tint);
+			child_node->Render(transform, tint, poses);
 		}
 	}
 
@@ -416,30 +417,19 @@ void Mesh::LoadFromYaml(const std::string& filename)
 	m_NodesByName = ngv.m_NodesByName;
 }
 
-void Mesh::Render(const glm::mat4& world_transform, const glm::vec4& tint)
+void Mesh::Render(const MeshRenderParams& params)
 {
-	m_RootNode->Render(world_transform, tint);
+	m_RootNode->Render(params.m_WorldTransform, params.m_Tint, params.m_Poses);
 }
 
-void Mesh::SetLocalPoses(const std::map<std::string, glm::mat4>& local_poses)
-{
-	for (auto local_pose : local_poses)
-	{
-		MeshNode* node = m_NodesByName[local_pose.first];
-		glm::mat4 node_transform = node->m_Transform;
-		glm::mat4 new_node_transform = local_pose.second;
-		node->m_Transform = new_node_transform;
-	}
-}
-
-std::map<std::string, glm::mat4> Mesh::GetLocalPoses(const std::vector<std::string>& node_names)
+std::map<std::string, glm::mat4> Mesh::GetLocalPoses()
 {
 	std::map<std::string, glm::mat4> local_poses;
-	for (auto node_name : node_names)
+	for (auto node_name : m_NodesByName)
 	{
-		MeshNode* node = m_NodesByName[node_name];
+		MeshNode* node = m_NodesByName[node_name.first];
 		glm::mat4 node_transform = node->m_Transform;
-		local_poses[node_name] = node_transform;
+		local_poses[node_name.first] = node_transform;
 	}
 	return local_poses;
 }
