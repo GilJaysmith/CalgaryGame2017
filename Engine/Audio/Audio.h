@@ -15,7 +15,7 @@ namespace Audio
 	void Update(const Time& time);
 
 	AudioHandle PlaySound(const std::string& sound_name, bool looping = false);
-	AudioHandle PlaySound(const std::string& sound_name, const glm::vec3& position);
+	AudioHandle PlaySound(const std::string& sound_name, const glm::vec3& position, bool looping = false);
 
 	void Pause(AudioHandle handle);
 	void Resume(AudioHandle handle);
@@ -26,4 +26,5 @@ namespace Audio
 	void SetVolume(AudioHandle handle, float volume);
 	void SetPitch(AudioHandle handle, float pitch);
 	void SetLooping(AudioHandle handle);
+	void SetPosition(AudioHandle handle, const glm::vec3& position);
 }

@@ -39,7 +39,10 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 
 		if (true)
 		{
-			// Look at revs
+			// Get car position.
+			glm::vec3 car_position = m_Entity->GetTransform()[3];
+
+			// Get vehicle info.
 			Message_VehicleGetEngineInfo vegi;
 			m_Entity->OnMessage(&vegi);
 			float revs = vegi.m_EngineRotationSpeed;
@@ -47,6 +50,7 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 			{
 				GearSound& gear_sound = m_GearSounds[gear_idx];
 				AudioHandle gear_audio = m_GearAudios[gear_idx];
+
 				float desired_volume = 1.0f;
 				float desired_pitch = 1.0f;
 				if (revs <= gear_sound.low_zero_volume || revs >= gear_sound.high_zero_volume)
@@ -65,54 +69,53 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 				{
 					desired_pitch = 0.5f + 1.5f * (revs - gear_sound.low_zero_volume) / (gear_sound.high_zero_volume - gear_sound.low_zero_volume);
 				}
+
+				// A little random variation in the pitch, to avoid warping effects when multiple cars are close together.
+				float MAX_VARIATION = 0.02f;
+				float variation = (rand() / (float)RAND_MAX) * MAX_VARIATION - (rand() / (float)RAND_MAX) * MAX_VARIATION;
+				desired_pitch += variation;
+
 				Audio::SetVolume(gear_audio, desired_volume);
 				Audio::SetPitch(gear_audio, desired_pitch);
+				Audio::SetPosition(gear_audio, car_position);
 			}
 		}
 	}
+}
+
+namespace YAML
+{
+	template <>
+	struct convert<VehicleAudioComponent::GearSound> {
+		static Node encode(const VehicleAudioComponent::GearSound& rhs) { 
+			return Node(); 
+		}
+
+		static bool decode(const Node& node, VehicleAudioComponent::GearSound& rhs)
+		{
+			if (node.IsNull()) return false;
+			rhs.sound = node["sound"].as<std::string>();
+			rhs.low_zero_volume = node["low_zero_volume"].as<float>();
+			rhs.low_full_volume = node["low_full_volume"].as<float>();
+			rhs.high_full_volume = node["high_full_volume"].as<float>();
+			rhs.high_zero_volume = node["high_zero_volume"].as<float>();
+			return true;
+		}
+	};
 }
 
 VehicleAudioComponent::VehicleAudioComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
 {
 	// Initialize sounds.
-
-	// TODO: move to yaml
-	m_GearSounds = {
-		//{
-		//	"low_on.wav",
-		//	-100,
-		//	0,
-		//	200,
-		//	300
-		//},
-		//{
-		//	"med_on.wav",
-		//	200,
-		//	300,
-		//	500,
-		//	600
-		//},
-		//{
-		//	"high_on.wav",
-		//	500,
-		//	600,
-		//	600,
-		//	700
-		//}
-		{
-			"med_on.wav",
-			-1,
-			0,
-			600,
-			601
-		}
-	};
-
+	if (properties["sounds"])
+	{
+		m_GearSounds = properties["sounds"].as<std::vector<GearSound>>();
+	}
 
 	for (auto gear_sound : m_GearSounds)
 	{
-		AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, true);
+		AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, glm::vec3(), true);
 		Audio::SetVolume(gs, 0.0f);
 		Audio::SetLooping(gs);
 		m_GearAudios.push_back(gs);

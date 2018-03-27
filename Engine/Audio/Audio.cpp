@@ -129,11 +129,11 @@ namespace Audio
 		return nullptr;
 	}
 
-	AudioHandle PlaySound(const std::string& sound_name, const glm::vec3& position)
+	AudioHandle PlaySound(const std::string& sound_name, const glm::vec3& position, bool looping)
 	{
 		std::string sound_path = "Data\\Audio\\" + sound_name;
 		FMOD::Sound* sound = nullptr;
-		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_3D, nullptr, &sound);
+		FMOD_RESULT result = fmod->createSound(sound_path.c_str(), FMOD_3D | (looping ? FMOD_LOOP_NORMAL : 0), nullptr, &sound);
 		if (result == FMOD_OK)
 		{
 			FMOD::Channel* channel = nullptr;
@@ -255,6 +255,20 @@ namespace Audio
 			it->second->getLength(&length, FMOD_TIMEUNIT_PCM);
 			channel->setLoopCount(-1);
 			channel->setLoopPoints(0, FMOD_TIMEUNIT_PCM, length - 1, FMOD_TIMEUNIT_PCM);
+		}
+	}
+
+	void SetPosition(AudioHandle handle, const glm::vec3& position)
+	{
+		FMOD::Channel* channel = static_cast<FMOD::Channel*>(handle);
+		auto it = sounds_playing.find(channel);
+		if (it != sounds_playing.end())
+		{
+			FMOD_VECTOR pos;
+			pos.x = position.x;
+			pos.y = position.y;
+			pos.z = position.z;
+			channel->set3DAttributes(&pos, nullptr);
 		}
 	}
 }

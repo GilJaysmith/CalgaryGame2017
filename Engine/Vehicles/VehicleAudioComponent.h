@@ -14,11 +14,6 @@ public:
 	virtual bool OnMessage(Message*) override;
 	virtual void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
 
-protected:
-	VehicleAudioComponent(Entity* owner, const YAML::Node& properties);
-
-	virtual void OnSetActive(bool active) {}
-
 	struct GearSound
 	{
 		std::string sound;
@@ -27,6 +22,11 @@ protected:
 		float high_full_volume;
 		float high_zero_volume;
 	};
+
+protected:
+	VehicleAudioComponent(Entity* owner, const YAML::Node& properties);
+
+	virtual void OnSetActive(bool active) {}
 
 	std::vector<GearSound> m_GearSounds;
 	std::vector<AudioHandle> m_GearAudios;
