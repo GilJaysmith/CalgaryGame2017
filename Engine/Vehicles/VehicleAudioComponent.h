@@ -14,7 +14,7 @@ public:
 	virtual bool OnMessage(Message*) override;
 	virtual void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
 
-	struct GearSound
+	struct EngineSoundDef
 	{
 		std::string sound;
 		float low_zero_volume;
@@ -28,6 +28,7 @@ protected:
 
 	virtual void OnSetActive(bool active) {}
 
-	std::vector<GearSound> m_GearSounds;
-	std::vector<AudioHandle> m_GearAudios;
+	std::vector<EngineSoundDef> m_EngineSoundDefs;
+	std::vector<AudioHandle> m_EngineSounds;
+	AudioHandle m_SkidSound;
 };

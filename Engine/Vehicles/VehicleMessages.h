@@ -9,7 +9,7 @@ namespace VehicleMessageSubtype
 	enum TYPE
 	{
 		SetInputs,
-		GetEngineInfo,
+		GetDynamicInfo,
 		COUNT
 	};
 }
@@ -36,11 +36,13 @@ struct Message_VehicleSetInputs : public Message
 };
 
 
-struct Message_VehicleGetEngineInfo : public Message
+struct Message_VehicleGetDynamicInfo : public Message
 {
-	Message_VehicleGetEngineInfo()
-		: Message(MessageType::Vehicle, VehicleMessageSubtype::GetEngineInfo)
+	Message_VehicleGetDynamicInfo()
+		: Message(MessageType::Vehicle, VehicleMessageSubtype::GetDynamicInfo)
 	{}
 
 	float m_EngineRotationSpeed;
+	glm::vec3 m_LinearVelocity;
+	bool m_InAir;
 };

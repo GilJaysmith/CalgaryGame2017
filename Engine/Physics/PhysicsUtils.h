@@ -29,3 +29,13 @@ physx::PxMat44 glm_to_physx(const glm::mat4& glm)
 	}
 	return physx;
 }
+
+glm::vec3 physx_to_glm(const physx::PxVec3& physx)
+{
+	glm::vec3 glm;
+	glm.x = physx.x;
+	glm.y = physx.y;
+	glm.z = physx.z;
+	return glm;
+}
+

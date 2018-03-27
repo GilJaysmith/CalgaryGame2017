@@ -98,10 +98,15 @@ bool VehicleComponent::OnMessage(Message* message)
 			}
 			break;
 
-			case VehicleMessageSubtype::GetEngineInfo:
+			case VehicleMessageSubtype::GetDynamicInfo:
 			{
-				Message_VehicleGetEngineInfo* vegi = static_cast<Message_VehicleGetEngineInfo*>(message);
-				vegi->m_EngineRotationSpeed = m_Vehicle4W->mDriveDynData.getEngineRotationSpeed();
+				Message_VehicleGetDynamicInfo* vgdi = static_cast<Message_VehicleGetDynamicInfo*>(message);
+				vgdi->m_EngineRotationSpeed = m_Vehicle4W->mDriveDynData.getEngineRotationSpeed();
+
+				physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
+				vgdi->m_LinearVelocity = physx_to_glm(actor->getLinearVelocity());
+
+				vgdi->m_InAir = m_IsVehicleInAir;
 			}
 			break;
 		}
@@ -322,14 +327,6 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			}
 			Message_RenderSetLocalPoses mrslp(wheel_local_poses);
 			m_Entity->OnMessage(&mrslp);
-
-			ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
-			ImGui::Begin("Car debug");
-			ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
-			ImGui::Text("Revs: %f", m_Vehicle4W->mDriveDynData.getEngineRotationSpeed());
-			physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
-			ImGui::Text("Car speed: %f", actor->getLinearVelocity().magnitude());
-			ImGui::End();
 
 			break;
 		}

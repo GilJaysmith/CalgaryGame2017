@@ -13,7 +13,7 @@ behaviours:
       - part 025
       - part 028
   vehicleaudio:
-    sounds:
+    engine:
       - sound: med_on.wav
         low_zero_volume: -1
         low_full_volume: 0

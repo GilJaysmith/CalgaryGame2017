@@ -29,7 +29,7 @@ CityGameState::~CityGameState()
 
 void CityGameState::OnEnter()
 {
-	Entity* m_GroundPlane = Entity::CreateEntity("sea", glm::mat4());
+	Entity* m_GroundPlane = Entity::CreateEntity("floor", glm::mat4());
 
 	//for (unsigned int x = 0; x < 10; x++)
 	//{
@@ -49,8 +49,8 @@ void CityGameState::OnEnter()
 	}
 
 	m_Car = Entity::CreateEntity("player_0_car", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 0.0f)));
-	//m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car.GetEntity(), 0);
-	m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
+	m_Camera = MemNew(MemoryPool::Vehicles, VehicleFollowCamera)(m_Car.GetEntity(), 0);
+	//m_Camera = MemNew(MemoryPool::Rendering, DebugCamera);
 	Renderer::SetActiveCamera(m_Camera);
 
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(10.0f, 1.0f, 0.0f)));
@@ -60,7 +60,7 @@ void CityGameState::OnEnter()
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(50.0f, 1.0f, 0.0f)));
 
 	Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
-	Music::StartPlaying();
+//	Music::StartPlaying();
 
 	//DebugDraw::DebugLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	//DebugDraw::DebugLine(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));

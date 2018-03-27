@@ -13,10 +13,11 @@ Component* VehicleAudioComponent::CreateComponent(Entity* owner, const YAML::Nod
 
 VehicleAudioComponent::~VehicleAudioComponent()
 {
-	for (auto gear_audio : m_GearAudios)
+	for (auto engine_sound : m_EngineSounds)
 	{
-		Audio::Stop(gear_audio);
+		Audio::Stop(engine_sound);
 	}
+	Audio::Stop(m_SkidSound);
 }
 
 bool VehicleAudioComponent::OnMessage(Message* message)
@@ -37,61 +38,101 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 		// At the bottom of the range, pitch = 0.5
 		// At the top of the range, pitch = 2.0
 
+
+		// Get car position.
+		glm::vec3 car_position = m_Entity->GetTransform()[3];
+
+		// Get vehicle info.
+		Message_VehicleGetDynamicInfo vgdi;
+		m_Entity->OnMessage(&vgdi);
+
+		ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
+		ImGui::Begin("Car audio debug");
+
+		// Engine sounds.
 		if (true)
 		{
-			// Get car position.
-			glm::vec3 car_position = m_Entity->GetTransform()[3];
-
-			// Get vehicle info.
-			Message_VehicleGetEngineInfo vegi;
-			m_Entity->OnMessage(&vegi);
-			float revs = vegi.m_EngineRotationSpeed;
-			for (int gear_idx = 0; gear_idx < m_GearSounds.size(); ++gear_idx)
+			float revs = vgdi.m_EngineRotationSpeed;
+			ImGui::Text("Revs: %f", revs);
+			for (int gear_idx = 0; gear_idx < m_EngineSoundDefs.size(); ++gear_idx)
 			{
-				GearSound& gear_sound = m_GearSounds[gear_idx];
-				AudioHandle gear_audio = m_GearAudios[gear_idx];
+				EngineSoundDef& engine_sound_def = m_EngineSoundDefs[gear_idx];
+				AudioHandle engine_sound = m_EngineSounds[gear_idx];
 
 				float desired_volume = 1.0f;
 				float desired_pitch = 1.0f;
-				if (revs <= gear_sound.low_zero_volume || revs >= gear_sound.high_zero_volume)
+				if (revs <= engine_sound_def.low_zero_volume || revs >= engine_sound_def.high_zero_volume)
 				{
 					desired_volume = 0.0f;
 				}
-				if (revs > gear_sound.low_zero_volume && revs < gear_sound.low_full_volume)
+				if (revs > engine_sound_def.low_zero_volume && revs < engine_sound_def.low_full_volume)
 				{
-					desired_volume = (revs - gear_sound.low_zero_volume) / (gear_sound.low_full_volume - gear_sound.low_zero_volume);
+					desired_volume = (revs - engine_sound_def.low_zero_volume) / (engine_sound_def.low_full_volume - engine_sound_def.low_zero_volume);
 				}
-				if (revs > gear_sound.high_full_volume && revs < gear_sound.high_zero_volume)
+				if (revs > engine_sound_def.high_full_volume && revs < engine_sound_def.high_zero_volume)
 				{
-					desired_volume = 1.0f - ((revs - gear_sound.high_full_volume) / (gear_sound.high_zero_volume - gear_sound.high_full_volume));
+					desired_volume = 1.0f - ((revs - engine_sound_def.high_full_volume) / (engine_sound_def.high_zero_volume - engine_sound_def.high_full_volume));
 				}
-				if (revs >= gear_sound.low_zero_volume && revs <= gear_sound.high_zero_volume)
+				if (revs >= engine_sound_def.low_zero_volume && revs <= engine_sound_def.high_zero_volume)
 				{
-					desired_pitch = 0.5f + 1.5f * (revs - gear_sound.low_zero_volume) / (gear_sound.high_zero_volume - gear_sound.low_zero_volume);
+					desired_pitch = 0.5f + 1.5f * (revs - engine_sound_def.low_zero_volume) / (engine_sound_def.high_zero_volume - engine_sound_def.low_zero_volume);
 				}
 
 				// A little random variation in the pitch, to avoid warping effects when multiple cars are close together.
-				float MAX_VARIATION = 0.02f;
+				float MAX_VARIATION = 0.0f;
 				float variation = (rand() / (float)RAND_MAX) * MAX_VARIATION - (rand() / (float)RAND_MAX) * MAX_VARIATION;
 				desired_pitch += variation;
 
-				Audio::SetVolume(gear_audio, desired_volume);
-				Audio::SetPitch(gear_audio, desired_pitch);
-				Audio::SetPosition(gear_audio, car_position);
+				Audio::SetVolume(engine_sound, desired_volume);
+				Audio::SetPitch(engine_sound, desired_pitch);
+				Audio::SetPosition(engine_sound, car_position);
 			}
 		}
+
+		// Skidding.
+		// This is where our actual velocity does not match our facing.
+		float skid_divergence = 0.0f;
+		if (true)
+		{
+			if (!vgdi.m_InAir && glm::length(vgdi.m_LinearVelocity) >= 0.01f)
+			{
+				glm::vec3 car_facing = glm::normalize(m_Entity->GetTransform()[2]);
+				glm::vec3 car_velocity = glm::normalize(vgdi.m_LinearVelocity);
+				skid_divergence = 1.0f - abs(glm::dot(car_facing, car_velocity));
+
+				const float MIN_SKID_DIVERGENCE = 0.0f;
+				float skid_volume = glm::clamp(skid_divergence - MIN_SKID_DIVERGENCE, 0.0f, 1.0f);
+				float car_velocity_mag = glm::length(vgdi.m_LinearVelocity);
+				const float MAG_SCALE = 1.0f;
+				float speed_mag = car_velocity_mag / MAG_SCALE;
+				skid_volume = glm::clamp(skid_volume * speed_mag, 0.0f, 5.0f);
+				Audio::SetVolume(m_SkidSound, skid_volume);
+				Audio::SetPosition(m_SkidSound, car_position);
+
+				ImGui::Text("Car velocity: (%f, %f, %f)", vgdi.m_LinearVelocity.x, vgdi.m_LinearVelocity.y, vgdi.m_LinearVelocity.z);
+				ImGui::Text("Skid divergence: %f", skid_divergence);
+				ImGui::Text("Final volume: %f", skid_volume);
+				ImGui::Text("Speed mag: %f", speed_mag);
+			}
+			else
+			{
+				Audio::SetVolume(m_SkidSound, 0.0f);
+			}
+		}
+
+		ImGui::End();
 	}
 }
 
 namespace YAML
 {
 	template <>
-	struct convert<VehicleAudioComponent::GearSound> {
-		static Node encode(const VehicleAudioComponent::GearSound& rhs) { 
+	struct convert<VehicleAudioComponent::EngineSoundDef> {
+		static Node encode(const VehicleAudioComponent::EngineSoundDef& rhs) { 
 			return Node(); 
 		}
 
-		static bool decode(const Node& node, VehicleAudioComponent::GearSound& rhs)
+		static bool decode(const Node& node, VehicleAudioComponent::EngineSoundDef& rhs)
 		{
 			if (node.IsNull()) return false;
 			rhs.sound = node["sound"].as<std::string>();
@@ -106,18 +147,26 @@ namespace YAML
 
 VehicleAudioComponent::VehicleAudioComponent(Entity* owner, const YAML::Node& properties)
 	: Component(owner)
+	, m_SkidSound(nullptr)
 {
 	// Initialize sounds.
-	if (properties["sounds"])
+	if (properties["engine"])
 	{
-		m_GearSounds = properties["sounds"].as<std::vector<GearSound>>();
+		m_EngineSoundDefs = properties["engine"].as<std::vector<EngineSoundDef>>();
 	}
-
-	for (auto gear_sound : m_GearSounds)
+	for (auto engine_sound : m_EngineSoundDefs)
 	{
-		AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, glm::vec3(), true);
-		Audio::SetVolume(gs, 0.0f);
-		Audio::SetLooping(gs);
-		m_GearAudios.push_back(gs);
+		AudioHandle handle = Audio::PlaySound("car\\" + engine_sound.sound, glm::vec3(), true);
+		Audio::SetVolume(handle, 0.0f);
+		Audio::SetLooping(handle);
+		m_EngineSounds.push_back(handle);
+	}
+	if (properties["skid"])
+	{
+		std::string skid_sound = properties["skid"].as<std::string>();
+		AudioHandle handle = Audio::PlaySound("car\\" + skid_sound, glm::vec3(), true);
+		Audio::SetVolume(handle, 0.0f);
+		Audio::SetLooping(handle);
+		m_SkidSound = handle;
 	}
 }

@@ -1,5 +1,7 @@
 #include "Engine/Pch.h"
 
+#include "Engine/Audio/Audio.h"
+#include "Engine/Entities/Entity.h"
 #include "Engine/Entities/EntityManager.h"
 #include "Engine/Health/DamageMessages.h"
 #include "Engine/Health/HealthComponent.h"
@@ -29,6 +31,8 @@ bool HealthComponent::OnMessage(Message* message)
 				m_Health -= damage_to_take;
 				if (m_Health == 0)
 				{
+					// Play a sound.
+					Audio::PlaySound("Blastwave_FX_ExplosionMetalDebris_HV.243.mp3", m_Entity->GetTransform()[3]);
 					EntityManager::DestroyEntity(m_Entity);
 				}
 				return true;
