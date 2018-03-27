@@ -9,6 +9,7 @@ namespace VehicleMessageSubtype
 	enum TYPE
 	{
 		SetInputs,
+		GetEngineInfo,
 		COUNT
 	};
 }
@@ -32,4 +33,14 @@ struct Message_VehicleSetInputs : public Message
 	bool m_Handbrake;
 	bool m_Jump;
 	bool m_ResetOrientation;
+};
+
+
+struct Message_VehicleGetEngineInfo : public Message
+{
+	Message_VehicleGetEngineInfo()
+		: Message(MessageType::Vehicle, VehicleMessageSubtype::GetEngineInfo)
+	{}
+
+	float m_EngineRotationSpeed;
 };

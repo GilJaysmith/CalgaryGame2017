@@ -199,6 +199,9 @@
     <ClCompile Include="Entities\EntityHandle.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Vehicles\VehicleAudioComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -384,6 +387,9 @@
     </ClInclude>
     <ClInclude Include="Entities\EntityHandle.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleAudioComponent.h">
+      <Filter>Vehicles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

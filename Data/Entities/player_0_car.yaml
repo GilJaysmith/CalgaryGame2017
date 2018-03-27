@@ -12,6 +12,7 @@ behaviours:
       - part 027
       - part 025
       - part 028
+  vehicleaudio: ~
   vehicleinput:
     player: 0
   collisionresponse: ~

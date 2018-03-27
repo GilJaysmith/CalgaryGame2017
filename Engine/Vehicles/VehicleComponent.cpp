@@ -1,6 +1,5 @@
 #include "Engine/Pch.h"
 
-#include "Engine/Audio/Audio.h"
 #include "Engine/Entities/Entity.h"
 #include "Engine/Entities/Message.h"
 #include "Engine/Entities/MessageTypes.h"
@@ -31,10 +30,6 @@ VehicleComponent::VehicleComponent(Entity* owner, const YAML::Node& properties)
 VehicleComponent::~VehicleComponent()
 {
 	DestroyVehicle();
-	for (auto gear_audio : m_GearAudios)
-	{
-		Audio::Stop(gear_audio);
-	}
 }
 
 bool VehicleComponent::OnMessage(Message* message)
@@ -100,8 +95,15 @@ bool VehicleComponent::OnMessage(Message* message)
 					actor->setGlobalPose(startTransform);
 					actor->setAngularVelocity(physx::PxVec3(0.0f, 0.0f, 0.0f));
 				}
-				break;
 			}
+			break;
+
+			case VehicleMessageSubtype::GetEngineInfo:
+			{
+				Message_VehicleGetEngineInfo* vegi = static_cast<Message_VehicleGetEngineInfo*>(message);
+				vegi->m_EngineRotationSpeed = m_Vehicle4W->mDriveDynData.getEngineRotationSpeed();
+			}
+			break;
 		}
 	}
 	return false;
@@ -316,7 +318,6 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			for (auto shape_idx = 0; shape_idx < 4; ++shape_idx)
 			{
 				glm::mat4 local_pose = physx_to_glm(physx::PxMat44(m_WheelQueryResults[shape_idx].localPose));
-				//local_pose[3][0] = -local_pose[3][0];
 				wheel_local_poses[m_WheelNames[shape_idx]] = local_pose;
 			}
 			Message_RenderSetLocalPoses mrslp(wheel_local_poses);
@@ -330,98 +331,6 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			ImGui::Text("Car speed: %f", actor->getLinearVelocity().magnitude());
 			ImGui::End();
 
-			// Audio.
-			// Max engine rotation speed is 600.
-			// Let's assign the wavs as follows:
-			// low: full volume 0-100, fall off by 200
-			// med: ramp up 100-200, full volume to 400, fall off by 500
-			// high: ramp up 400-500, full volume to 600
-			// At the bottom of the range, pitch = 0.5
-			// At the top of the range, pitch = 2.0
-
-			if (false)
-			{
-				struct GearSound
-				{
-					std::string sound;
-					float low_zero_volume;
-					float low_full_volume;
-					float high_full_volume;
-					float high_zero_volume;
-				};
-
-				std::vector<GearSound> gear_sounds = {
-					//{
-					//	"low_on.wav",
-					//	-100,
-					//	0,
-					//	200,
-					//	300
-					//},
-					//{
-					//	"med_on.wav",
-					//	200,
-					//	300,
-					//	500,
-					//	600
-					//},
-					//{
-					//	"high_on.wav",
-					//	500,
-					//	600,
-					//	600,
-					//	700
-					//}
-					{
-						"med_on.wav",
-						-1,
-						0,
-						600,
-						601
-					}
-				};
-
-				// Initialize audio if not already playing.
-				if (m_GearAudios.size() == 0)
-				{
-					// Initialize sounds.
-					for (auto gear_sound : gear_sounds)
-					{
-						AudioHandle gs = Audio::PlaySound("carengine\\" + gear_sound.sound, true);
-						Audio::SetVolume(gs, 0.0f);
-						Audio::SetLooping(gs);
-						m_GearAudios.push_back(gs);
-					}
-				}
-
-				// Look at revs
-				float revs = m_Vehicle4W->mDriveDynData.getEngineRotationSpeed();
-				for (int gear_idx = 0; gear_idx < gear_sounds.size(); ++gear_idx)
-				{
-					GearSound& gear_sound = gear_sounds[gear_idx];
-					AudioHandle gear_audio = m_GearAudios[gear_idx];
-					float desired_volume = 1.0f;
-					float desired_pitch = 1.0f;
-					if (revs <= gear_sound.low_zero_volume || revs >= gear_sound.high_zero_volume)
-					{
-						desired_volume = 0.0f;
-					}
-					if (revs > gear_sound.low_zero_volume && revs < gear_sound.low_full_volume)
-					{
-						desired_volume = (revs - gear_sound.low_zero_volume) / (gear_sound.low_full_volume - gear_sound.low_zero_volume);
-					}
-					if (revs > gear_sound.high_full_volume && revs < gear_sound.high_zero_volume)
-					{
-						desired_volume = 1.0f - ((revs - gear_sound.high_full_volume) / (gear_sound.high_zero_volume - gear_sound.high_full_volume));
-					}
-					if (revs >= gear_sound.low_zero_volume && revs <= gear_sound.high_zero_volume)
-					{
-						desired_pitch = 0.5f + 1.5f * (revs - gear_sound.low_zero_volume) / (gear_sound.high_zero_volume - gear_sound.low_zero_volume);
-					}
-					Audio::SetVolume(gear_audio, desired_volume);
-					Audio::SetPitch(gear_audio, desired_pitch);
-				}
-			}
 			break;
 		}
 	}

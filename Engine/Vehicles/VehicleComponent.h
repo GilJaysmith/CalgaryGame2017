@@ -29,7 +29,6 @@ protected:
 
 private:
 	std::vector<std::string> m_WheelNames;
-	std::vector<AudioHandle> m_GearAudios;
 
 	physx::PxDefaultAllocator m_Allocator;
 	physx::PxDefaultErrorCallback m_ErrorCallback;
