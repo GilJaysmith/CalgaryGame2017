@@ -1,7 +1,0 @@
-obj: low-poly-car.mdl
-
-attributes:
-    - { name: position, floats: 3 }
-    - { name: colour, floats: 3 }
-	
-shader: SolidColourObject

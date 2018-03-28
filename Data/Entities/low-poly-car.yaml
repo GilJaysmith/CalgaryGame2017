@@ -1,9 +1,0 @@
---- 
-behaviours: 
-  render: 
-    mesh: low-poly-car
-  physics:
-    shape: box
-    dimensions: [1.0, 1.0, 1.0]
-    material: cube
-    
