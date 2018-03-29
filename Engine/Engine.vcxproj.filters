@@ -202,6 +202,9 @@
     <ClCompile Include="Vehicles\VehicleAudioComponent.cpp">
       <Filter>Vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\TriggerComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -390,6 +393,9 @@
     </ClInclude>
     <ClInclude Include="Vehicles\VehicleAudioComponent.h">
       <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\TriggerComponent.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
