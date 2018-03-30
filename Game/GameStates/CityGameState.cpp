@@ -59,7 +59,7 @@ void CityGameState::OnEnter()
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(40.0f, 1.0f, 0.0f)));
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(50.0f, 1.0f, 0.0f)));
 
-	Entity::CreateEntity("trigger_test", glm::mat4());
+	Entity::CreateEntity("trigger_test", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 10.0f)));
 
 	Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
 //	Music::StartPlaying();

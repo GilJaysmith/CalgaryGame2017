@@ -145,7 +145,28 @@ namespace Physics
 				}
 			}
 		}
-		virtual void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override {}
+		virtual void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override
+		{
+			// Thurr's been a trigger.
+			for (unsigned int pair_idx = 0; pair_idx < count; ++pair_idx)
+			{
+				const physx::PxTriggerPair& pair = pairs[pair_idx];
+				physx::PxFilterData filterdata0 = pair.triggerShape->getSimulationFilterData();
+				if (filterdata0.word2 & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+				{
+					physx::PxRigidActor* trigger_actor = pair.triggerActor;
+					physx::PxRigidActor* other_actor = pair.otherActor;
+					Entity* entity0 = static_cast<Entity*>(trigger_actor->userData);
+					Entity* entity1 = static_cast<Entity*>(other_actor->userData);
+					if (entity0)
+					{
+						Message_CollisionTrigger mct(trigger_actor, pair.triggerShape, other_actor, pair.otherShape);
+						entity0->OnMessage(&mct);
+					}
+				}
+			}
+		}
+
 		virtual void onAdvance(const physx::PxRigidBody*const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override {}
 	};
 

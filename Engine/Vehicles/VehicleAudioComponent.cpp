@@ -50,7 +50,7 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 		ImGui::Begin("Car audio debug");
 
 		// Engine sounds.
-		if (true)
+		if (false)
 		{
 			float revs = vgdi.m_EngineRotationSpeed;
 			ImGui::Text("Revs: %f", revs);
@@ -92,7 +92,7 @@ void VehicleAudioComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE 
 		// Skidding.
 		// This is where our actual velocity does not match our facing.
 		float skid_divergence = 0.0f;
-		if (true)
+		if (false)
 		{
 			if (!vgdi.m_InAir && glm::length(vgdi.m_LinearVelocity) >= 0.01f)
 			{

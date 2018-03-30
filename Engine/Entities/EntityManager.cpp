@@ -40,7 +40,7 @@ namespace EntityManager
 	Entity * CreateEntity()
 	{
 		Entity* new_entity = MemNew(MemoryPool::Entities, Entity);
-		s_EntityHandleMap[new_entity] = new_entity->GetEntityId();
+		s_EntityHandleMap[new_entity] = new_entity->GetId();
 		return new_entity;
 	}
 

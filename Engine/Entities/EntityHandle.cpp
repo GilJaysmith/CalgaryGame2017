@@ -13,7 +13,7 @@ EntityHandle::EntityHandle()
 
 EntityHandle::EntityHandle(Entity* entity)
 	: m_Entity(entity)
-	, m_EntityId(entity ? entity->GetEntityId() : 0)
+	, m_EntityId(entity ? entity->GetId() : 0)
 {
 }
 
@@ -36,6 +36,6 @@ Entity* EntityHandle::operator->() const
 EntityHandle& EntityHandle::operator=(Entity* entity)
 {
 	m_Entity = entity;
-	m_EntityId = entity ? entity->GetEntityId() : 0;
+	m_EntityId = entity ? entity->GetId() : 0;
 	return *this;
 }

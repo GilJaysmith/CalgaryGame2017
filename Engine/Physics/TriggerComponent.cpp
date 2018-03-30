@@ -27,15 +27,18 @@ bool TriggerComponent::OnMessage(Message* message)
 	{
 		switch (message->GetMessageSubtype())
 		{
-		case CollisionMessageSubtype::Touch:
+		case CollisionMessageSubtype::Trigger:
 		{
-			Message_CollisionTouch* mct = static_cast<Message_CollisionTouch*>(message);
+			Message_CollisionTrigger* mct = static_cast<Message_CollisionTrigger*>(message);
 			physx::PxActor* my_actor = mct->m_MyActor;
 			physx::PxActor* other_actor = mct->m_OtherActor;
 
 			Entity* other_entity = static_cast<Entity*>(other_actor->userData);
 			if (other_entity)
 			{
+				std::stringstream str;
+				str << "Trigger " << m_Entity->GetType() << " shape " << mct->m_MyShape << " contact with entity "  << other_entity->GetType() << " shape " << mct->m_OtherShape;
+				Logging::Log("Trigger", str.str());
 			}
 
 			return true;
@@ -66,7 +69,7 @@ TriggerComponent::TriggerComponent(Entity* owner, const YAML::Node& properties)
 
 	std::vector<unsigned int> filter = properties["simfilter"].as<std::vector<unsigned int>>();
 	assert(filter.size() == 4);
-	physx::PxFilterData filter_data(filter[0], filter[1], filter[2], filter[3]);
+	physx::PxFilterData filter_data(filter[0], filter[1], filter[2] | physx::PxPairFlag::eNOTIFY_TOUCH_FOUND, filter[3]);
 	for (auto shape : shapes)
 	{
 		shape->setSimulationFilterData(filter_data);

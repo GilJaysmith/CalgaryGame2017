@@ -7,7 +7,7 @@
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 
-unsigned int Entity::s_NextEntityId = 1;
+unsigned int Entity::s_NextId = 1;
 
 Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& transform)
 {
@@ -26,7 +26,7 @@ Entity* Entity::CreateEntity(const std::string& entity_type, const glm::mat4& tr
 }
 
 Entity::Entity()
-	: m_EntityId(s_NextEntityId++)
+	: m_Id(s_NextId++)
 {
 }
 
