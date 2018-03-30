@@ -56,6 +56,7 @@
     <ClCompile Include="Physics\CollisionResponseComponent.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsComponent.cpp" />
+    <ClCompile Include="Physics\PhysicsUtils.cpp" />
     <ClCompile Include="Physics\TriggerComponent.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\MeshManager.cpp" />

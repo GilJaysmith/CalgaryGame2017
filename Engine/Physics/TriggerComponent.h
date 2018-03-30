@@ -2,9 +2,13 @@
 
 #include "Engine/Entities/Component.h"
 
-
 class Entity;
 class Time;
+
+namespace physx
+{
+	class PxRigidActor;
+}
 
 class TriggerComponent : public Component
 {
@@ -18,4 +22,6 @@ public:
 
 protected:
 	TriggerComponent(Entity* owner, const YAML::Node& properties);
+
+	physx::PxRigidActor* m_Actor;
 };

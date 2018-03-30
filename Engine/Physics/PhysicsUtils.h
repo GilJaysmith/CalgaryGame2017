@@ -2,9 +2,11 @@
 
 #include "sdks/glm/glm.hpp"
 #include "sdks/PhysX/PxShared/include/foundation/PxMat44.h"
+#include "sdks/PhysX/PhysX/Include/PxShape.h"
 
 
-glm::mat4 physx_to_glm(const physx::PxMat44& physx)
+
+inline glm::mat4 physx_to_glm(const physx::PxMat44& physx)
 {
 	glm::mat4 glm;
 	for (int i = 0; i < 4; ++i)
@@ -17,7 +19,7 @@ glm::mat4 physx_to_glm(const physx::PxMat44& physx)
 	return glm;
 }
 
-physx::PxMat44 glm_to_physx(const glm::mat4& glm)
+inline physx::PxMat44 glm_to_physx(const glm::mat4& glm)
 {
 	physx::PxMat44 physx;
 	for (int i = 0; i < 4; ++i)
@@ -30,7 +32,7 @@ physx::PxMat44 glm_to_physx(const glm::mat4& glm)
 	return physx;
 }
 
-glm::vec3 physx_to_glm(const physx::PxVec3& physx)
+inline glm::vec3 physx_to_glm(const physx::PxVec3& physx)
 {
 	glm::vec3 glm;
 	glm.x = physx.x;
@@ -39,3 +41,5 @@ glm::vec3 physx_to_glm(const physx::PxVec3& physx)
 	return glm;
 }
 
+
+physx::PxShape* CreatePhysicsShape(const YAML::Node& node, const physx::PxMaterial& material, physx::PxShapeFlags flags);

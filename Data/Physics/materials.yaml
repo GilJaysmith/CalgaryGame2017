@@ -1,3 +1,4 @@
 materials:
     floor: [0.1, 0.1, 0.1]
     cube: [0.2, 0.2, 0.6]
+    trigger: [0.0, 0.0, 0.0]
