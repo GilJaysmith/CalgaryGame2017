@@ -24,7 +24,8 @@ public:
 	int OnMessage(Message* message);
 	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass);
 
-	glm::mat4 GetTransform() const { return m_Transform;  }
+	const glm::mat4* GetTransformPtr() const { return &m_Transform; }
+	glm::mat4 GetTransform() const { return m_Transform; }
 	void SetTransform(const glm::mat4& transform) { m_Transform = transform; }
 
 	unsigned int GetId() const { return m_Id; }

@@ -19,4 +19,6 @@ public:
 protected:
 	Camera* m_Camera;
 	EntityHandle m_Car;
+
+	glm::mat4 m_DebugDrawTransform;
 };

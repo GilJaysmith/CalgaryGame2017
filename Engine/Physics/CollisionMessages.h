@@ -33,16 +33,18 @@ struct Message_CollisionTouch : Message
 };
 struct Message_CollisionTrigger : Message
 {
-	Message_CollisionTrigger(physx::PxActor* my_actor, physx::PxShape* my_shape, physx::PxActor* other_actor, physx::PxShape* other_shape)
+	Message_CollisionTrigger(physx::PxActor* my_actor, physx::PxShape* my_shape, physx::PxActor* other_actor, physx::PxShape* other_shape, bool touch)
 		: Message(MessageType::Collision, CollisionMessageSubtype::Trigger)
 		, m_MyActor(my_actor)
 		, m_MyShape(my_shape)
 		, m_OtherActor(other_actor)
 		, m_OtherShape(other_shape)
+		, m_Touch(touch)
 	{}
 
 	physx::PxActor* m_MyActor;
 	physx::PxShape* m_MyShape;
 	physx::PxActor* m_OtherActor;
 	physx::PxShape* m_OtherShape;
+	bool m_Touch;
 };

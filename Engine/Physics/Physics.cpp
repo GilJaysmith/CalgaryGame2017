@@ -151,18 +151,19 @@ namespace Physics
 			for (unsigned int pair_idx = 0; pair_idx < count; ++pair_idx)
 			{
 				const physx::PxTriggerPair& pair = pairs[pair_idx];
-				physx::PxFilterData filterdata0 = pair.triggerShape->getSimulationFilterData();
-				if (filterdata0.word2 & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+				physx::PxRigidActor* trigger_actor = pair.triggerActor;
+				physx::PxRigidActor* other_actor = pair.otherActor;
+				Entity* entity0 = static_cast<Entity*>(trigger_actor->userData);
+				Entity* entity1 = static_cast<Entity*>(other_actor->userData);
+				if (pair.flags & physx::PxTriggerPairFlag::eREMOVED_SHAPE_OTHER)
 				{
-					physx::PxRigidActor* trigger_actor = pair.triggerActor;
-					physx::PxRigidActor* other_actor = pair.otherActor;
-					Entity* entity0 = static_cast<Entity*>(trigger_actor->userData);
-					Entity* entity1 = static_cast<Entity*>(other_actor->userData);
-					if (entity0)
-					{
-						Message_CollisionTrigger mct(trigger_actor, pair.triggerShape, other_actor, pair.otherShape);
-						entity0->OnMessage(&mct);
-					}
+					other_actor = nullptr;
+					entity1 = nullptr;
+				}
+				if (entity0)
+				{
+					Message_CollisionTrigger mct(trigger_actor, pair.triggerShape, other_actor, pair.otherShape, pair.status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND);
+					entity0->OnMessage(&mct);
 				}
 			}
 		}

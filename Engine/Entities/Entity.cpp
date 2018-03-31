@@ -1,5 +1,6 @@
 #include "Engine/Pch.h"
 
+#include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/Entities/Component.h"
 #include "Engine/Entities/ComponentRegistry.h"
 #include "Engine/Entities/Entity.h"

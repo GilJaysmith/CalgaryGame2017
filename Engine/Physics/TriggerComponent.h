@@ -5,9 +5,15 @@
 class Entity;
 class Time;
 
+namespace DebugDraw
+{
+	class IDebugObject;
+}
+
 namespace physx
 {
 	class PxRigidActor;
+	class PxShape;
 }
 
 class TriggerComponent : public Component
@@ -24,4 +30,5 @@ protected:
 	TriggerComponent(Entity* owner, const YAML::Node& properties);
 
 	physx::PxRigidActor* m_Actor;
+	std::map<physx::PxShape*, DebugDraw::IDebugObject*> m_ShapeToDebugObject;
 };
