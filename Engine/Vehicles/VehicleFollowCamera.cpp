@@ -6,7 +6,7 @@
 #include "Engine/Vehicles/VehicleFollowCameraInputHandler.h"
 
 
-VehicleFollowCamera::VehicleFollowCamera(Entity* followed, int player_idx)
+VehicleFollowCamera::VehicleFollowCamera(EntityHandle followed, int player_idx)
 	: m_FollowedEntity(followed)
 {
 	m_InputHandler = MemNew(MemoryPool::Vehicles, VehicleFollowCameraInputHandler)(player_idx);

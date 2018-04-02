@@ -41,5 +41,4 @@ inline glm::vec3 physx_to_glm(const physx::PxVec3& physx)
 	return glm;
 }
 
-
 physx::PxShape* CreatePhysicsShape(const YAML::Node& node, const physx::PxMaterial& material, physx::PxShapeFlags flags);

@@ -332,3 +332,9 @@ void VehicleComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 		}
 	}
 }
+
+void VehicleComponent::OnTransformUpdated()
+{
+	physx::PxRigidDynamic* actor = m_Vehicle4W->getRigidDynamicActor();
+	actor->setGlobalPose(physx::PxTransform(glm_to_physx(m_Entity->GetTransform())));
+}

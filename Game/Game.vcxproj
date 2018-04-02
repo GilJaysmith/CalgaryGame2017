@@ -174,15 +174,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Entities\BuildingComponent.h" />
-    <ClInclude Include="Entities\CheckpointComponent.h" />
-    <ClInclude Include="Entities\ContourComponent.h" />
-    <ClInclude Include="Entities\PowerupComponent.h" />
-    <ClInclude Include="Entities\WorldComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameStates\CityGameState.h" />
-    <ClInclude Include="GameStates\FrontEndState.h" />
-    <ClInclude Include="GameStates\InGameState.h" />
+    <ClInclude Include="GameStates\RaceGameState.h" />
     <ClInclude Include="GameStates\TestGameState.h" />
     <ClInclude Include="GIS\City.h" />
     <ClInclude Include="GIS\CityLoaderFromCooked.h" />
@@ -191,17 +185,13 @@
     <ClInclude Include="GIS\polypartition\polypartition.h" />
     <ClInclude Include="GIS\shapelib\shapefil.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="Race\CheckpointComponent.h" />
+    <ClInclude Include="Race\RaceManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entities\BuildingComponent.cpp" />
-    <ClCompile Include="Entities\CheckpointComponent.cpp" />
-    <ClCompile Include="Entities\ContourComponent.cpp" />
-    <ClCompile Include="Entities\PowerupComponent.cpp" />
-    <ClCompile Include="Entities\WorldComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameStates\CityGameState.cpp" />
-    <ClCompile Include="GameStates\FrontEndState.cpp" />
-    <ClCompile Include="GameStates\InGameState.cpp" />
+    <ClCompile Include="GameStates\RaceGameState.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp" />
     <ClCompile Include="GIS\City.cpp" />
     <ClCompile Include="GIS\CityLoaderFromCooked.cpp" />
@@ -387,6 +377,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Race\CheckpointComponent.cpp" />
+    <ClCompile Include="Race\RaceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

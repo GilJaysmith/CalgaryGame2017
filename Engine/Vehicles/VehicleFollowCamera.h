@@ -8,7 +8,7 @@ class VehicleFollowCameraInputHandler;
 class VehicleFollowCamera : public Camera
 {
 public:
-	VehicleFollowCamera(Entity* followed, int player_idx);
+	VehicleFollowCamera(EntityHandle followed, int player_idx);
 	~VehicleFollowCamera();
 
 	virtual void Update(const Time& frame_time) override;

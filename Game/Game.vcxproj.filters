@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{71c0f1e3-9cd0-4fa1-852a-c5899d511ff8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameStates">
       <UniqueIdentifier>{dadaaf06-c26b-47c9-ab8e-98f18a184829}</UniqueIdentifier>
     </Filter>
@@ -23,34 +20,16 @@
     <Filter Include="GIS\polypartition">
       <UniqueIdentifier>{3496f01d-9a6c-4114-936c-fb7979bf030a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Race">
+      <UniqueIdentifier>{f0cfaa95-d986-4c12-9c35-4a8e5baadcd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entities\BuildingComponent.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities\ContourComponent.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStates\FrontEndState.h">
-      <Filter>GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities\WorldComponent.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities\CheckpointComponent.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities\PowerupComponent.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameStates\TestGameState.h">
-      <Filter>GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStates\InGameState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
     <ClInclude Include="GIS\shapelib\shapefil.h">
@@ -74,34 +53,22 @@
     <ClInclude Include="GIS\CityLoaderFromCooked.h">
       <Filter>GIS</Filter>
     </ClInclude>
+    <ClInclude Include="Race\RaceManager.h">
+      <Filter>Race</Filter>
+    </ClInclude>
+    <ClInclude Include="Race\CheckpointComponent.h">
+      <Filter>Race</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\RaceGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Entities\BuildingComponent.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities\ContourComponent.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStates\FrontEndState.cpp">
-      <Filter>GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities\WorldComponent.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities\CheckpointComponent.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities\PowerupComponent.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Pch.cpp" />
     <ClCompile Include="GameStates\TestGameState.cpp">
-      <Filter>GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStates\InGameState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
     <ClCompile Include="GIS\shapelib\dbfopen.c">
@@ -166,6 +133,15 @@
     </ClCompile>
     <ClCompile Include="GIS\CityLoaderFromCooked.cpp">
       <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="Race\RaceManager.cpp">
+      <Filter>Race</Filter>
+    </ClCompile>
+    <ClCompile Include="Race\CheckpointComponent.cpp">
+      <Filter>Race</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\RaceGameState.cpp">
+      <Filter>GameStates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

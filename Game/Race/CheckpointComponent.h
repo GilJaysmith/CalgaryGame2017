@@ -2,31 +2,33 @@
 
 #include "Engine/Entities/Component.h"
 
-
 class Entity;
 class Time;
+
+namespace DebugDraw
+{
+	class IDebugObject;
+}
 
 namespace physx
 {
 	class PxRigidActor;
+	class PxShape;
 }
 
-class PhysicsComponent : public Component
+class CheckpointComponent : public Component
 {
 public:
 	static Component* CreateComponent(Entity* owner, const YAML::Node& properties);
 
 public:
-	virtual ~PhysicsComponent();
+	virtual ~CheckpointComponent();
 
 	bool OnMessage(Message*) override;
-	void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
-	void OnTransformUpdated() override;
 
 protected:
-	PhysicsComponent(Entity* owner, const YAML::Node& properties);
-
-	virtual void OnSetActive(bool active) override;
+	CheckpointComponent(Entity* owner, const YAML::Node& properties);
 
 	physx::PxRigidActor* m_Actor;
+	DebugDraw::IDebugObject* m_DebugObject;
 };

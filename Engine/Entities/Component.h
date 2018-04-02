@@ -14,6 +14,7 @@ public:
 
 	virtual bool OnMessage(Message*) { return false; }
 	virtual void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) {}
+	virtual void OnTransformUpdated() {}
 
 	void SetActive(bool active);
 

@@ -18,6 +18,7 @@ public:
 
 	virtual bool OnMessage(Message*) override;
 	virtual void OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass) override;
+	virtual void OnTransformUpdated() override;
 
 protected:
 	VehicleComponent(Entity* owner, const YAML::Node& properties);

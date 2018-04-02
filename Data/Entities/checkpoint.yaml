@@ -1,0 +1,7 @@
+--- 
+behaviours: 
+  checkpoint:
+    shape:
+      type: sphere
+      radius: 2.5
+    simfilter: [1, 28, 0, 0]

@@ -4,6 +4,7 @@
 #include "Engine/Physics/Physics.h"
 #include "Engine/Physics/PhysicsComponent.h"
 #include "Engine/Physics/PhysicsMessages.h"
+#include "Engine/Physics/PhysicsUtils.h"
 
 #include "sdks/libyaml/include/yaml-cpp/yaml.h"
 #include "sdks/PhysX/PhysX/Include/PxPhysicsAPI.h"
@@ -92,6 +93,14 @@ void PhysicsComponent::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE updat
 			}
 			break;
 		}
+	}
+}
+
+void PhysicsComponent::OnTransformUpdated()
+{
+	if (m_Actor)
+	{
+		m_Actor->setGlobalPose(physx::PxTransform(glm_to_physx(m_Entity->GetTransform())));
 	}
 }
 

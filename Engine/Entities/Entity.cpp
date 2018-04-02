@@ -67,6 +67,18 @@ void Entity::OnUpdate(const Time& elapsed_time, UpdatePass::TYPE update_pass)
 	}
 }
 
+void Entity::SetTransform(const glm::mat4& transform, bool update_components)
+{
+	m_Transform = transform;
+	if (update_components)
+	{
+		for (auto component : m_Components)
+		{
+			component->OnTransformUpdated();
+		}
+	}
+}
+
 void Entity::AddTag(const std::string& tag)
 {
 	EntityManager::AddTag(this, tag);

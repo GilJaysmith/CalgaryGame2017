@@ -17,6 +17,7 @@
 
 #include "Game/GameStates/CityGameState.h"
 #include "Game/GIS/GISManager.h"
+#include "Game/Race/RaceManager.h"
 
 CityGameState::CityGameState()
 {
@@ -59,9 +60,16 @@ void CityGameState::OnEnter()
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(40.0f, 1.0f, 0.0f)));
 	Entity::CreateEntity("Porsche 911 GT2", glm::translate(glm::mat4(), glm::vec3(50.0f, 1.0f, 0.0f)));
 
-	Entity::CreateEntity("trigger_sphere", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 10.0f)));
-	Entity::CreateEntity("trigger_box", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 30.0f)));
-	Entity::CreateEntity("trigger_sphere", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 50.0f)));
+	//Entity::CreateEntity("trigger_sphere", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 10.0f)));
+	//Entity::CreateEntity("trigger_box", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 30.0f)));
+	//Entity::CreateEntity("trigger_sphere", glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 50.0f)));
+
+	RaceManager::RegisterCar(m_Car);
+	for (int i = 0; i <= 10; ++i)
+	{
+		Entity* checkpoint = Entity::CreateEntity("checkpoint", glm::translate(glm::mat4(), glm::vec3(i * 20.0f, 0.0f, i * 20.0f)));
+		RaceManager::RegisterCheckpoint(checkpoint);
+	}
 
 	Music::LoadPlaylist("Data/Audio/Music/Playlist.yaml");
 //	Music::StartPlaying();
