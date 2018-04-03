@@ -15,6 +15,10 @@ public:
 	{
 		return m_Entity < other.m_Entity;
 	}
+	bool operator== (const EntityHandle& other) const
+	{
+		return m_Entity == other.m_Entity && m_EntityId == other.m_EntityId;
+	}
 
 protected:
 	Entity* m_Entity;

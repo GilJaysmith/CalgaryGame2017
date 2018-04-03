@@ -19,6 +19,7 @@
 #include "Engine/Logging/Logging.h"
 #include "Engine/Memory/Memory.h"
 
+#include <algorithm>
 #include <map>
 #include <string>
 #include <sstream>
