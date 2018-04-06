@@ -3,6 +3,7 @@
 #undef CreateWindow
 
 class Camera;
+class Time;
 class Renderable;
 class Viewport;
 
@@ -21,7 +22,7 @@ namespace Renderer
 	void SetActiveCamera(Camera*);
 	Camera* GetActiveCamera();
 
-	void RenderScene();
+	void RenderScene(const Time& frame_time);
 
 	void RegisterRenderable(Renderable* renderable);
 	void UnregisterRenderable(Renderable* renderable);

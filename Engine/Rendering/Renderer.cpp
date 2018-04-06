@@ -3,6 +3,7 @@
 #include "Engine/Cameras/Camera.h"
 #include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/DebugPanels/DebugPanels.h"
+#include "Engine/GameStates/Time.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
@@ -43,6 +44,11 @@ namespace Renderer
 		s_Viewports.clear();
 	}
 
+	GLuint s_Framebuffer;
+	GLuint s_TextureColourBuffer;
+	GLuint s_PostprocessShader;	
+	GLuint s_QuadVAO;
+
 	void CreateWindow(unsigned int width, unsigned int height, bool full_screen)
 	{
 		DestroyWindow();
@@ -69,6 +75,54 @@ namespace Renderer
 
 		Viewport default_viewport(0, 0, width, height);
 		s_Viewports["default"] = default_viewport;
+
+		// Set up a framebuffer.
+		glGenFramebuffers(1, &s_Framebuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, s_Framebuffer);
+		// generate texture
+		glGenTextures(1, &s_TextureColourBuffer);
+		glBindTexture(GL_TEXTURE_2D, s_TextureColourBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		// attach it to currently bound framebuffer object
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, s_TextureColourBuffer, 0);
+		// Set up a renderbuffer
+		unsigned int rbo;
+		glGenRenderbuffers(1, &rbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		// attach it to currently bound framebuffer object
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+		// check framebuffer is complete
+		assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);	
+		// restore default framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		s_PostprocessShader = ShaderManager::LoadProgram("Postprocess");
+
+		float quad_vertices[] = {
+			-1.0f,  1.0f,  0.0f, 1.0f,
+			-1.0f, -1.0f,  0.0f, 0.0f,
+			1.0f, -1.0f,  1.0f, 0.0f,
+			-1.0f,  1.0f,  0.0f, 1.0f,
+			1.0f, -1.0f,  1.0f, 0.0f,
+			1.0f,  1.0f,  1.0f, 1.0f
+		};
+		glGenVertexArrays(1, &s_QuadVAO);
+		glBindVertexArray(s_QuadVAO);
+		GLuint quadVBO;
+		glGenBuffers(1, &quadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
+		GLint posAttrib = glGetAttribLocation(s_PostprocessShader, "position");
+		GLint texAttrib = glGetAttribLocation(s_PostprocessShader, "texcoord");
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+		glEnableVertexAttribArray(posAttrib);
+		glEnableVertexAttribArray(texAttrib);
 	}
 
 	void Initialize()
@@ -193,8 +247,17 @@ namespace Renderer
 
 	unsigned int s_PeakVertsInScene = 0;
 
-	void RenderScene()
+	void RenderScene(const Time& frame_time)
 	{
+		//Renderer::ClearWindow();
+
+		// Render everything to the framebuffer.
+		glBindFramebuffer(GL_FRAMEBUFFER, s_Framebuffer);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
+		glEnable(GL_DEPTH_TEST);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 		unsigned int num_meshes = 0;
 		unsigned int num_verts = 0;
 
@@ -261,6 +324,42 @@ namespace Renderer
 				Logging::Log("Renderer", str.str());
 			}
 		}
+
+		//// second pass
+
+		ShaderManager::SetActiveShader(s_PostprocessShader);
+		GLuint uniTex = glGetUniformLocation(s_PostprocessShader, "tex");
+		glUniform1i(uniTex, 0);
+		GLuint uniTint = glGetUniformLocation(s_PostprocessShader, "tint");
+		static float alpha = 1.0f;
+		const float OFFSET = 0.02f;
+		static float offset = -OFFSET;
+		static glm::vec4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+		tint[3] = alpha;
+		alpha += offset;
+		if (alpha <= 0.0f)
+		{
+			offset = OFFSET;
+		}
+		if (alpha >= 1.0f)
+		{
+			tint[0] = rand() / (float)RAND_MAX;
+			tint[1] = rand() / (float)RAND_MAX;
+			tint[2] = rand() / (float)RAND_MAX;
+			tint[3] = alpha = 1.0f;
+			offset = -OFFSET;
+		}
+		glUniform4fv(uniTint, 1, glm::value_ptr(tint));
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glBindVertexArray(s_QuadVAO);
+		glDisable(GL_DEPTH_TEST);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, s_TextureColourBuffer);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 
 	void RegisterRenderable(Renderable* renderable)
