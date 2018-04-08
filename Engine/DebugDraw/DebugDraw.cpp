@@ -350,7 +350,6 @@ namespace DebugDraw
 		_DebugLine(const glm::vec3& end)
 		{
 			m_Vao = s_DebugLineVao;
-			// TODO: set transform based on line end.
 			glm::vec3 up(1.0f, 0.0f, 0.0f);
 			glm::vec3 xaxis = glm::cross(up, end);
 			xaxis = glm::normalize(xaxis);
@@ -685,6 +684,95 @@ namespace DebugDraw
 	IDebugObject* DebugArrow(const std::string& layer)
 	{
 		_DebugArrow* debug_object = MemNew(MemoryPool::Rendering, _DebugArrow);
+		s_DebugObjects[layer].insert(debug_object);
+		return debug_object;
+	}
+
+	class _DebugCapsule : public IRenderableDebugObject
+	{
+	public:
+		_DebugCapsule(float radius, float half_height)
+		{
+			m_NumLines = 0;
+
+			glGenVertexArrays(1, &m_Vao);
+			glBindVertexArray(m_Vao);
+
+			GLuint vbo;
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+			// We want lines around the length of the capsule.
+			std::vector<glm::vec3> verts;
+
+			std::vector<glm::vec3> one_end;
+			std::vector<glm::vec3> other_end;
+			for (int i = 0; i < 360; i += 20)
+			{
+				float angle = (i / 180.0f) * glm::pi<float>();
+				glm::vec3 from = glm::vec3(half_height, radius * sin(angle), radius * cos(angle));
+				glm::vec3 to = glm::vec3(-half_height, radius * sin(angle), radius * cos(angle));
+				one_end.push_back(from);
+				other_end.push_back(to);
+			}
+
+			for (int i = 0; i < one_end.size(); ++i)
+			{
+				verts.push_back(one_end[i]);
+				verts.push_back(other_end[i]);
+				++m_NumLines;
+				verts.push_back(one_end[i]);
+				verts.push_back(one_end[(i + 1) % one_end.size()]);
+				++m_NumLines;
+				verts.push_back(other_end[i]);
+				verts.push_back(other_end[(i + 1) % other_end.size()]);
+				++m_NumLines;
+			}
+
+			unsigned int data_size = static_cast<unsigned int>(sizeof(float) * 3 * verts.size());
+			float* vert_data = static_cast<float*>(MemNewBytes(MemoryPool::Rendering, data_size));
+			float* f = vert_data;
+			for (auto v : verts)
+			{
+				*f++ = v.x;
+				*f++ = v.y;
+				*f++ = v.z;
+			}
+
+			glBufferData(GL_ARRAY_BUFFER, data_size, vert_data, GL_STATIC_DRAW);
+
+			GLint posAttrib = glGetAttribLocation(s_Shader, "position");
+			if (posAttrib > -1)
+			{
+				glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+				glEnableVertexAttribArray(posAttrib);
+			}
+
+			MemDelete(vert_data);
+		}
+
+		~_DebugCapsule()
+		{
+		}
+
+		virtual void Render() override
+		{
+			glBindVertexArray(m_Vao);
+			glDrawArrays(GL_LINES, 0, m_NumLines * 2);
+		}
+
+		virtual void Release() override
+		{
+			DebugDraw::Release(this);
+		}
+
+	protected:
+		unsigned int m_NumLines;
+	};
+
+	IDebugObject* DebugCapsule(const std::string& layer, float radius, float half_height)
+	{
+		_DebugCapsule* debug_object = MemNew(MemoryPool::Rendering, _DebugCapsule)(radius, half_height);
 		s_DebugObjects[layer].insert(debug_object);
 		return debug_object;
 	}
