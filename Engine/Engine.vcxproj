@@ -60,6 +60,7 @@
     <ClCompile Include="Physics\TriggerComponent.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\MeshManager.cpp" />
+    <ClCompile Include="Rendering\PostProcessEffect.cpp" />
     <ClCompile Include="Rendering\Renderable.cpp" />
     <ClCompile Include="Rendering\RenderComponent.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Physics\TriggerComponent.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\MeshManager.h" />
+    <ClInclude Include="Rendering\PostProcessEffect.h" />
     <ClInclude Include="Rendering\Renderable.h" />
     <ClInclude Include="Rendering\RenderComponent.h" />
     <ClInclude Include="Rendering\Renderer.h" />

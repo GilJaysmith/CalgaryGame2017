@@ -119,6 +119,17 @@ TriggerComponent::TriggerComponent(Entity* owner, const YAML::Node& properties)
 				debug_object->SetExternalTransform(m_Entity->GetTransformPtr());
 			}
 		}
+
+		case physx::PxGeometryType::eCAPSULE:
+		{
+			physx::PxCapsuleGeometry geo;
+			if (shape->getCapsuleGeometry(geo))
+			{
+				debug_object = DebugDraw::DebugCapsule("TEST", geo.radius, geo.halfHeight);
+				debug_object->SetExternalTransform(m_Entity->GetTransformPtr());
+			}
+		}
+
 		break;
 		}
 		if (debug_object)

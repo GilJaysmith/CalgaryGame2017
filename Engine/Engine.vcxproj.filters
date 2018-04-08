@@ -208,6 +208,9 @@
     <ClCompile Include="Physics\PhysicsUtils.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\PostProcessEffect.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -399,6 +402,9 @@
     </ClInclude>
     <ClInclude Include="Physics\TriggerComponent.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\PostProcessEffect.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

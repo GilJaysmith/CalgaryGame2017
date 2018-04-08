@@ -6,6 +6,7 @@ class Camera;
 class Time;
 class Renderable;
 class Viewport;
+class PostProcessEffect;
 
 namespace Renderer
 {
@@ -30,4 +31,6 @@ namespace Renderer
 	void RegisterViewport(const Viewport& viewport, const std::string& viewport_name);
 	void UnregisterViewport(const std::string& viewport_name);
 	Viewport& GetViewport(const std::string& viewport_name);
+
+	void InsertPostProcessEffect(PostProcessEffect* ppe);
 }
