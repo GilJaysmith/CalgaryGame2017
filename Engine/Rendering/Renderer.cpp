@@ -4,7 +4,7 @@
 #include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/DebugPanels/DebugPanels.h"
 #include "Engine/GameStates/Time.h"
-#include "Engine/Rendering/PostProcessEffect.h"
+#include "Engine/Rendering/Postprocessing/PostProcessEffect.h"
 #include "Engine/Rendering/Renderable.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/ScreenSpaceRenderer.h"
@@ -71,6 +71,11 @@ namespace Renderer
 
 		glewExperimental = GL_TRUE;
 		glewInit();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glfwSwapBuffers(s_Window);
 
 		Viewport default_viewport(0, 0, width, height);
 		s_Viewports["default"] = default_viewport;
@@ -207,21 +212,6 @@ namespace Renderer
 
 	void RenderScene(const Time& frame_time)
 	{
-		// Process the effect chain.
-		for (auto it = s_PostProcessEffectChain.begin(); it != s_PostProcessEffectChain.end(); )
-		{
-			(*it)->Update(frame_time);
-			if ((*it)->IsComplete())
-			{
-				MemDelete(*it);
-				it = s_PostProcessEffectChain.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-
 		// Render the scene to the first target framebuffer, which might come from the postprocess chain if we have one.
 		std::list<PostProcessEffect*>::iterator postprocess_iterator = s_PostProcessEffectChain.begin();
 		PostProcessEffect* this_postprocess_node = postprocess_iterator != s_PostProcessEffectChain.end() ? *postprocess_iterator : nullptr;
@@ -309,6 +299,19 @@ namespace Renderer
 			this_postprocess_node = next_postprocess_node;
 		}
 
+		for (auto it = s_PostProcessEffectChain.begin(); it != s_PostProcessEffectChain.end(); )
+		{
+			if ((*it)->IsComplete())
+			{
+				MemDelete(*it);
+				it = s_PostProcessEffectChain.erase(it);
+			}
+			else
+			{
+				(*it)->Update(frame_time);
+				++it;
+			}
+		}
 
 		//GLuint uniTex = glGetUniformLocation(s_PostprocessShader, "tex");
 		//glUniform1i(uniTex, 0);

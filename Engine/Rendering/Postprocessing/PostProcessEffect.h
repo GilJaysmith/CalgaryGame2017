@@ -10,7 +10,7 @@ public:
 
 	virtual bool IsComplete() const;
 	virtual void Update(const Time& frame_time);
-	void RenderTo(GLuint framebuffer) const;
+	virtual void RenderTo(GLuint framebuffer) const;
 
 	GLuint GetFrameBuffer() const { return m_FrameBuffer; }
 	GLuint GetTextureColourBuffer() const { return m_TextureColourBuffer; }

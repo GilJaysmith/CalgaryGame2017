@@ -52,6 +52,9 @@
     <Filter Include="Health">
       <UniqueIdentifier>{3a6f9dd5-f213-4899-ba11-4c25d5b48279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering\PostProcessing">
+      <UniqueIdentifier>{8e85b428-c45f-4e6f-a518-46834378debc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Component.cpp">
@@ -208,8 +211,11 @@
     <ClCompile Include="Physics\PhysicsUtils.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\PostProcessEffect.cpp">
-      <Filter>Rendering</Filter>
+    <ClCompile Include="Rendering\Postprocessing\PostProcessEffect.cpp">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Postprocessing\PostProcessFade.cpp">
+      <Filter>Rendering\PostProcessing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,8 +409,11 @@
     <ClInclude Include="Physics\TriggerComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\PostProcessEffect.h">
-      <Filter>Rendering</Filter>
+    <ClInclude Include="Rendering\Postprocessing\PostProcessEffect.h">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Postprocessing\PostProcessFade.h">
+      <Filter>Rendering\PostProcessing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
