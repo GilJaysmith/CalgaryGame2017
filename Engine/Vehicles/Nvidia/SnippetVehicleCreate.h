@@ -108,6 +108,8 @@ struct VehicleDesc
 	ShapeUserData* shapeUserDatas;
 
 	std::vector<physx::PxMat44> wheelOffsets;
+
+	YAML::Node yamlProperties;
 };
 
 PxVehicleDrive4W* createVehicle4W(const VehicleDesc& vehDesc, PxPhysics* physics, PxCooking* cooking);

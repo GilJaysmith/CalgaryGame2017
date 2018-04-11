@@ -44,7 +44,7 @@ namespace snippetvehicle
 	namespace fourwheel
 	{
 		void setupWheelsSimulationData
-		(const PxF32 wheelMass, const PxF32 wheelMOI, const PxF32 wheelRadius, const PxF32 wheelWidth,
+		(const YAML::Node& properties, const PxF32 wheelMass, const PxF32 wheelMOI, const PxF32 wheelRadius, const PxF32 wheelWidth,
 			const PxU32 numWheels, const PxVec3* wheelCenterActorOffsets,
 			const PxVec3& chassisCMOffset, const PxF32 chassisMass,
 			PxVehicleWheelsSimData* wheelsSimData)
@@ -62,11 +62,11 @@ namespace snippetvehicle
 				}
 
 				//Enable the handbrake for the rear wheels only.
-				wheels[PxVehicleDrive4WWheelOrder::eREAR_LEFT].mMaxHandBrakeTorque = 4000.0f;
-				wheels[PxVehicleDrive4WWheelOrder::eREAR_RIGHT].mMaxHandBrakeTorque = 4000.0f;
+				wheels[PxVehicleDrive4WWheelOrder::eREAR_LEFT].mMaxHandBrakeTorque = properties["wheels"]["maxHandBrakeTorque"].as<float>();
+				wheels[PxVehicleDrive4WWheelOrder::eREAR_RIGHT].mMaxHandBrakeTorque = properties["wheels"]["maxHandBrakeTorque"].as<float>();
 				//Enable steering for the front wheels only.
-				wheels[PxVehicleDrive4WWheelOrder::eFRONT_LEFT].mMaxSteer = PxPi * 0.3333f;
-				wheels[PxVehicleDrive4WWheelOrder::eFRONT_RIGHT].mMaxSteer = PxPi * 0.3333f;
+				wheels[PxVehicleDrive4WWheelOrder::eFRONT_LEFT].mMaxSteer = PxPi * properties["wheels"]["maxSteer"].as<float>();
+				wheels[PxVehicleDrive4WWheelOrder::eFRONT_RIGHT].mMaxSteer = PxPi * properties["wheels"]["maxSteer"].as<float>();
 			}
 
 			//Set up the tires.
@@ -91,17 +91,17 @@ namespace snippetvehicle
 				//Set the suspension data.
 				for (PxU32 i = 0; i < numWheels; i++)
 				{
-					suspensions[i].mMaxCompression = 0.3f;
-					suspensions[i].mMaxDroop = 0.1f;
-					suspensions[i].mSpringStrength = 35000.0f;
-					suspensions[i].mSpringDamperRate = 4500.0f;
+					suspensions[i].mMaxCompression = properties["suspension"]["maxCompression"].as<float>();
+					suspensions[i].mMaxDroop = properties["suspension"]["maxDroop"].as<float>();
+					suspensions[i].mSpringStrength = properties["suspension"]["springStrength"].as<float>();
+					suspensions[i].mSpringDamperRate = properties["suspension"]["springDamperRate"].as<float>();
 					suspensions[i].mSprungMass = suspSprungMasses[i];
 				}
 
 				//Set the camber angles.
-				const PxF32 camberAngleAtRest = 0.0;
-				const PxF32 camberAngleAtMaxDroop = 0.01f;
-				const PxF32 camberAngleAtMaxCompression = -0.01f;
+				const PxF32 camberAngleAtRest = properties["suspension"]["camberAngleAtRest"].as<float>();
+				const PxF32 camberAngleAtMaxDroop = properties["suspension"]["camberAngleAtMaxDroop"].as<float>();
+				const PxF32 camberAngleAtMaxCompression = properties["suspension"]["camberAngleAtMaxCompression"].as<float>();
 				for (PxU32 i = 0; i < numWheels; i += 2)
 				{
 					suspensions[i + 0].mCamberAtRest = camberAngleAtRest;
@@ -165,12 +165,12 @@ namespace snippetvehicle
 			PxVehicleAntiRollBarData barFront;
 			barFront.mWheel0 = PxVehicleDrive4WWheelOrder::eFRONT_LEFT;
 			barFront.mWheel1 = PxVehicleDrive4WWheelOrder::eFRONT_RIGHT;
-			barFront.mStiffness = 10000.0f;
+			barFront.mStiffness = properties["rollbars"]["frontStiffness"].as<float>();
 			wheelsSimData->addAntiRollBarData(barFront);
 			PxVehicleAntiRollBarData barRear;
 			barRear.mWheel0 = PxVehicleDrive4WWheelOrder::eREAR_LEFT;
 			barRear.mWheel1 = PxVehicleDrive4WWheelOrder::eREAR_RIGHT;
-			barRear.mStiffness = 10000.0f;
+			barRear.mStiffness = properties["rollbars"]["rearStiffness"].as<float>();
 			wheelsSimData->addAntiRollBarData(barRear);
 		}
 
@@ -241,7 +241,7 @@ namespace snippetvehicle
 
 			//Set up the simulation data for all wheels.
 			fourwheel::setupWheelsSimulationData
-			(vehicle4WDesc.wheelMass, vehicle4WDesc.wheelMOI, wheelRadius, wheelWidth,
+			(vehicle4WDesc.yamlProperties, vehicle4WDesc.wheelMass, vehicle4WDesc.wheelMOI, wheelRadius, wheelWidth,
 				numWheels, wheelCenterActorOffsets,
 				vehicle4WDesc.chassisCMOffset, vehicle4WDesc.chassisMass,
 				wheelsSimData);
@@ -257,18 +257,18 @@ namespace snippetvehicle
 
 			//Engine
 			PxVehicleEngineData engine;
-			engine.mPeakTorque = 500.0f;
-			engine.mMaxOmega = 600.0f;//approx 6000 rpm
+			engine.mPeakTorque = vehicle4WDesc.yamlProperties["engine"]["peakTorque"].as<float>();
+			engine.mMaxOmega = vehicle4WDesc.yamlProperties["engine"]["maxOmega"].as<float>();
 			driveSimData.setEngineData(engine);
 
 			//Gears
 			PxVehicleGearsData gears;
-			gears.mSwitchTime = 0.5f;
+			gears.mSwitchTime = vehicle4WDesc.yamlProperties["gears"]["switchTime"].as<float>();
 			driveSimData.setGearsData(gears);
 
 			//Clutch
 			PxVehicleClutchData clutch;
-			clutch.mStrength = 10.0f;
+			clutch.mStrength = vehicle4WDesc.yamlProperties["clutch"]["strength"].as<float>();
 			driveSimData.setClutchData(clutch);
 
 			//Ackermann steer accuracy

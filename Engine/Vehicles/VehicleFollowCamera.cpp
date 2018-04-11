@@ -39,10 +39,6 @@ void VehicleFollowCamera::Update(const Time& frame_time)
 		vec = entity_rotation * vec;
 		float rot_y = atan2(vec.z, vec.x);
 
-		ImGui::Begin("Car camera debug");
-		ImGui::Text("Rot y %f", rot_y * 180.0f / glm::pi<float>());
-		ImGui::End();
-
 		// Make a matrix for the rotation.
 		glm::mat3 rot_around_y = glm::rotate(glm::mat4(), -rot_y, glm::vec3(0.0f, 1.0f, 0.0f));
 

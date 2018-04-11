@@ -25,7 +25,7 @@ protected:
 
 	virtual void OnSetActive(bool active) {}
 
-	void CreateVehicle();
+	void CreateVehicle(const YAML::Node& properties);
 	void DestroyVehicle();
 
 private:
@@ -43,5 +43,5 @@ private:
 	physx::PxVehicleDrive4WRawInputData mVehicleInputData;
 	physx::PxWheelQueryResult m_WheelQueryResults[PX_MAX_NB_WHEELS];
 
-	snippetvehicle::VehicleDesc initVehicleDesc();
+	snippetvehicle::VehicleDesc initVehicleDesc(const YAML::Node& properties);
 };
