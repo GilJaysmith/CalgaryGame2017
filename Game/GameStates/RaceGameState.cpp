@@ -94,6 +94,23 @@ bool RaceGameState::OnUpdate(const Time& frame_time)
 			}
 			status = "FINISHED!";
 		}
+
+		if (rs.m_Car == m_PlayerCar)
+		{
+			if (!m_LastPlayerCheckpoint.IsValid())
+			{
+				m_LastPlayerCheckpoint = rs.m_NextCheckpoint;
+			}
+			else
+			{
+				if (rs.m_NextCheckpoint != m_LastPlayerCheckpoint)
+				{
+					AudioHandle ah = Audio::PlaySound("checkpoint.wav");
+					m_LastPlayerCheckpoint = rs.m_NextCheckpoint;
+				}
+			}
+		}
+
 		ImGui::Text("%d: %s %s", position + 1, rs.m_Car->GetName().c_str(), status.c_str());
 	}
 	ImGui::End();

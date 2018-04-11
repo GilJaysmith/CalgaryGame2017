@@ -35,6 +35,7 @@ protected:
 
 	RACESTATE m_RaceState;
 	Time m_TimeInCurrentState;
+	EntityHandle m_LastPlayerCheckpoint;
 
 	int m_CurrentCountdownThreshold;
 

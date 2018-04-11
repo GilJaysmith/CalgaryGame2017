@@ -19,6 +19,10 @@ public:
 	{
 		return m_Entity == other.m_Entity && m_EntityId == other.m_EntityId;
 	}
+	bool operator!= (const EntityHandle& other) const
+	{
+		return !(*this == other);
+	}
 
 protected:
 	Entity* m_Entity;

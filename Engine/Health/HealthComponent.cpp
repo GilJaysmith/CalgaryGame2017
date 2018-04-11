@@ -32,7 +32,7 @@ bool HealthComponent::OnMessage(Message* message)
 				if (m_Health == 0)
 				{
 					// Play a sound.
-					Audio::PlaySound("Blastwave_FX_ExplosionMetalDebris_HV.243.mp3", m_Entity->GetTransform()[3]);
+					Audio::PlaySound("explosion.mp3", m_Entity->GetTransform()[3]);
 					EntityManager::DestroyEntity(m_Entity);
 				}
 				return true;
