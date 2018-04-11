@@ -74,7 +74,7 @@ bool VehicleComponent::OnMessage(Message* message)
 				ImGui::SetNextWindowSizeConstraints(ImVec2(400, 100), ImVec2(800, 600));
 				ImGui::Begin("Car intentions debug");
 				ImGui::Text("Car gear: %d", m_Vehicle4W->mDriveDynData.getCurrentGear());
-				ImGui::Text("Car speed: %f", vehicle_vel);
+				ImGui::Text("Car speed: %f", vehicle_vel * 3600.0f / 1000.0f);
 				ImGui::Text("Intention accel: %f", accel);
 				ImGui::Text("Intention brake: %f", brake);
 				ImGui::End();
