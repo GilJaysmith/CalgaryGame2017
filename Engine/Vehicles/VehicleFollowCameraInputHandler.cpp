@@ -7,6 +7,8 @@
 
 VehicleFollowCameraInputHandler::VehicleFollowCameraInputHandler(int player_idx)
 	: m_PlayerIdx(player_idx)
+	, m_Pitch(0.0f)
+	, m_Yaw(0.0f)
 {
 	Input::RegisterInputHandler(this);
 }

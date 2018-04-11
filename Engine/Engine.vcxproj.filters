@@ -217,6 +217,9 @@
     <ClCompile Include="Rendering\Postprocessing\PostProcessFade.cpp">
       <Filter>Rendering\PostProcessing</Filter>
     </ClCompile>
+    <ClCompile Include="Cameras\CameraManager.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -414,6 +417,9 @@
     </ClInclude>
     <ClInclude Include="Rendering\Postprocessing\PostProcessFade.h">
       <Filter>Rendering\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\CameraManager.h">
+      <Filter>Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

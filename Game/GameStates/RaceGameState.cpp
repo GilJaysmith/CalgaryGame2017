@@ -2,6 +2,7 @@
 
 #include "Engine/Audio/Audio.h"
 #include "Engine/Audio/Music.h"
+#include "Engine/Cameras/CameraManager.h"
 #include "Engine/Cameras/DebugCamera.h"
 #include "Engine/DebugDraw/DebugDraw.h"
 #include "Engine/DebugPanels/imgui/imgui.h"
@@ -47,8 +48,9 @@ void RaceGameState::OnEnter()
 	m_PlayerCar = Entity::CreateEntity("player_0_car");
 	m_PlayerCar->SetName("Player");
 	RaceManager::RegisterCar(m_PlayerCar);
-	m_Camera = MemNew(MemoryPool::Rendering, VehicleFollowCamera)(m_PlayerCar, 0);
-	Renderer::SetActiveCamera(m_Camera);
+	Camera* camera = MemNew(MemoryPool::Rendering, VehicleFollowCamera)(m_PlayerCar, 0);
+	CameraManager::RegisterCamera(camera);
+	Renderer::SetActiveCamera(camera);
 
 	m_RaceState = NONE;
 
@@ -59,7 +61,6 @@ void RaceGameState::OnEnter()
 bool RaceGameState::OnUpdate(const Time& frame_time)
 {
 	GameState::OnUpdate(frame_time);
-	m_Camera->Update(frame_time);
 
 	std::string race_status_description = "Race Monitor";
 	switch (m_RaceState)
@@ -124,8 +125,6 @@ bool RaceGameState::OnUpdate(const Time& frame_time)
 
 void RaceGameState::OnExit()
 {
-	MemDelete(m_Camera);
-
 	Music::StopPlaying();
 }
 

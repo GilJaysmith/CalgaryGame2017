@@ -18,7 +18,6 @@ public:
 	virtual void OnExit() override;
 
 protected:
-	Camera* m_Camera;
 	EntityHandle m_PlayerCar;
 	std::vector<EntityHandle> m_Cars;
 	std::vector<EntityHandle> m_Checkpoints;
