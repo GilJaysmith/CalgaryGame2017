@@ -20,6 +20,7 @@ behaviours:
         low_full_volume: 0
         high_full_volume: 600
         high_zero_volume: 601
-  collisionresponse: ~
+#  collisionresponse: ~
   health:
     health: 20
+  vehicleai: ~

@@ -23,6 +23,6 @@ behaviours:
         high_full_volume: 600
         high_zero_volume: 601
     skid: skid.wav
-  collisionresponse: ~
+#  collisionresponse: ~
   health:
     health: 1000

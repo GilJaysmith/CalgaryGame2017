@@ -74,6 +74,7 @@
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp" />
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp" />
     <ClCompile Include="Vehicles\Nvidia\SnippetVehicleTireFriction.cpp" />
+    <ClCompile Include="Vehicles\VehicleAIComponent.cpp" />
     <ClCompile Include="Vehicles\VehicleAudioComponent.cpp" />
     <ClCompile Include="Vehicles\VehicleComponent.cpp" />
     <ClCompile Include="Vehicles\VehicleFollowCamera.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h" />
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleTireFriction.h" />
     <ClInclude Include="Vehicles\Nvidia\SnippetVehicleWheelQueryResult.h" />
+    <ClInclude Include="Vehicles\VehicleAIComponent.h" />
     <ClInclude Include="Vehicles\VehicleAudioComponent.h" />
     <ClInclude Include="Vehicles\VehicleComponent.h" />
     <ClInclude Include="Vehicles\VehicleFollowCamera.h" />

@@ -220,6 +220,9 @@
     <ClCompile Include="Cameras\CameraManager.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="Vehicles\VehicleAIComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Component.h">
@@ -420,6 +423,9 @@
     </ClInclude>
     <ClInclude Include="Cameras\CameraManager.h">
       <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleAIComponent.h">
+      <Filter>Vehicles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
