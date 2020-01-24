@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\util\sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\util\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{DA9FEB6A-35F9-324E-B9EF-21E4AEA84114}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

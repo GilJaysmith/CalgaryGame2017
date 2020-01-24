@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\7b59f13fae01d6020515f307bbd71f80\googletest_project-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\fe2f29ac0ec40c81fe1647ea5f52b826\googletest_project-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\CMakeFiles\c4337492513a629cbad94daae1aa9314\googletest_project.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\test\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\work\GitHub\CalgaryGame2018\source\yaml-cpp\build\test\CMakeFiles\googletest_project" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E0FA2ECD-8B97-340D-B4D6-524EDA0326EE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

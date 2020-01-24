@@ -1,0 +1,15 @@
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/yaml-cpp.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/format.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/INSTALL.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/RUN_TESTS.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/ALL_BUILD.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/ZERO_CHECK.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/test/CMakeFiles/INSTALL.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/test/CMakeFiles/RUN_TESTS.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/test/CMakeFiles/googletest_project.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/test/CMakeFiles/run-tests.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/util/CMakeFiles/sandbox.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/util/CMakeFiles/parse.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/util/CMakeFiles/read.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/util/CMakeFiles/INSTALL.dir
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/util/CMakeFiles/RUN_TESTS.dir

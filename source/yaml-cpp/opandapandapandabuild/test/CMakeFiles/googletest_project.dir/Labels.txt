@@ -1,0 +1,13 @@
+# Target labels
+ googletest_project
+# Source files and their labels
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/test/CMakeFiles/googletest_project
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/c4337492513a629cbad94daae1aa9314/googletest_project.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/fe2f29ac0ec40c81fe1647ea5f52b826/googletest_project-complete.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-install.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-mkdir.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-download.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-update.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-patch.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-configure.rule
+C:/work/GitHub/CalgaryGame2018/source/yaml-cpp/build/CMakeFiles/7b59f13fae01d6020515f307bbd71f80/googletest_project-build.rule
