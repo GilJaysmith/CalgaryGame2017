@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: PostprocessFade.vs }
-    - { type: fragment, shader: PostprocessFade.fs }
- 
-outputs: [ outColour ]

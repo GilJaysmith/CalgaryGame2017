@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: DebugDraw.vs }
-    - { type: fragment, shader: DebugDraw.fs }
- 
-outputs: [ outColour ]
