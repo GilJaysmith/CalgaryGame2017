@@ -11,16 +11,18 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
+/source/**/[Dd]ebug/
+/source/**/[Dd]ebugPublic/
+/source/**/[Rr]elease/
+/source/**/[Rr]eleases/
+/source/**/x64/
+/source/**/x86/
+/source/**/bld/
+/source/**/[Bb]in/
+/source/**/[Oo]bj/
+/source/**/[Ll]og/
+!/source/sdks/**/[Dd]ebug/
+!/source/sdks/**/[Cc]hecked/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -261,10 +263,7 @@ __pycache__/
 *.pyc
 
 # Project-specific stuff
-/bin
-/Data/Shapefiles/Paris
-/Data/Shapefiles/Paris
-/Data/Shapefiles/Vancouver/cooked.bin
-!/runnable/bin/
-!/source/sdks/
+/runnable/data/Shapefiles/Vancouver/cooked.bin
+!/runnable/bin/debug/*
+!/runnable/bin/release/*
 **/*.exe
