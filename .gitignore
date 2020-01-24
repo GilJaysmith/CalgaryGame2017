@@ -265,4 +265,5 @@ __pycache__/
 /Data/Shapefiles/Paris
 /Data/Shapefiles/Paris
 /Data/Shapefiles/Vancouver/cooked.bin
+!/runnable/bin
 **/*.exe
