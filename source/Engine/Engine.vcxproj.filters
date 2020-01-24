@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{55b42d0b-a97a-49c6-85ac-a9279711bfd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{8c68cb7f-7d7d-4647-8ba5-d049412a4bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{32a2c2fb-d388-4e99-8f78-42b211f58cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{7cb1231f-a065-45fe-97a9-6ccac374101c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Allocators">
+      <UniqueIdentifier>{3ec4faab-9f9e-498f-aae0-3c04286277f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{9a6ca443-d9d1-4936-ab92-f6e8dcb305ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{ac4b7e1e-2e5e-4a31-82df-c8b281795404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{c5b0e2fb-515a-4727-a8bf-4d1c1365601b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cameras">
+      <UniqueIdentifier>{0da9adf8-ec42-4169-babb-52447e0523b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{06f8edec-4cd6-4515-a2a5-973195a137e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{991b5742-5cd0-4cf2-ad3b-6ce6a528bd5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DebugPanels">
+      <UniqueIdentifier>{1302035c-5581-4f1f-be7c-7f0f149afacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DebugPanels\imgui">
+      <UniqueIdentifier>{54fb5edc-7032-4469-82c4-37c7002da972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles">
+      <UniqueIdentifier>{945d731a-df55-4afc-865e-8460af0183a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles\Nvidia">
+      <UniqueIdentifier>{9d8d8431-897b-45fa-8e19-d916ef732cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DebugDraw">
+      <UniqueIdentifier>{d80fb98a-4f4c-4173-81e6-ab7a268cc146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Health">
+      <UniqueIdentifier>{3a6f9dd5-f213-4899-ba11-4c25d5b48279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\PostProcessing">
+      <UniqueIdentifier>{8e85b428-c45f-4e6f-a518-46834378debc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entities\Component.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Message.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Logging.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\GameStateManager.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\EntityManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch.cpp" />
+    <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp">
+      <Filter>Memory\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Renderer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\ShaderManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Renderable.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Mesh.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\TextureManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\Time.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\GameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\ComponentRegistry.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderComponent.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MeshManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\Camera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\DebugCamera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\SplashScreenGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputHandler.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\DebugCameraInputHandler.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanels\DebugPanels.cpp">
+      <Filter>DebugPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanels\imgui\imgui.cpp">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanels\imgui\imgui_demo.cpp">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleTireFriction.cpp">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Viewport.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Gamepad.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleInputComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleInputHandler.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleFollowCamera.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleFollowCameraInputHandler.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\Music.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw\DebugDraw.cpp">
+      <Filter>DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\CollisionResponseComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Health\HealthComponent.cpp">
+      <Filter>Health</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\EntityHandle.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleAudioComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\TriggerComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsUtils.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Postprocessing\PostProcessEffect.cpp">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Postprocessing\PostProcessFade.cpp">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras\CameraManager.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicles\VehicleAIComponent.cpp">
+      <Filter>Vehicles</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entities\Component.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Message.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Logging.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\GameStateManager.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\EntityManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Pch.h" />
+    <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h">
+      <Filter>Memory\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\MessageTypes.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ShaderManager.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Renderable.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Mesh.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\TextureManager.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\GameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\Time.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\ComponentRegistry.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderComponent.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MeshManager.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\Camera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsComponent.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\DebugCamera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\SplashScreenGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ScreenSpaceRenderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsMessages.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputHandler.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\DebugCameraInputHandler.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\DebugPanels.h">
+      <Filter>DebugPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\imconfig.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\imgui.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\imgui_internal.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\stb_rect_pack.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\stb_textedit.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugPanels\imgui\stb_truetype.h">
+      <Filter>DebugPanels\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleFilterShader.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleTireFriction.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleWheelQueryResult.h">
+      <Filter>Vehicles\Nvidia</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleComponent.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Viewport.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\UpdatePass.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Gamepad.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleInputComponent.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleInputHandler.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleMessages.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleFollowCamera.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleFollowCameraInputHandler.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsUtils.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderMessages.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\Music.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDraw\DebugDraw.h">
+      <Filter>DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionResponseComponent.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionMessages.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Health\HealthComponent.h">
+      <Filter>Health</Filter>
+    </ClInclude>
+    <ClInclude Include="Health\DamageMessages.h">
+      <Filter>Health</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\EntityHandle.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleAudioComponent.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\TriggerComponent.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Postprocessing\PostProcessEffect.h">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Postprocessing\PostProcessFade.h">
+      <Filter>Rendering\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras\CameraManager.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicles\VehicleAIComponent.h">
+      <Filter>Vehicles</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

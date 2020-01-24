@@ -1,0 +1,5 @@
+shaders:
+    - { type: vertex, shader: PostprocessNull.vs }
+    - { type: fragment, shader: PostprocessNull.fs }
+ 
+outputs: [ outColour ]

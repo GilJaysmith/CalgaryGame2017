@@ -1,0 +1,5 @@
+shaders:
+    - { type: vertex, shader: ScreenSpace.vs }
+    - { type: fragment, shader: ScreenSpace.fs }
+ 
+outputs: [ outColour ]

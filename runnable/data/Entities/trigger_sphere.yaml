@@ -1,0 +1,12 @@
+--- 
+behaviours: 
+  trigger:
+    shapes:
+      - type: sphere
+        radius: 2.5
+    simfilter: [1, 28, 0, 0]
+    script:
+      - action: damageOther
+        damage: 10
+      - action: playSound
+        sound: Blastwave_FX_ExplosionMetalDebris_HV.243

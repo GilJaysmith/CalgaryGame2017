@@ -1,0 +1,25 @@
+chassisMass: 1500.0
+chassisDims: [2.0, 1.2, 3.0]
+wheelMass: 20.0
+numWheels: 4
+wheels:
+  maxHandBrakeTorque: 4000.0
+  maxSteer: 0.3333
+suspension:
+  maxCompression: 0.3
+  maxDroop: 0.1
+  springStrength: 35000.0
+  springDamperRate: 4500.0
+  camberAngleAtRest: 0.0
+  camberAngleAtMaxDroop: 0.01
+  camberAngleAtMaxCompression: -0.01
+rollbars:
+  frontStiffness: 10000.0
+  rearStiffness: 10000.0
+engine:
+  peakTorque: 500.0
+  maxOmega: 600.0
+gears:
+  switchTime: 0.5
+clutch:
+  strength: 10.0

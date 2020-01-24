@@ -1,0 +1,26 @@
+--- 
+behaviours: 
+  render: 
+    mesh: Porsche 911 GT2
+#  physics:
+#    shape: box
+#    dimensions: [0.98, 0.63, 2.23]
+#    material: cube
+  vehicle:
+    cardesc: Porsche 911 GT2
+    wheels:
+      - part 026
+      - part 027
+      - part 025
+      - part 028
+  vehicleaudio:
+    engine:
+      - sound: med_on.wav
+        low_zero_volume: -1
+        low_full_volume: 0
+        high_full_volume: 600
+        high_zero_volume: 601
+#  collisionresponse: ~
+  health:
+    health: 20
+  vehicleai: ~

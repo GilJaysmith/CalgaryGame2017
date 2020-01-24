@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Audio\Audio.cpp" />
+    <ClCompile Include="Audio\Music.cpp" />
+    <ClCompile Include="Cameras\Camera.cpp" />
+    <ClCompile Include="Cameras\CameraManager.cpp" />
+    <ClCompile Include="Cameras\DebugCamera.cpp" />
+    <ClCompile Include="Cameras\DebugCameraInputHandler.cpp" />
+    <ClCompile Include="DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="DebugPanels\DebugPanels.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui_demo.cpp" />
+    <ClCompile Include="DebugPanels\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Entities\Component.cpp" />
+    <ClCompile Include="Entities\ComponentRegistry.cpp" />
+    <ClCompile Include="Entities\Entity.cpp" />
+    <ClCompile Include="Entities\EntityHandle.cpp" />
+    <ClCompile Include="Entities\EntityManager.cpp" />
+    <ClCompile Include="Entities\Message.cpp" />
+    <ClCompile Include="GameStates\GameState.cpp" />
+    <ClCompile Include="GameStates\GameStateManager.cpp" />
+    <ClCompile Include="GameStates\SplashScreenGameState.cpp" />
+    <ClCompile Include="GameStates\Time.cpp" />
+    <ClCompile Include="Health\HealthComponent.cpp" />
+    <ClCompile Include="Input\Gamepad.cpp" />
+    <ClCompile Include="Input\Input.cpp" />
+    <ClCompile Include="Input\InputHandler.cpp" />
+    <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Memory\Allocators\FreeStoreAllocator.cpp" />
+    <ClCompile Include="Memory\Memory.cpp" />
+    <ClCompile Include="Pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Engine/Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Physics\CollisionResponseComponent.cpp" />
+    <ClCompile Include="Physics\Physics.cpp" />
+    <ClCompile Include="Physics\PhysicsComponent.cpp" />
+    <ClCompile Include="Physics\PhysicsUtils.cpp" />
+    <ClCompile Include="Physics\TriggerComponent.cpp" />
+    <ClCompile Include="Rendering\Mesh.cpp" />
+    <ClCompile Include="Rendering\MeshManager.cpp" />
+    <ClCompile Include="Rendering\Postprocessing\PostProcessEffect.cpp" />
+    <ClCompile Include="Rendering\Postprocessing\PostProcessFade.cpp" />
+    <ClCompile Include="Rendering\Renderable.cpp" />
+    <ClCompile Include="Rendering\RenderComponent.cpp" />
+    <ClCompile Include="Rendering\Renderer.cpp" />
+    <ClCompile Include="Rendering\ScreenSpaceRenderer.cpp" />
+    <ClCompile Include="Rendering\ShaderManager.cpp" />
+    <ClCompile Include="Rendering\Viewport.cpp" />
+    <ClCompile Include="Rendering\TextureManager.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicle4WCreate.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleCreate.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.cpp" />
+    <ClCompile Include="Vehicles\Nvidia\SnippetVehicleTireFriction.cpp" />
+    <ClCompile Include="Vehicles\VehicleAIComponent.cpp" />
+    <ClCompile Include="Vehicles\VehicleAudioComponent.cpp" />
+    <ClCompile Include="Vehicles\VehicleComponent.cpp" />
+    <ClCompile Include="Vehicles\VehicleFollowCamera.cpp" />
+    <ClCompile Include="Vehicles\VehicleFollowCameraInputHandler.cpp" />
+    <ClCompile Include="Vehicles\VehicleInputComponent.cpp" />
+    <ClCompile Include="Vehicles\VehicleInputHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Audio\Audio.h" />
+    <ClInclude Include="Audio\Music.h" />
+    <ClInclude Include="Cameras\Camera.h" />
+    <ClInclude Include="Cameras\CameraManager.h" />
+    <ClInclude Include="Cameras\DebugCamera.h" />
+    <ClInclude Include="Cameras\DebugCameraInputHandler.h" />
+    <ClInclude Include="DebugDraw\DebugDraw.h" />
+    <ClInclude Include="DebugPanels\DebugPanels.h" />
+    <ClInclude Include="DebugPanels\imgui\imconfig.h" />
+    <ClInclude Include="DebugPanels\imgui\imgui.h" />
+    <ClInclude Include="DebugPanels\imgui\imgui_internal.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_rect_pack.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_textedit.h" />
+    <ClInclude Include="DebugPanels\imgui\stb_truetype.h" />
+    <ClInclude Include="Entities\Component.h" />
+    <ClInclude Include="Entities\ComponentRegistry.h" />
+    <ClInclude Include="Entities\Entity.h" />
+    <ClInclude Include="Entities\EntityHandle.h" />
+    <ClInclude Include="Entities\EntityManager.h" />
+    <ClInclude Include="Entities\Message.h" />
+    <ClInclude Include="Entities\MessageTypes.h" />
+    <ClInclude Include="Entities\UpdatePass.h" />
+    <ClInclude Include="GameStates\GameState.h" />
+    <ClInclude Include="GameStates\GameStateManager.h" />
+    <ClInclude Include="GameStates\SplashScreenGameState.h" />
+    <ClInclude Include="GameStates\Time.h" />
+    <ClInclude Include="Health\DamageMessages.h" />
+    <ClInclude Include="Health\HealthComponent.h" />
+    <ClInclude Include="Input\Gamepad.h" />
+    <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Input\InputHandler.h" />
+    <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Math\AABB.h" />
+    <ClInclude Include="Memory\Allocators\FreeStoreAllocator.h" />
+    <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Pch.h" />
+    <ClInclude Include="Physics\CollisionMessages.h" />
+    <ClInclude Include="Physics\CollisionResponseComponent.h" />
+    <ClInclude Include="Physics\Physics.h" />
+    <ClInclude Include="Physics\PhysicsComponent.h" />
+    <ClInclude Include="Physics\PhysicsMessages.h" />
+    <ClInclude Include="Physics\PhysicsUtils.h" />
+    <ClInclude Include="Physics\TriggerComponent.h" />
+    <ClInclude Include="Rendering\Mesh.h" />
+    <ClInclude Include="Rendering\MeshManager.h" />
+    <ClInclude Include="Rendering\Postprocessing\PostProcessEffect.h" />
+    <ClInclude Include="Rendering\Postprocessing\PostProcessFade.h" />
+    <ClInclude Include="Rendering\Renderable.h" />
+    <ClInclude Include="Rendering\RenderComponent.h" />
+    <ClInclude Include="Rendering\Renderer.h" />
+    <ClInclude Include="Rendering\RenderMessages.h" />
+    <ClInclude Include="Rendering\ScreenSpaceRenderer.h" />
+    <ClInclude Include="Rendering\ShaderManager.h" />
+    <ClInclude Include="Rendering\TextureManager.h" />
+    <ClInclude Include="Rendering\Viewport.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleCreate.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleFilterShader.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleSceneQuery.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleTireFriction.h" />
+    <ClInclude Include="Vehicles\Nvidia\SnippetVehicleWheelQueryResult.h" />
+    <ClInclude Include="Vehicles\VehicleAIComponent.h" />
+    <ClInclude Include="Vehicles\VehicleAudioComponent.h" />
+    <ClInclude Include="Vehicles\VehicleComponent.h" />
+    <ClInclude Include="Vehicles\VehicleFollowCamera.h" />
+    <ClInclude Include="Vehicles\VehicleFollowCameraInputHandler.h" />
+    <ClInclude Include="Vehicles\VehicleInputComponent.h" />
+    <ClInclude Include="Vehicles\VehicleInputHandler.h" />
+    <ClInclude Include="Vehicles\VehicleMessages.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\soil\projects\VC9\SOIL.vcxproj">
+      <Project>{c32fb2b4-500c-43cd-a099-eecce079d3f1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{93532914-e0a7-3a7f-9acd-127bb7dac84d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{A4995B33-B3D6-41E9-933C-855755B24C46}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Engine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\sdks\PhysX-3.4\PhysX_3.4\Include;..\sdks\PhysX-3.4\PxShared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>Engine/Pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\pxshared\include;..\sdks\PhysX\include;..\sdks\assimp\include;..\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\sdks\PhysX-3.4\PhysX_3.4\Include;..\sdks\PhysX-3.4\PxShared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>Engine/Pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\sdks\PxShared\Include;..\sdks\PhysX\Include;..\sdks\assimp\include;..\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

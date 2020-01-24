@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{dadaaf06-c26b-47c9-ab8e-98f18a184829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GIS">
+      <UniqueIdentifier>{e1c5014f-9128-4410-94ca-f1466d835da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GIS\shapelib">
+      <UniqueIdentifier>{5d411c0e-41cf-4b2b-b10d-d15a2ce0460b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GIS\shapelib\unused">
+      <UniqueIdentifier>{7f5e19a6-8b8e-43d5-8e86-b4a6cda3186f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GIS\polypartition">
+      <UniqueIdentifier>{3496f01d-9a6c-4114-936c-fb7979bf030a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Race">
+      <UniqueIdentifier>{f0cfaa95-d986-4c12-9c35-4a8e5baadcd9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Pch.h" />
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\TestGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\shapelib\shapefil.h">
+      <Filter>GIS\shapelib</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\GISManager.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\CityGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\polypartition\polypartition.h">
+      <Filter>GIS\polypartition</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\CityLoaderFromSource.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\City.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="GIS\CityLoaderFromCooked.h">
+      <Filter>GIS</Filter>
+    </ClInclude>
+    <ClInclude Include="Race\RaceManager.h">
+      <Filter>Race</Filter>
+    </ClInclude>
+    <ClInclude Include="Race\CheckpointComponent.h">
+      <Filter>Race</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates\RaceGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch.cpp" />
+    <ClCompile Include="GameStates\TestGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\dbfopen.c">
+      <Filter>GIS\shapelib</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\safileio.c">
+      <Filter>GIS\shapelib</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\sbnsearch.c">
+      <Filter>GIS\shapelib</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shpopen.c">
+      <Filter>GIS\shapelib</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shptree.c">
+      <Filter>GIS\shapelib</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\dbfadd.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\dbfcreate.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\dbfdump.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shpadd.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shpcreate.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shpdump.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shprewind.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shptest.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shptreedump.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\shapelib\shputils.c">
+      <Filter>GIS\shapelib\unused</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\GISManager.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\CityGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\polypartition\polypartition.cpp">
+      <Filter>GIS\polypartition</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\CityLoaderFromSource.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\City.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="GIS\CityLoaderFromCooked.cpp">
+      <Filter>GIS</Filter>
+    </ClCompile>
+    <ClCompile Include="Race\RaceManager.cpp">
+      <Filter>Race</Filter>
+    </ClCompile>
+    <ClCompile Include="Race\CheckpointComponent.cpp">
+      <Filter>Race</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates\RaceGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
