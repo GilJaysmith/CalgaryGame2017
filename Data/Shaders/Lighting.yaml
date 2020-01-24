@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: Lighting.vs }
-    - { type: fragment, shader: Lighting.fs }
- 
-outputs: [ outColour ]

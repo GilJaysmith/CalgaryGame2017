@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: Skybox.vs }
-    - { type: fragment, shader: Skybox.fs }
- 
-outputs: [ outColour ]

@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: SolidColour.vs }
-    - { type: fragment, shader: SolidColour.fs }
- 
-outputs: [ outColour ]

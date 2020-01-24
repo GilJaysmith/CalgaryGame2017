@@ -1,5 +1,0 @@
-shaders:
-    - { type: vertex, shader: Postprocess.vs }
-    - { type: fragment, shader: Postprocess.fs }
- 
-outputs: [ outColour ]
