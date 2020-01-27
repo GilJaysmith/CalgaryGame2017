@@ -16,7 +16,7 @@
 #include "sdks/glm/gtc/matrix_transform.hpp"
 #include "sdks/glm/gtc/type_ptr.hpp"
 
-#include "../yaml-cpp/include/yaml-cpp/yaml.h"
+#include "yaml-cpp/yaml.h"
 
 #include "Engine/DebugPanels/imgui/imgui.h"
 #include "Engine/Logging/Logging.h"
