@@ -12,8 +12,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SOIL", "soil\projects\VC9\SOIL.vcxproj", "{C32FB2B4-500C-43CD-A099-EECCE079D3F1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml-cpp static md", "yaml-cpp\yaml-cpp.vcxproj", "{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -74,18 +72,6 @@ Global
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.RelWithDebInfo|x64.Build.0 = Release|x64
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.RelWithDebInfo|x86.Build.0 = Release|Win32
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Debug|x64.ActiveCfg = Debug|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Debug|x64.Build.0 = Debug|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Debug|x86.ActiveCfg = Debug|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.MinSizeRel|x86.ActiveCfg = MinSizeRel|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Release|x64.ActiveCfg = Release|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Release|x64.Build.0 = Release|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.Release|x86.ActiveCfg = Release|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
-		{93532914-E0A7-3A7F-9ACD-127BB7DAC84D}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
