@@ -7,3 +7,4 @@ My game is based on using open data for cities to create large-scale environment
 Whether this will be fun I don't yet know, but it's all proving very educational as I teach myself OpenGL rendering, PhysX, pathfinding, and all the other skills you need to actually make an entire game.
 
 So that's what it is, and we'll see how it proceeds won't we?
+
