@@ -8,3 +8,4 @@ Whether this will be fun I don't yet know, but it's all proving very educational
 
 So that's what it is, and we'll see how it proceeds won't we?
 
+PR check builds are now enabled in this repo.
